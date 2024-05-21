@@ -25,6 +25,11 @@ import Income from "./Pages/Dashboard/Income";
 import ClassManagement from "./Pages/Dashboard/ClassManagement";
 import ManageProducts from "./Pages/Dashboard/ManageProducts";
 import About from "./Pages/Dashboard/About";
+import Contact from "./Pages/Dashboard/Contact";
+import FAQ from "./Pages/Dashboard/FAQ";
+import PrivacyPolicy from "./Pages/Dashboard/PrivacyPolicy";
+import Terms from "./Pages/Dashboard/Terms";
+import Blog from "./Pages/Dashboard/Blog";
 function App() {
   return (
     <>
@@ -46,6 +51,11 @@ function App() {
               <Route path="/class-management" element={<ClassManagement/>} />
               <Route path="/manage-products" element={<ManageProducts/>} />
               <Route path="/about" element={<About/>} />
+              <Route path="/contact" element={<Contact/>} />
+              <Route path="/faq" element={<FAQ/>} />
+              <Route path="/privacy" element={<PrivacyPolicy/>} />
+              <Route path="/terms-condition" element={<Terms/>} />
+              <Route path="/blog" element={<Blog/>} />
               <Route path="/seller-details/:id" element={<SellerDetails />} />
               <Route path="/seller-product-list" element={<SellerProductList />} />
               <Route path="/emails" element={<Emails />} />

@@ -31,20 +31,20 @@ const Otp = () => {
     <div
       style={{
         width: "100%",
-        background: "#BFF2EE",
+        background: "#f8f1e6",
         height: "100vh",
         display:"flex",
         alignItems: "center",
         justifyContent: "center"
       }}
     >
-      <div style={{width: "630px",  background: "white", borderRadius: "12px", padding: "90px 57px"}}>
+      <div style={{width: "630px",  background: "white", padding: "90px 57px"}}>
         <h1 style={{fontSize: "32px", color: "#6A6D7C", marginBottom: "13px", textAlign: "center"}}>Check your email</h1>
         <p style={{width: "380px", color: "#B8B8B8",  margin: "0 auto 0 auto"}}>
           We sent a reset link to <span style={{color: "#545454"}}> contact@dscode...com </span>
           enter 6 digit code that mentioned in the email
         </p>
-        <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "30px",}}>
+        <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "30px",}} className="py-7">
           <OTPInput
             value={otp}
             onChange={setOtp}
@@ -71,7 +71,7 @@ const Otp = () => {
                 fontWeight: "400px",
                 fontSize: "18px",
                 color: "white",
-                background: "#2FD5C7",
+                background: "#3C3C3C",
                 marginTop: "30px",
                 border: "none",
                 outline: "none",
@@ -82,7 +82,7 @@ const Otp = () => {
         </Button>
         <p style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
           Didn’t receive code?
-          <p onClick={handleResendEmail} style={{color: "#2FD5C7", textDecoration: "underline", cursor: "pointer"}}>Resend </p>
+          <p onClick={handleResendEmail} style={{color: "#B47000", textDecoration: "underline", cursor: "pointer"}}>Resend </p>
         </p>
       </div>
     </div>
