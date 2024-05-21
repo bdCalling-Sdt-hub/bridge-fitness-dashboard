@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ant-layout {
+  background: #f2f2f2 !important;
+}
+*,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+
+  padding: 0;
+  margin: 0;
+}
+
+ul,
+li {
+  text-decoration: none;
+}
+
+.VIpgJd-ZVi9od-l4eHX-hSRGPd {
+  display: none;
+}
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-badge .ant-badge-count {
+  background: #23A095;
+  color: white !important;
+}
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item {
+  padding: 10px 10px !important;
+  margin-bottom: 0 !important;
+}
+
+/* table padding remove */
+.ant-table-wrapper .ant-table-thead>tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
+  display: none !important;
+}
+
+.ant-table-wrapper .ant-table-tbody>tr>td {
+  border-bottom: none !important;
+}
+
+.ant-table-wrapper .ant-table-thead>tr>th {
+  padding: 10px 16px !important;
+}
+
+.ant-table-wrapper .ant-table-tbody>tr>td {
+  padding: 9px 16px !important;
+}
+
+/* center pagination */
+:where(.css-dev-only-do-not-override-17a39f8).ant-table-wrapper .ant-table-pagination {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+}
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-table-wrapper .ant-table-pagination.ant-pagination {
+  margin: 8px 0 !important;
+}
+
+/* alert button */
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+  background-color: #2FD5C7 !important;
+  margin: 0 !important;
+  /* width: 350px !important; */
+  border-radius: 8px !important;
+}
+
+/* slider */
+.ant-slider .ant-slider-handle:hover::after {
+  box-shadow: 0 0 0 4px #6A6D7C !important;
+}
+
+.ant-slider .ant-slider-handle:focus::after {
+  box-shadow: 0 0 0 4px #6A6D7C !important;
+}
+
+.ant-slider .ant-slider-handle::after {
+  box-shadow: 0 0 0 4px #6A6D7C !important;
+
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+.borderLeft {
+  position: relative;
+}
+
+.borderLeft::after {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 80%;
+  background: #DADADA;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+.ant-table-tbody .ant-table-cell {
+  font-size: 16px !important;
+  color: #707070 !important;
+}
+
+.ant-table-thead .ant-table-cell {
+  font-size: 18px !important;
+  color: #575757 !important;
+  font-weight: 700 !important;
+}
+
+#makeAdmin .ant-table-thead .ant-table-cell {
+  background-color: #E8D3B0 !important;
+}
+
+#makeAdmin .ant-table-tbody .ant-table-row:nth-child(even) {
+  background-color: #F8F1E6;
+}
+
+:where(.css-dev-only-do-not-override-djtmh8).ant-table-wrapper .ant-table-pagination-right {
+  justify-content: center !important;
+}
+.jodit-workplace {
+  min-height: 250px ;
+  height: auto;
+}
