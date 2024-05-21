@@ -234,7 +234,8 @@ const Blog = () => {
                                         justifyContent: 'start',
                                         alignItems: 'center',
                                         gap: '35px',
-                                        fontSize: '14px'
+                                        fontSize: '14px',
+                                        marginTop:'8px'
                                     }}>
                                         <p style={{
                                             display: 'flex',

@@ -2,6 +2,7 @@ import { Button, Form, Input, Typography } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import forgatePass from "../../assets/forgatePass.png";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -19,32 +20,33 @@ const ForgotPassword = () => {
     });
   };
   return (
-    <div
+    <div className="grid grid-cols-2 gap-0 "
       style={{
         width: "100%",
-        background: "#BFF2EE",
+        background: "#F4EAD9",
         height: "100vh",
-        display:"flex",
-        alignItems: "center",
-        justifyContent: "center"
       }}
     >
-      <Form 
-        name="normal_login"
-        className="password-form"
-        initialValues={{
-          remember: true,
-        }}
-        style={{width: "630px", background: "white", borderRadius: "12px", padding: "90px 57px"}}
-        
-        onFinish={onFinish}
-      >
-        <h1 style={{fontSize: "32px", marginBottom: "54px", color: "#494949", textAlign: "center"}}>Forgot Password</h1>
+      <div className="flex justify-center items-center">
+        <img src={forgatePass} alt="" />
+      </div>
+      <div className="w-full bg-white flex justify-center items-center">
+        <Form
+          name="normal_login"
+          className="password-form"
+          initialValues={{
+            remember: true,
+          }}
+          style={{ width: "630px", background: "white", borderRadius: "12px", padding: "90px 57px" }}
 
-          <div style={{marginBottom: "24px"}}>
-            <label htmlFor="email" style={{display: "block", marginBottom: "5px" }}> Email Address</label>
+          onFinish={onFinish}
+        >
+          <h1 style={{ fontSize: "32px", marginBottom: "54px", color: "#494949", textAlign: "center" }}>Forgot Password</h1>
+
+          <div style={{ marginBottom: "24px" }}>
+            <label htmlFor="email" style={{ display: "block", marginBottom: "5px" }}> Email Address</label>
             <Form.Item
-              style={{marginBottom: 0}}
+              style={{ marginBottom: 0 }}
               name="email"
               id="email"
               rules={[
@@ -79,7 +81,7 @@ const ForgotPassword = () => {
                 height: "45px",
                 fontWeight: "400px",
                 fontSize: "18px",
-                background: "#2FD5C7",
+                background: "#555555",
                 color: "white",
                 alignSelf: "bottom",
                 marginTop: "30px",
@@ -88,7 +90,8 @@ const ForgotPassword = () => {
               Send a Code
             </Button>
           </Form.Item>
-      </Form>
+        </Form>
+      </div>
     </div>
   );
 };

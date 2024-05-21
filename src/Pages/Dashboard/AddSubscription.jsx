@@ -1,9 +1,9 @@
-import { Input, Table } from 'antd'
-import React, { useState } from 'react'
-import { FiEye, FiSearch } from 'react-icons/fi'
-import { LuRefreshCw } from 'react-icons/lu';
-import avater from '../../assets/avater.png';
+import React, { useMemo, useState } from 'react'
 import { RiEditLine } from 'react-icons/ri';
+import { Form, Input, Modal, Table, Button, Row, Col } from 'antd';
+import { FaPlus, FaXmark } from 'react-icons/fa6';
+import { LuPhone } from 'react-icons/lu';
+import { CiCircleMinus } from 'react-icons/ci';
 const data = [
     {
         key: "1",
@@ -16,21 +16,32 @@ const data = [
         price: "80 CND",
     },
     {
-        key: "2",
+        key: "3",
         name: "Premium Membership",
         price: "100 CND",
     },
 ]
-
+function generateRandomNumber() {
+    const randomNumber = Array.from({ length: 10 }, () => Math.floor(Math.random() * 10)).join('');
+    return randomNumber;
+}
+const descriptions = [
+    { feature: 'On-demand Access to ourworkout library', id: 'bjasu1' },
+    { feature: 'New Classes Every Week', id: 'bjasu2' },
+    { feature: 'Join a Global Community', id: 'bjasu3' },
+]
 const AddSubscription = () => {
-    const [search, setSearch] = useState("");
-    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
-    const handlePageChange = (page) => {
-        setPage(page);
-        const params = new URLSearchParams(window.location.search);
-        params.set('page', page);
-        window.history.pushState(null, "", `?${params.toString()}`);
+    const [descriptionFeatures, setDescriptionFeatures] = useState(descriptions)
+    const [openAddModel, setOpenAddModel] = useState(false);
+    const [reFresh, setReFresh] = useState("");
+    const [subscriptionID, setsubscriptionID] = useState(data[0]?.key)
+    const manageSubscription = data.filter(item => item.key == subscriptionID)
+    if (reFresh) {
+        setTimeout(() => {
+            setReFresh("")
+        }, 1500)
     }
+
     const columns = [
         {
             title: "S.No",
@@ -52,25 +63,31 @@ const AddSubscription = () => {
             dataIndex: "",
             key: "",
             render: (_, record) => (
-              <button style={{
-                display:'flex',
-                justifyContent:'center',
-                alignItems:'center',
-                background:'transparent',
-                border:'none',
-                cursor:'pointer'
-              }}>
-                <RiEditLine style={{
-                    fontSize:'22px'
-                }} />
-              </button>
+                <>
+                    <button onClick={() => {
+                        setOpenAddModel(true)
+                        setsubscriptionID(record.key)
+                    }} style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        background: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer'
+                    }}>
+                        <RiEditLine style={{
+                            fontSize: '22px'
+                        }} />
+                    </button>
+                </>
             )
         },
     ];
+
     return (
         <div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "16px 0" }}>
-                <h1 style={{ fontSize: "20px", fontWeight: 600, color: "#2F2F2F" }}>All Products</h1>
+                <h1 style={{ fontSize: "20px", fontWeight: 600, color: "#2F2F2F" }}>Subscription</h1>
             </div>
             <div>
                 <Table
@@ -79,6 +96,49 @@ const AddSubscription = () => {
                     pagination={false}
                 />
             </div>
+            <Modal
+                centered
+                open={openAddModel}
+                onCancel={() => setOpenAddModel(false)}
+                width={700}
+                footer={false}
+            >
+                <div>
+                    <h1 className='font-semibold text-[#555555]' style={{ marginBottom: "12px" }}>Manage Subscriptions</h1>
+                    <form>
+                        <div>
+                            <p className='text-[#6D6D6D] py-1'>Package Name</p>
+                            <input className='w-[50%] border outline-none px-3 py-[10px]' type="text" value={manageSubscription[0]?.name} />
+                        </div>
+                        <div className='mt-2'>
+                            <p className='text-[#6D6D6D] py-1'>Package Price</p>
+                            <input className='w-[50%] border outline-none px-3 py-[10px]' type="text" value={manageSubscription[0]?.price} />
+                        </div>
+                    </form>
+                    <p className='text-[#6D6D6D] py-1'>Description </p>
+                    <div className='w-full  py-3 pb-10 px-3  border'>
+                        <div className='w-full  flex flex-col justify-start items-start gap-2'>
+                            {
+                                descriptionFeatures?.map((item) => <span key={item?.id} className='relative w-full'>
+                                    <input className='w-[90%] bg-[#FEFEFE] border py-3 px-2' type="text" name="" id="" defaultValue={item?.feature || 'please insert a feature'} />
+                                    <CiCircleMinus onClick={() => {
+                                        const newfeatures = descriptionFeatures.filter((filterItem) => filterItem?.id !== item?.id)
+                                        setDescriptionFeatures(newfeatures)
+                                    }} className='absolute right-3 top-[50%] translate-y-[-50%] text-2xl cursor-pointer text-[#E2BCC1]' />
+                                </span>)
+                            }
+
+                            <div className='w-full relative py-3'>
+                                <button onClick={() => {
+                                    setDescriptionFeatures([...descriptionFeatures, { feature: false, id: generateRandomNumber() }])
+                                }} className='p-1 bg-[#B47000] rounded-full absolute right-[8.5px]'>
+                                    <FaPlus className='text-xl text-white' />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </div>
     )
 }
