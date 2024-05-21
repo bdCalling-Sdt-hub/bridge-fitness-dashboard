@@ -28,7 +28,7 @@ const UpdatePassword = () => {
     <div
       style={{
         width: "100%",
-        background: "#BFF2EE",
+        background: "#f8f1e6",
         height: "100vh",
         display:"flex",
         alignItems: "center",
@@ -41,7 +41,7 @@ const UpdatePassword = () => {
         initialValues={{
           remember: true,
         }}
-        style={{width: "630px", background: "white", borderRadius: "12px", padding: "90px 57px"}}
+        style={{width: "630px", background: "white", padding: "90px 57px"}}
         onFinish={onFinish}
       >
         <h1 style={{fontSize: "32px", color: "#6A6D7C", marginBottom: "13px", textAlign: "center"}}>Set a new password</h1>
@@ -112,7 +112,7 @@ const UpdatePassword = () => {
             style={{
               border: "none",
               height: "51px",
-              background: "#2FD5C7",
+              background: "#555555",
               color: "white",
               borderRadius: "8px",
               outline: "none",
