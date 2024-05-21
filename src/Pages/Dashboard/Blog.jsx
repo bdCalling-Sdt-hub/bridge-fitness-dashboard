@@ -6,7 +6,8 @@ import { FaPlus } from 'react-icons/fa6';
 import course from "../../assets/course.png";
 import { Col, Row } from 'antd';
 import { CiCalendar } from 'react-icons/ci';
-import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
+import { SlArrowLeft } from "react-icons/sl";
+import { SlArrowRight } from "react-icons/sl";
 const data = [
     {
         title: '45-min advance vinyasa yoga',
@@ -26,26 +27,10 @@ const data = [
         topic: 'Yoga',
         date: 'Mon 11/ 06/ 2024'
     },
-    {
-        title: '45-min advance vinyasa yoga',
-        img: course,
-        topic: 'Yoga',
-        date: 'Mon 11/ 06/ 2024'
-    },
-    {
-        title: '45-min advance vinyasa yoga',
-        img: course,
-        topic: 'Yoga',
-        date: 'Mon 11/ 06/ 2024'
-    },
-    {
-        title: '45-min advance vinyasa yoga',
-        img: course,
-        topic: 'Yoga',
-        date: 'Mon 11/ 06/ 2024'
-    },
+
 ]
-const ClassManagement = () => {
+
+const Blog = () => {
     const [pageNumber, setPageNumber] = useState(new URLSearchParams(window.location.search).get('page') || 0);
     const totalPages = Math.ceil(data.length / 6)
     const pages = [...Array(totalPages).keys()];
@@ -61,7 +46,7 @@ const ClassManagement = () => {
         <div>
             <div style={{ margin: "24px 0" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }} >
-                    <h3 style={{ fontSize: "24px", fontWeight: 600, color: "#2F2F2F" }}>All Classes</h3>
+                    <h3 style={{ fontSize: "24px", fontWeight: 600, color: "#2F2F2F" }}>Blogs</h3>
                     <button
                         onClick={() => setOpenAddModel(true)}
                         style={{
@@ -82,7 +67,7 @@ const ClassManagement = () => {
                         <FaPlus style={{
                             marginTop: '-2px'
                         }} />
-                        Add new class
+                        Add Blog
                     </button>
                 </div>
             </div>
@@ -94,7 +79,7 @@ const ClassManagement = () => {
                 footer={false}
             >
                 <div>
-                    <h1 style={{ marginBottom: "12px" }}>Add new class</h1>
+                    <h1 style={{ marginBottom: "12px" }}>Add Blogs</h1>
                     <Form
                         name="normal_login"
                         initialValues={{
@@ -306,4 +291,4 @@ const ClassManagement = () => {
     )
 }
 
-export default ClassManagement
+export default Blog

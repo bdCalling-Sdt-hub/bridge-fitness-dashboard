@@ -138,7 +138,7 @@ const Dashboard = () => {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "30px",
+            gap: "20px",
             height: "100%",
             marginTop: 0
           }}
@@ -237,6 +237,7 @@ const Dashboard = () => {
                   top: "40px",
                   width: '100%',
                   padding: "0px 10px",
+                  zIndex:'100'
                 }}
               >
                 {

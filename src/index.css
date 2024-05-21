@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .ant-layout {
   background: #f2f2f2 !important;
 }
+
 *,
 h1,
 h2,
@@ -129,8 +131,4 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
 
 :where(.css-dev-only-do-not-override-djtmh8).ant-table-wrapper .ant-table-pagination-right {
   justify-content: center !important;
-}
-.jodit-workplace {
-  min-height: 250px ;
-  height: auto;
 }
