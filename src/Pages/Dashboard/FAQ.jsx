@@ -1,17 +1,55 @@
 import { Form, Input, Modal, Table, Button, Row, Col } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
 import React, { useState } from 'react'
 import { CiEdit } from 'react-icons/ci';
 import { FaPlus } from 'react-icons/fa6';
 import { RxCross2 } from "react-icons/rx";
-
+const data = [
+    {
+        key: '1',
+        question: "What is an affiliate e-commerce website?",
+        ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
+    },
+    {
+        key: '1',
+        question: "What is an affiliate e-commerce website?",
+        ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
+    },
+    {
+        key: '1',
+        question: "What is an affiliate e-commerce website?",
+        ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
+    },
+    {
+        key: '1',
+        question: "What is an affiliate e-commerce website?",
+        ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
+    },
+    {
+        key: '1',
+        question: "What is an affiliate e-commerce website?",
+        ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
+    },
+    {
+        key: '1',
+        question: "What is an affiliate e-commerce website?",
+        ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
+    },
+]
 const FAQ = () => {
     const [openAddModel, setOpenAddModel] = useState(false);
     const [reFresh, setReFresh] = useState("");
-
+    const [openEditModal, setOpenEditModal] = useState(false)
+    const [showDelete, setShowDelete] = useState(false)
+    const [deleteId, setDeleteId] = useState('')
+    const [editId, seteditId] = useState('')
     if (reFresh) {
         setTimeout(() => {
             setReFresh("")
         }, 1500)
+    }
+    const handeldelete = () => {
+        setShowDelete(false)
     }
     return (
         <div>
@@ -43,45 +81,29 @@ const FAQ = () => {
                 </div>
             </div>
             <div className='bg-white py-6 px-4'>
-                <div className='flex justify-between items-start gap-4 '>
-                    <div className='w-full '>
-                        <p className='text-base font-medium bg-[#E8D3B0] rounded-xl py-2 px-4'><span className='mr-4'>Q:</span> What is an affiliate e-commerce website?</p>
-                        <div className='flex justify-start items-start gap-2  py-2 px-4 bg-[#F8F1E6] rounded-xl my-4'>
-                            <p className='text-[#6D6D6D] font-medium'>Ans:</p>
-                            <p className='text-[#919191] leading-[24px] mb-6'>convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at </p>
+                {
+                    data.map(item => <div key={item?.key} className='flex justify-between items-start gap-4 '>
+                        <div className='w-full '>
+                            <p className='text-base font-medium bg-[#E8D3B0] rounded-xl py-2 px-4'><span className='mr-4'>Q:</span>{item?.question}</p>
+                            <div className='flex justify-start items-start gap-2  py-2 px-4 bg-[#F8F1E6] rounded-xl my-4'>
+                                <p className='text-[#6D6D6D] font-medium'>Ans:</p>
+                                <p className='text-[#919191] leading-[24px] mb-6'>{item?.ans}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className='w-[4%] flex justify-start items-center pt-3 gap-2'>
-                        <CiEdit className='text-2xl cursor-pointer' />
-                        <RxCross2 className='text-2xl cursor-pointer' />
-                    </div>
-                </div>
-                <div className='flex justify-between items-start gap-4 '>
-                    <div className='w-full '>
-                        <p className='text-base font-medium bg-[#E8D3B0] rounded-xl py-2 px-4'><span className='mr-4'>Q:</span> What is an affiliate e-commerce website?</p>
-                        <div className='flex justify-start items-start gap-2  py-2 px-4 bg-[#F8F1E6] rounded-xl my-4'>
-                            <p className='text-[#6D6D6D] font-medium'>Ans:</p>
-                            <p className='text-[#919191] leading-[24px] mb-6'>convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at </p>
+                        <div className='w-[4%] flex justify-start items-center pt-3 gap-2'>
+                            <CiEdit onClick={() => {
+                                setOpenAddModel(true)
+                                seteditId(item?.key)
+
+                            }} className='text-2xl cursor-pointer' />
+                            <RxCross2 onClick={() => {
+                                setDeleteId(item?.key)
+                                setShowDelete(true)
+                            }} className='text-2xl cursor-pointer' />
                         </div>
-                    </div>
-                    <div className='w-[4%] flex justify-start items-center pt-3 gap-2'>
-                        <CiEdit className='text-2xl cursor-pointer' />
-                        <RxCross2 className='text-2xl cursor-pointer' />
-                    </div>
-                </div>
-                <div className='flex justify-between items-start gap-4 '>
-                    <div className='w-full '>
-                        <p className='text-base font-medium bg-[#E8D3B0] rounded-xl py-2 px-4'><span className='mr-4'>Q:</span> What is an affiliate e-commerce website?</p>
-                        <div className='flex justify-start items-start gap-2  py-2 px-4 bg-[#F8F1E6] rounded-xl my-4'>
-                            <p className='text-[#6D6D6D] font-medium'>Ans:</p>
-                            <p className='text-[#919191] leading-[24px] mb-6'>convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at </p>
-                        </div>
-                    </div>
-                    <div className='w-[4%] flex justify-start items-center pt-3 gap-2'>
-                        <CiEdit className='text-2xl cursor-pointer' />
-                        <RxCross2 className='text-2xl cursor-pointer' />
-                    </div>
-                </div>
+                    
+                    </div>)
+                }
             </div>
             <Modal
                 centered
@@ -90,7 +112,7 @@ const FAQ = () => {
                 width={500}
                 footer={false}
             >
-                <div>
+                <div className='p-6'>
                     <h1 style={{ marginBottom: "12px" }}>Add FAQ</h1>
                     <Form
                         name="normal_login"
@@ -98,80 +120,16 @@ const FAQ = () => {
                             remember: true,
                         }}
                     >
-                        <Row gutter={[16, 16]}>
-                            <Col span={12}>
-                                <div style={{ marginBottom: "16px", width: '100%' }}>
-                                    <label style={{ display: "block", marginBottom: "5px" }}>Full Name</label>
-                                    <Form.Item
-                                        style={{ marginBottom: 0 }}
-                                        name="fullName"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Please input User Full Name",
-                                            },
-                                        ]}
-                                    >
-                                        <Input
-                                            placeholder="Enter Full Name"
-                                            type="text"
-                                            style={{
-                                                border: "1px solid #E0E4EC",
-                                                height: "52px",
-                                                background: "white",
-                                                borderRadius: "8px",
-                                                outline: "none",
-                                            }}
-                                        />
-                                    </Form.Item>
-                                </div>
-                            </Col>
-                            <Col span={12}>
-                                <div style={{ marginBottom: "16px", width: '100%' }}>
-                                    <label style={{ display: "block", marginBottom: "5px" }} htmlFor="">Email </label>
-                                    <Form.Item
-                                        name="email"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Please input User Email",
-                                            },
-                                        ]}
-                                        style={{ marginBottom: 0 }}
-                                    >
-                                        <Input
-                                            type="text"
-                                            placeholder="Enter User Email"
-                                            style={{
-                                                border: "1px solid #E0E4EC",
-                                                height: "52px",
-                                                background: "white",
-                                                borderRadius: "8px",
-                                                outline: "none",
-                                            }}
-                                        />
-                                    </Form.Item>
-                                </div>
-                            </Col>
-                        </Row>
-
-
 
                         <div style={{ marginBottom: "16px" }}>
-                            <label style={{ display: "block", marginBottom: "5px" }} htmlFor="password">Password</label>
+                            <label style={{ display: "block", marginBottom: "5px" }} htmlFor="question">Question</label>
                             <Form.Item
                                 style={{ marginBottom: 0 }}
-                                name="password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Please input User Password!",
-                                    },
-                                ]}
+                                name="question"
                             >
-                                <Input.Password
-                                    type="password"
-                                    placeholder="Enter User password"
+                                <Input
+                                    type="Text"
+                                    placeholder="Enter answer"
                                     style={{
                                         border: "1px solid #E0E4EC",
                                         height: "52px",
@@ -180,27 +138,27 @@ const FAQ = () => {
                                         outline: "none",
                                     }}
                                 />
+
                             </Form.Item>
                         </div>
 
+
                         <div style={{ marginBottom: "16px" }}>
-                            <label style={{ display: "block", marginBottom: "5px" }} htmlFor="password">User Type</label>
+                            <label style={{ display: "block", marginBottom: "5px" }} htmlFor="answer">Answer</label>
                             <Form.Item
                                 style={{ marginBottom: 0 }}
-                                name="userType"
+                                name="answer"
                             >
-                                <Input
+                                <TextArea
                                     type="Text"
-                                    placeholder="Enter User password"
+                                    placeholder="Enter answer"
                                     style={{
                                         border: "1px solid #E0E4EC",
-                                        height: "52px",
+                                        height: "152px",
                                         background: "white",
                                         borderRadius: "8px",
                                         outline: "none",
                                     }}
-                                    defaultValue="ADMIN"
-                                    readOnly
                                 />
                             </Form.Item>
                         </div>
@@ -222,6 +180,19 @@ const FAQ = () => {
                             </Button>
                         </Form.Item>
                     </Form>
+                </div>
+            </Modal>
+            <Modal
+                centered
+                open={showDelete}
+                onCancel={() => setShowDelete(false)}
+                width={400}
+                footer={false}
+            >
+                <div className='p-6 text-center'>
+                    <p className='text-[#B47000] text-center font-semibold'>Are you sure !</p>
+                    <p className='pt-4 pb-12 text-center'>Do you want to  delete this content ?</p>
+                    <button onClick={handeldelete} className='bg-[#B47000] py-2 px-5 text-white rounded-md'>Confirm</button>
                 </div>
             </Modal>
         </div>

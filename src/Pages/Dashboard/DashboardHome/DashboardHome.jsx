@@ -115,23 +115,6 @@ function DashboardHome() {
           </Col>
         </Row>
       </div>
-      {/* <div style={{ marginTop: "20px", marginBottom: "15px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", width: '100%' }} >
-        <div style={{ width: '100%', height: "276px",  padding: "20px", backgroundColor: "#fff" }}>
-          <DailyOverviewChart />
-        </div>
-
-        <div
-          style={{
-
-            backgroundColor: "#fff",
-            width: '100%',
-            height: "276px",
-            padding: "10px 20px 20px 20px"
-          }}
-        >
-          <TotalSellerChart />
-        </div>
-      </div> */}
       <TotalSellerListTable />
     </div>
   );

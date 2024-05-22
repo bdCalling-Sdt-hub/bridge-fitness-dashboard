@@ -371,7 +371,7 @@ const ManageProducts = () => {
                 width={700}
                 footer={false}
             >
-                <div>
+                <div className='p-6'>
                     <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>Add New Products</h1>
                     <Form
                         name="normal_login"

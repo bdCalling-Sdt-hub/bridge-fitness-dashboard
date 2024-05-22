@@ -9,6 +9,7 @@ import { CiCalendar, CiVideoOn } from 'react-icons/ci';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import TextArea from 'antd/es/input/TextArea';
 import { IoIosDocument } from "react-icons/io";
+import Swal from 'sweetalert2';
 const data = [
     {
         title: '45-min advance vinyasa yoga',
@@ -53,11 +54,15 @@ const ClassManagement = () => {
     const pages = [...Array(totalPages).keys()];
     const [openAddModel, setOpenAddModel] = useState(false);
     const [reFresh, setReFresh] = useState("");
-
+    const [showDelete, setShowDelete] = useState(false)
+    const [deleteId, setDeleteId] = useState('')
     if (reFresh) {
         setTimeout(() => {
             setReFresh("")
         }, 1500)
+    }
+    const handeldelete = ()=>{
+        setShowDelete(false)
     }
     return (
         <div>
@@ -95,7 +100,7 @@ const ClassManagement = () => {
                 width={700}
                 footer={false}
             >
-                <div>
+                <div className='p-6'>
                     <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>Add new class</h1>
                     <Form
                         name="normal_login"
@@ -198,21 +203,21 @@ const ClassManagement = () => {
                                                 </span>
                                             </div>
                                         </label>
-                                       <div className='hidden'>
-                                       <Input id='video'
-                                            placeholder="tittle here..."
-                                            type="file"
-                                            value={``}
-                                            style={{
-                                                border: "1px solid #E0E4EC",
-                                                height: "52px",
-                                                paddingTop: '10px',
-                                                background: "white",
-                                                borderRadius: "8px",
-                                                outline: "none",
-                                            }}
-                                        />
-                                       </div>
+                                        <div className='hidden'>
+                                            <Input id='video'
+                                                placeholder="tittle here..."
+                                                type="file"
+                                                value={``}
+                                                style={{
+                                                    border: "1px solid #E0E4EC",
+                                                    height: "52px",
+                                                    paddingTop: '10px',
+                                                    background: "white",
+                                                    borderRadius: "8px",
+                                                    outline: "none",
+                                                }}
+                                            />
+                                        </div>
                                     </Form.Item>
                                 </label>
                             </div>
@@ -260,21 +265,21 @@ const ClassManagement = () => {
                                                 </span>
                                             </div>
                                         </label>
-                                       <div className='hidden'>
-                                       <Input id='pdf'
-                                            placeholder="tittle here..."
-                                            type="file"
-                                            value={``}
-                                            style={{
-                                                border: "1px solid #E0E4EC",
-                                                height: "52px",
-                                                paddingTop: '10px',
-                                                background: "white",
-                                                borderRadius: "8px",
-                                                outline: "none",
-                                            }}
-                                        />
-                                       </div>
+                                        <div className='hidden'>
+                                            <Input id='pdf'
+                                                placeholder="tittle here..."
+                                                type="file"
+                                                value={``}
+                                                style={{
+                                                    border: "1px solid #E0E4EC",
+                                                    height: "52px",
+                                                    paddingTop: '10px',
+                                                    background: "white",
+                                                    borderRadius: "8px",
+                                                    outline: "none",
+                                                }}
+                                            />
+                                        </div>
                                     </Form.Item>
                                 </label>
                             </div>
@@ -297,21 +302,21 @@ const ClassManagement = () => {
                                                 </span>
                                             </div>
                                         </label>
-                                       <div className='hidden'>
-                                       <Input id='doc'
-                                            placeholder="tittle here..."
-                                            type="file"
-                                            value={``}
-                                            style={{
-                                                border: "1px solid #E0E4EC",
-                                                height: "52px",
-                                                paddingTop: '10px',
-                                                background: "white",
-                                                borderRadius: "8px",
-                                                outline: "none",
-                                            }}
-                                        />
-                                       </div>
+                                        <div className='hidden'>
+                                            <Input id='doc'
+                                                placeholder="tittle here..."
+                                                type="file"
+                                                value={``}
+                                                style={{
+                                                    border: "1px solid #E0E4EC",
+                                                    height: "52px",
+                                                    paddingTop: '10px',
+                                                    background: "white",
+                                                    borderRadius: "8px",
+                                                    outline: "none",
+                                                }}
+                                            />
+                                        </div>
                                     </Form.Item>
                                 </label>
                             </div>
@@ -368,7 +373,7 @@ const ClassManagement = () => {
                                         alignItems: 'center',
                                         gap: '35px',
                                         fontSize: '14px',
-                                        marginTop:'8px'
+                                        marginTop: '8px'
                                     }}>
                                         <p style={{
                                             display: 'flex',
@@ -394,14 +399,17 @@ const ClassManagement = () => {
                                         alignItems: 'center',
                                         gap: '35px',
                                     }}>
-                                        <button style={{
+                                        <button onClick={() => {
+                                            setShowDelete(true)
+                                            setDeleteId(item?._id)
+                                        }} style={{
                                             background: 'transparent',
                                             border: '1px solid black',
                                             padding: '12px 36px',
                                             color: '#242424',
                                             cursor: 'pointer'
                                         }}>Delete</button>
-                                        <button style={{
+                                        <button onClick={()=>setOpenAddModel(true)} style={{
                                             background: 'transparent',
                                             border: 'none',
                                             padding: '14px 48px',
@@ -415,6 +423,19 @@ const ClassManagement = () => {
                         );
                     })}
                 </Row>
+                <Modal
+                    centered
+                    open={showDelete}
+                    onCancel={() => setShowDelete(false)}
+                    width={400}
+                    footer={false}
+                >
+                    <div className='p-6 text-center'>
+                        <p className='text-[#B47000] text-center font-semibold'>Are you sure !</p>
+                        <p className='pt-4 pb-12 text-center'>Do you want to  delete this content ?</p>
+                        <button onClick={handeldelete} className='bg-[#B47000] py-2 px-5 text-white rounded-md'>Confirm</button>
+                    </div>
+                </Modal>
                 <div className={`flex justify-center items-center gap-4 mx-4`}>
                     <button disabled={pageNumber === 0} className={`flex justify-start items-center gap-4 mx-4 ${pageNumber !== 0 ? 'text-[#555555]' : 'text-[#C2C2C2]'}`}><SlArrowLeft className='-mt-1' />Previous</button>
                     {pages.map((item, index) => <button className={`${pageNumber === item ? 'text-[#555555] border rounded-full' : 'text-[#C2C2C2]'} py-1 px-3 `} key={index}>{item + 1}</button>)}

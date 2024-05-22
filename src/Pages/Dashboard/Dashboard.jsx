@@ -313,7 +313,7 @@ const Dashboard = () => {
                 <RiNotification2Line color="#6A6A6A" size={24} />
               </Link>
             </Badge>
-            <div
+            <Link to={'/admin-profile'}
               style={{
                 width: "170px",
                 height: "42px",
@@ -327,7 +327,7 @@ const Dashboard = () => {
             >
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLotvhr2isTRMEzzT30Cj0ly77jFThGXr0ng&usqp=CAU" style={{ width: "30px", height: "30px", borderRadius: "100%" }} alt="" />
               <h2 style={{ color: "black", fontSize: "10px" }}>DR. Jim ahhmed</h2>
-            </div>
+            </Link>
           </div>
         </Header>
 
