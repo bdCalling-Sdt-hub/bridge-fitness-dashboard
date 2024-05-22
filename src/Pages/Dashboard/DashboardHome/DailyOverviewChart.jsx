@@ -123,7 +123,7 @@ export default function DailyRentChart() {
           >
             <XAxis dataKey="name" />
             <YAxis />
-            <Area type="monotone" dataKey="uv" stroke="#0044B4" fill="#0044B4" />
+            <Area type="monotone" dataKey="uv" stroke="#0044B4" fillOpacity={1} fill="#0044B4" />
           </AreaChart>
         </ResponsiveContainer>
       </div>

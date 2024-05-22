@@ -6,13 +6,13 @@ import NotFoundImg from "./assets/not-found.png"
 function NotFound() {
   return (
     <div style={{
-      background: "#BFF2EE",
-      height:"100vh", 
-      width:"100vw",
-      display:"flex",
-      alignItems:"center",
-      justifyContent:"center",
-      flexDirection:"column"
+      background: "#F4EAD9",
+      height: "100vh",
+      width: "100vw",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "column"
     }}
     >
       <div style={{
@@ -23,21 +23,21 @@ function NotFound() {
         padding: "120px"
       }}>
         <img src={NotFoundImg} />
-        <p style={{fontSize: "24px", margin: "43px 0", fontWeight: 400, textAlign: "center", color: "#4C4C4C"}}> Looks like you’ve got lost…. </p>
-        <Button
+        <p style={{ fontSize: "24px", margin: "43px 0", fontWeight: 400, textAlign: "center", color: "#4C4C4C" }}> Looks like you’ve got lost…. </p>
+        <Link to="/"> <Button
           style={{
             width: "100%",
             height: "56px",
-            background: "#2FD5C7",
+            background: "#F4EAD9",
             borderRadius: "8px",
-            color: "white",
+            color: "black",
             margin: "0 auto 0 auto",
             border: "none",
             outline: "none"
           }}
         >
-          <Link to="/">Back to Dashboard</Link>
-        </Button>
+          Back to Dashboard
+        </Button></Link>
       </div>
     </div>
   )

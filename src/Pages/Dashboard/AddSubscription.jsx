@@ -103,7 +103,7 @@ const AddSubscription = () => {
                 width={700}
                 footer={false}
             >
-                <div>
+                <div className='p-6'>
                     <h1 className='font-semibold text-[#555555]' style={{ marginBottom: "12px" }}>Manage Subscriptions</h1>
                     <form>
                         <div>

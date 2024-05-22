@@ -259,8 +259,8 @@ const TotalSellerListTable = () => {
     <div style={{ height: "fit-content", background: "white", padding: "15px 24px 0 24px" ,width:'100%'}}>
       <div style={{ display: "flex", alignItems: "center", marginBottom: "15px", justifyContent: "space-between" }}>
         <h1 style={{ fontSize: "20px", fontWeight: 600, color: "#2F2F2F" }}>New Subscriber</h1>
-        <Link to="/seller-list">
-          <p style={{ color: "#2FD5C7", fontSize: "12px", textDecoration: "underline" }}>VIEW ALL</p>
+        <Link to="/all-subscriber">
+          <p style={{ color: " #707070", fontSize: "12px", textDecoration: "underline" }}>VIEW ALL</p>
         </Link>
       </div>
       <Table

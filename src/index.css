@@ -132,12 +132,14 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
 :where(.css-dev-only-do-not-override-djtmh8).ant-table-wrapper .ant-table-pagination-right {
   justify-content: center !important;
 }
-.showProfilePassword{
+
+.showProfilePassword {
   color: #B47000;
   position: relative;
   font-weight: 600;
 }
-.showProfilePassword::after{
+
+.showProfilePassword::after {
   content: '';
   position: absolute;
   width: 100%;
@@ -145,4 +147,9 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
   bottom: -5px;
   left: 0;
   background-color: #B47000;
+}
+
+.ant-modal-content {
+  padding: 0 !important;
+  border-radius: 0 !important;
 }

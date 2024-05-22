@@ -165,7 +165,7 @@ const MakeAdmin = () => {
                 width={500}
                 footer={false}
             >
-                <div>
+                <div className='p-6'> 
                     <h1 style={{ marginBottom: "12px" }}>Make Admin</h1>
                     <Form
                         name="normal_login"

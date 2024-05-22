@@ -3,6 +3,7 @@ import { FaArrowDown, FaArrowUp } from 'react-icons/fa6'
 import { BsArrowUp } from "react-icons/bs";
 // import { PureComponent } from 'react';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Link } from 'react-router-dom';
 
 const chartData = [
     {
@@ -98,6 +99,7 @@ const data = [
         count: "18.6K",
         icon: <FaArrowUp size={16} />,
         btn: 'View details',
+        path:'/subscription-income',
         btnicon: <BsArrowUp style={{
             transform: 'rotate(45deg)'
         }} />,
@@ -109,6 +111,7 @@ const data = [
         count: "20.9k",
         icon: <FaArrowDown size={16} />,
         btn: 'View details',
+        path:'/ecommerce-income',
         btnicon: <BsArrowUp style={{
             transform: 'rotate(45deg)'
         }} />,
@@ -171,7 +174,7 @@ const Income = () => {
                                     {item.name}
                                 </p>
                                 {
-                                    item?.btn && <button style={{
+                                    item?.btn && <Link to={item?.path} style={{
                                         display: 'flex',
                                         justifyContent: 'start',
                                         alignItems: 'center',
@@ -184,7 +187,7 @@ const Income = () => {
                                         right: '80px'
                                     }}>
                                         {item?.btn}  {item?.btnicon}
-                                    </button>
+                                    </Link>
                                 }
                             </div>
                         </div>
