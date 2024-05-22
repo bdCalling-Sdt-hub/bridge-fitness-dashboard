@@ -156,7 +156,9 @@ const MakeAdmin = () => {
                     </button>
                 </div>
             </div>
-            <Table columns={columns} dataSource={data} pagination={false} />
+            <div className='bg-white p-4 rounded-md min-h-[96vh]'>
+                <Table columns={columns} dataSource={data} pagination={false} />
+            </div>
 
             <Modal
                 centered
@@ -165,7 +167,7 @@ const MakeAdmin = () => {
                 width={500}
                 footer={false}
             >
-                <div className='p-6'> 
+                <div className='p-6'>
                     <h1 style={{ marginBottom: "12px" }}>Make Admin</h1>
                     <Form
                         name="normal_login"

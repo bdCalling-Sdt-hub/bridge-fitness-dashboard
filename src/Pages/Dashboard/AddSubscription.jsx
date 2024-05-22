@@ -1,8 +1,7 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RiEditLine } from 'react-icons/ri';
-import { Form, Input, Modal, Table, Button, Row, Col } from 'antd';
-import { FaPlus, FaXmark } from 'react-icons/fa6';
-import { LuPhone } from 'react-icons/lu';
+import { Modal, Table, } from 'antd';
+import { FaPlus } from 'react-icons/fa6';
 import { CiCircleMinus } from 'react-icons/ci';
 const data = [
     {
@@ -31,11 +30,11 @@ const descriptions = [
     { feature: 'Join a Global Community', id: 'bjasu3' },
 ]
 const AddSubscription = () => {
+    const [subName, setsubName] = useState('');
+    const [subPrice, setsubPrice] = useState('');
     const [descriptionFeatures, setDescriptionFeatures] = useState(descriptions)
     const [openAddModel, setOpenAddModel] = useState(false);
     const [reFresh, setReFresh] = useState("");
-    const [subscriptionID, setsubscriptionID] = useState(data[0]?.key)
-    const manageSubscription = data.filter(item => item.key == subscriptionID)
     if (reFresh) {
         setTimeout(() => {
             setReFresh("")
@@ -66,7 +65,9 @@ const AddSubscription = () => {
                 <>
                     <button onClick={() => {
                         setOpenAddModel(true)
-                        setsubscriptionID(record.key)
+                        const manageSubscription = data.filter(item => item.key == record.key)
+                        setsubName(manageSubscription[0].name)
+                        setsubPrice(manageSubscription[0].price)
                     }} style={{
                         display: 'flex',
                         justifyContent: 'center',
@@ -83,7 +84,9 @@ const AddSubscription = () => {
             )
         },
     ];
+    const handelsubmit = (e) => {
 
+    }
     return (
         <div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "16px 0" }}>
@@ -103,16 +106,16 @@ const AddSubscription = () => {
                 width={700}
                 footer={false}
             >
-                <div className='p-6'>
+                <div className='p-6 '>
                     <h1 className='font-semibold text-[#555555]' style={{ marginBottom: "12px" }}>Manage Subscriptions</h1>
-                    <form>
+                    <form onSubmit={handelsubmit}>
                         <div>
                             <p className='text-[#6D6D6D] py-1'>Package Name</p>
-                            <input className='w-[50%] border outline-none px-3 py-[10px]' type="text" value={manageSubscription[0]?.name} />
+                            <input onChange={(e) => { setsubName(e.target.value) }} className='w-[50%] border outline-none px-3 py-[10px]' type="text" value={subName} />
                         </div>
                         <div className='mt-2'>
                             <p className='text-[#6D6D6D] py-1'>Package Price</p>
-                            <input className='w-[50%] border outline-none px-3 py-[10px]' type="text" value={manageSubscription[0]?.price} />
+                            <input onChange={(e) => { setsubPrice(e.target.value); }} className='w-[50%] border outline-none px-3 py-[10px]' type="text" value={subPrice} />
                         </div>
                     </form>
                     <p className='text-[#6D6D6D] py-1'>Description </p>
@@ -136,6 +139,11 @@ const AddSubscription = () => {
                                 </button>
                             </div>
                         </div>
+                    </div>
+                    <div className='text-center mt-6'>
+                        <button className='bg-[#B47000] px-6 py-3 text-[#FEFEFE]'>
+                            Save & Change
+                        </button>
                     </div>
                 </div>
             </Modal>
