@@ -30,6 +30,7 @@ import FAQ from "./Pages/Dashboard/FAQ";
 import PrivacyPolicy from "./Pages/Dashboard/PrivacyPolicy";
 import Terms from "./Pages/Dashboard/Terms";
 import Blog from "./Pages/Dashboard/Blog";
+import AdminProfile from "./Pages/Dashboard/AdminProfile";
 function App() {
   return (
     <>
@@ -56,6 +57,7 @@ function App() {
               <Route path="/privacy" element={<PrivacyPolicy/>} />
               <Route path="/terms-condition" element={<Terms/>} />
               <Route path="/blog" element={<Blog/>} />
+              <Route path="/admin-profile" element={<AdminProfile/>} />
               <Route path="/seller-details/:id" element={<SellerDetails />} />
               <Route path="/seller-product-list" element={<SellerProductList />} />
               <Route path="/emails" element={<Emails />} />
