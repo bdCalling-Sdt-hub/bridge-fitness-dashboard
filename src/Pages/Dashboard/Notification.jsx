@@ -24,7 +24,7 @@ const Notification = () => {
   return (
     <div>
       <div className="flex justify-between items-center gap-4">
-        <h3 className="text-[#242424] text-2xl font-bold">Notification</h3>
+        <h3 className="text-[#242424] text-2xl font-bold">Notifications</h3>
         <button className="text-[#B47000] font-semibold border-2 border-[#B47000] px-6 py-2">Read all</button>
       </div>
       <div className="flex justify-start items-start flex-col gap-2 py-8">
