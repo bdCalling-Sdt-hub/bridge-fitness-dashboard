@@ -43,7 +43,6 @@ function App() {
             <Route exact path="/" element={ <PrivateRoute> <Dashboard /> </PrivateRoute> }>
               <Route path="/" element={<DashboardHome />} />
               <Route path="/notification" element={<Notification />} />
-              <Route path="/package" element={<Package />} />
               <Route path="/edit-package" element={<EditPackage />} />
               <Route path="/make-admin" element={<MakeAdmin />} />
               <Route path="/setting-change-password" element={<ChangePassword />} />
@@ -66,8 +65,6 @@ function App() {
               <Route path="/subscription-income" element={<SubscriptionIncome/>} />
               <Route path="/seller-details/:id" element={<SellerDetails />} />
               <Route path="/seller-product-list" element={<SellerProductList />} />
-              <Route path="/emails" element={<Emails />} />
-              <Route path="/top-seller-list" element={<TopSellerList />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />

@@ -2,12 +2,12 @@ import { Layout, Badge, } from "antd";
 import React, { useState } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../assets/icon/logo.png";
-import { HiLogout, HiOutlineMail } from "react-icons/hi";
+import { HiLogout } from "react-icons/hi";
 import { LuDatabase, LuUser } from "react-icons/lu";
 import { TbUserPlus } from "react-icons/tb";
 import { MdDashboard, MdOutlineManageHistory, MdOutlineSignalCellularAlt } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
-import { RiNotification2Line, RiChat1Line, RiCopperDiamondLine } from "react-icons/ri";
+import { RiNotification2Line } from "react-icons/ri";
 const { Header, Sider, Content } = Layout;
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdKeyboardArrowRight } from "react-icons/md";
@@ -88,16 +88,6 @@ const Dashboard = () => {
       path: "/manage-products",
       icon: <LiaProductHunt size={24} />,
     },
-    {
-      title: "Email",
-      path: "/emails",
-      icon: <HiOutlineMail size={24} />,
-    },
-    {
-      title: "Pricing",
-      path: "/package",
-      icon: <RiCopperDiamondLine size={24} />,
-    }
   ];
 
   return (
@@ -276,8 +266,6 @@ const Dashboard = () => {
         </ul>
 
       </Sider>
-
-
       <Layout>
         <Header
           style={{
@@ -298,16 +286,10 @@ const Dashboard = () => {
               width: "280px",
               display: "flex",
               alignItems: "center",
-              // gap: "16px",
-              justifyContent: "space-between"
+              gap: "16px",
+              justifyContent: "end"
             }}
           >
-            <Badge color="#23A095" count={5}>
-              <Link to="/emails" >
-                <RiChat1Line color="#6A6A6A" size={24} />
-              </Link>
-            </Badge>
-
             <Badge color="#C30303" count={5}>
               <Link to="/notification" >
                 <RiNotification2Line color="#6A6A6A" size={24} />

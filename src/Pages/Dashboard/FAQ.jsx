@@ -80,7 +80,7 @@ const FAQ = () => {
                     </button>
                 </div>
             </div>
-            <div className='bg-white py-6 px-4'>
+            <div className='bg-white py-6 px-4 rounded-md'>
                 {
                     data.map(item => <div key={item?.key} className='flex justify-between items-start gap-4 '>
                         <div className='w-full '>

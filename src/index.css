@@ -151,5 +151,5 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
 
 .ant-modal-content {
   padding: 0 !important;
-  border-radius: 0 !important;
+  border-radius: 6px !important;
 }

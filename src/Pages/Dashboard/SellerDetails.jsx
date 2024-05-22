@@ -250,7 +250,6 @@ const SellerDetails = () => {
                     </div>
                 </div>
             </div>
-
             <SellingProductList/>
         </div>
     )
