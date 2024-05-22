@@ -26,7 +26,7 @@ const Contact = () => {
                 <Col
                     xs={{ flex: '50%' }}
                 >
-                    <div className='w-full  px-20 py-10 bg-[#FBFBFB]'>
+                    <div className='w-full  px-20 py-10 bg-[#FBFBFB] rounded-md'>
                         <div className='flex justify-start items-center gap-4 text-[#575757]'>
                             <span className='p-3 bg-[#FFF2B4] rounded-full'><LuPhone className='text-xl' /></span> <p className='font-medium text-lg'>Call To Us</p>
                         </div>
@@ -54,7 +54,7 @@ const Contact = () => {
                 <Col
                     xs={{ flex: '50%' }}
                 >
-                    <div className='w-full  px-20 py-10 bg-[#FBFBFB]'>
+                    <div className='w-full  px-20 py-10 bg-[#FBFBFB] rounded-md'>
                         <div className='flex justify-start items-center gap-4 text-[#575757]'>
                             <span className='p-3 bg-[#FFF2B4] rounded-full'><CgMail className='text-xl' /></span> <p className='font-medium text-lg'>Write To US</p>
                         </div>

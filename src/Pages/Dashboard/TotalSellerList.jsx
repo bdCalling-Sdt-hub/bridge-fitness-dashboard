@@ -429,6 +429,7 @@ const TotalSellerList = () => {
         style={{
           background: "white",
           padding: "20px",
+          borderRadius:'6px'
         }}
       >
         <div>
@@ -451,7 +452,7 @@ const TotalSellerList = () => {
                 footer={false}
                 padding={0}
             >
-                <div className='p-2'>
+                <div className='p-2 '>
                     <div className='flex flex-col justify-center items-center bg-[#F4EAD9] p-6'>
                         <div className='w-32 h-32 rounded-full overflow-hidden'>
                             <img className='h-full w-full object-cover' src={avater} alt="" />

@@ -346,7 +346,8 @@ const ClassManagement = () => {
             </Modal>
             <div style={{
                 background: 'white',
-                padding: '30px 20px'
+                padding: '30px 20px',
+                borderRadius:'6px'
             }}>
                 <Row gutter={30}>
                     {data.map((item, index) => {

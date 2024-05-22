@@ -350,6 +350,7 @@ const ManageProducts = () => {
                 style={{
                     background: "white",
                     padding: "20px",
+                    borderRadius:'6px'
                 }}
             >
                 <div>
