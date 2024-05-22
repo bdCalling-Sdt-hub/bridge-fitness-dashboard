@@ -1,7 +1,6 @@
 import { Form, Input, Modal, Table, Button, Row, Col } from 'antd';
 import React, { useState } from 'react'
 import { MdOutlineDelete } from 'react-icons/md';
-import BackButton from './BackButton';
 import { FaPlus } from 'react-icons/fa6';
 
 
@@ -53,7 +52,7 @@ const data = [
 const MakeAdmin = () => {
     const [openAddModel, setOpenAddModel] = useState(false);
     const [reFresh, setReFresh] = useState("");
-
+    const [showDelete, setShowDelete] = useState(false)
     if (reFresh) {
         setTimeout(() => {
             setReFresh("")
@@ -121,12 +120,18 @@ const MakeAdmin = () => {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
-                <MdOutlineDelete onClick={() => handleDelete(record)} className='cursor-pointer' style={{
+                <MdOutlineDelete onClick={() => {
+                    setShowDelete(true)
+                    handleDelete(record)
+                }} className='cursor-pointer' style={{
                     cursor: 'pointer'
                 }} size={25} color='red' />
             ),
         },
     ];
+    const handeldelete = () => {
+        setShowDelete(false)
+    }
     return (
         <div id='makeAdmin'>
             <div style={{ margin: "24px 0" }}>
@@ -299,6 +304,19 @@ const MakeAdmin = () => {
                             </Button>
                         </Form.Item>
                     </Form>
+                </div>
+            </Modal>
+            <Modal
+                centered
+                open={showDelete}
+                onCancel={() => setShowDelete(false)}
+                width={400}
+                footer={false}
+            >
+                <div className='p-6 text-center'>
+                    <p className='text-[#B47000] text-center font-semibold'>Are you sure !</p>
+                    <p className='pt-4 pb-12 text-center'>Do you want to  delete this content ?</p>
+                    <button onClick={handeldelete} className='bg-[#B47000] py-2 px-5 text-white rounded-md'>Confirm</button>
                 </div>
             </Modal>
         </div>
