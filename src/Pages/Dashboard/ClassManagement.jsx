@@ -53,6 +53,7 @@ const ClassManagement = () => {
     const totalPages = Math.ceil(data.length / 6)
     const pages = [...Array(totalPages).keys()];
     const [openAddModel, setOpenAddModel] = useState(false);
+    const [openUpdateModel, setOpenUpdateModel] = useState(false);
     const [reFresh, setReFresh] = useState("");
     const [showDelete, setShowDelete] = useState(false)
     const [deleteId, setDeleteId] = useState('')
@@ -61,7 +62,7 @@ const ClassManagement = () => {
             setReFresh("")
         }, 1500)
     }
-    const handeldelete = ()=>{
+    const handeldelete = () => {
         setShowDelete(false)
     }
     return (
@@ -344,10 +345,261 @@ const ClassManagement = () => {
                     </Form>
                 </div>
             </Modal>
+            <Modal
+                centered
+                open={openUpdateModel}
+                onCancel={() => setOpenUpdateModel(false)}
+                width={700}
+                footer={false}
+            >
+                <div className='p-6'>
+                    <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>Update class</h1>
+                    <Form
+                        name="normal_login"
+                        initialValues={{
+                            remember: true,
+                        }}
+                    >
+                        <div className='grid grid-cols-2 gap-3 py-6'>
+                            <div>
+                                <label style={{ display: "block", marginBottom: "5px" }}>Topic</label>
+                                <Form.Item
+                                    style={{ marginBottom: 0 }}
+                                    name="topic"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Please input Topic",
+                                        },
+                                    ]}
+                                >
+                                    <Input
+                                        placeholder="Topic here ..."
+                                        type="text"
+                                        style={{
+                                            border: "1px solid #E0E4EC",
+                                            height: "52px",
+                                            background: "white",
+                                            borderRadius: "8px",
+                                            outline: "none",
+                                        }}
+                                    />
+                                </Form.Item>
+                            </div>
+                            <div>
+                                <label style={{ display: "block", marginBottom: "5px" }}>Tittle</label>
+                                <Form.Item
+                                    style={{ marginBottom: 0 }}
+                                    name="title"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Please input tittle ",
+                                        },
+                                    ]}
+                                >
+                                    <Input
+                                        placeholder="tittle here..."
+                                        type="text"
+                                        style={{
+                                            border: "1px solid #E0E4EC",
+                                            height: "52px",
+                                            background: "white",
+                                            borderRadius: "8px",
+                                            outline: "none",
+                                        }}
+                                    />
+                                </Form.Item>
+                            </div>
+                            <div>
+                                <label style={{ display: "block", marginBottom: "5px" }}>Date</label>
+                                <Form.Item
+                                    style={{ marginBottom: 0 }}
+                                    name="date"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Please input date ",
+                                        },
+                                    ]}
+                                >
+                                    <Input
+                                        placeholder="tittle here..."
+                                        type="date"
+                                        style={{
+                                            border: "1px solid #E0E4EC",
+                                            height: "52px",
+                                            background: "white",
+                                            borderRadius: "8px",
+                                            outline: "none",
+                                        }}
+                                    />
+                                </Form.Item>
+                            </div>
+                            <div>
+                                <label for="video" style={{ display: "block", marginBottom: "5px" }}>Add video
+                                    <Form.Item
+                                        style={{ marginBottom: 0 }}
+                                        name="video"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Please Add pdf ",
+                                            },
+                                        ]}
+                                    >
+                                        <label for="video" className="btn">
+                                            <div className='border p-2 rounded-lg'>
+                                                <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
+                                                    <CiVideoOn /> browse video
+                                                </span>
+                                            </div>
+                                        </label>
+                                        <div className='hidden'>
+                                            <Input id='video'
+                                                placeholder="tittle here..."
+                                                type="file"
+                                                value={``}
+                                                style={{
+                                                    border: "1px solid #E0E4EC",
+                                                    height: "52px",
+                                                    paddingTop: '10px',
+                                                    background: "white",
+                                                    borderRadius: "8px",
+                                                    outline: "none",
+                                                }}
+                                            />
+                                        </div>
+                                    </Form.Item>
+                                </label>
+                            </div>
+                            <div className='row-span-2'>
+                                <label style={{ display: "block", marginBottom: "5px" }}>Description </label>
+                                <Form.Item
+                                    style={{ marginBottom: 0 }}
+                                    name="description"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Please Description ",
+                                        },
+                                    ]}
+                                >
+                                    <TextArea
+                                        placeholder="tittle here..."
+                                        style={{
+                                            border: "1px solid #E0E4EC",
+                                            height: "140px",
+                                            paddingTop: '10px',
+                                            background: "white",
+                                            borderRadius: "8px",
+                                            outline: "none",
+                                        }}
+                                    />
+                                </Form.Item>
+                            </div>
+                            <div>
+                                <label for="pdf" style={{ display: "block", marginBottom: "5px" }}>Add PDF
+                                    <Form.Item
+                                        style={{ marginBottom: 0 }}
+                                        name="pdf"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Please Add pdf ",
+                                            },
+                                        ]}
+                                    >
+                                        <label for="pdf" className="btn">
+                                            <div className='border p-2 rounded-lg'>
+                                                <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
+                                                    <FaFilePdf /> browse pdf
+                                                </span>
+                                            </div>
+                                        </label>
+                                        <div className='hidden'>
+                                            <Input id='pdf'
+                                                placeholder="tittle here..."
+                                                type="file"
+                                                value={``}
+                                                style={{
+                                                    border: "1px solid #E0E4EC",
+                                                    height: "52px",
+                                                    paddingTop: '10px',
+                                                    background: "white",
+                                                    borderRadius: "8px",
+                                                    outline: "none",
+                                                }}
+                                            />
+                                        </div>
+                                    </Form.Item>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="doc" style={{ display: "block", marginBottom: "5px" }}>Add Doc File
+                                    <Form.Item
+                                        style={{ marginBottom: 0 }}
+                                        name="doc"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Please Add video ",
+                                            },
+                                        ]}
+                                    >
+                                        <label for="doc" className="btn">
+                                            <div className='border p-2 rounded-lg'>
+                                                <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
+                                                    <IoIosDocument /> browse doc
+                                                </span>
+                                            </div>
+                                        </label>
+                                        <div className='hidden'>
+                                            <Input id='doc'
+                                                placeholder="tittle here..."
+                                                type="file"
+                                                value={``}
+                                                style={{
+                                                    border: "1px solid #E0E4EC",
+                                                    height: "52px",
+                                                    paddingTop: '10px',
+                                                    background: "white",
+                                                    borderRadius: "8px",
+                                                    outline: "none",
+                                                }}
+                                            />
+                                        </div>
+                                    </Form.Item>
+                                </label>
+                            </div>
+                        </div>
+
+
+
+                        <Form.Item>
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                block
+                                style={{
+                                    border: "none",
+                                    height: "52px",
+                                    background: "#B47000",
+                                    color: "white",
+                                    borderRadius: "8px",
+                                    outline: "none",
+                                }}
+                            >
+                                Publish
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
+            </Modal>
             <div style={{
                 background: 'white',
                 padding: '30px 20px',
-                borderRadius:'6px'
+                borderRadius: '6px'
             }}>
                 <Row gutter={30}>
                     {data.map((item, index) => {
@@ -410,7 +662,7 @@ const ClassManagement = () => {
                                             color: '#242424',
                                             cursor: 'pointer'
                                         }}>Delete</button>
-                                        <button onClick={()=>setOpenAddModel(true)} style={{
+                                        <button onClick={() => setOpenUpdateModel(true)} style={{
                                             background: 'transparent',
                                             border: 'none',
                                             padding: '14px 48px',

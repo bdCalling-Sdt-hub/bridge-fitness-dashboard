@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { CiEdit } from 'react-icons/ci';
 import { FaPlus } from 'react-icons/fa6';
 import { RxCross2 } from "react-icons/rx";
+import { useForm } from "react-hook-form"
 const data = [
     {
         key: '1',
@@ -11,27 +12,27 @@ const data = [
         ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
     },
     {
-        key: '1',
+        key: '2',
+        question: "What is an affiliate e-commerce website?2",
+        ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
+    },
+    {
+        key: '3',
         question: "What is an affiliate e-commerce website?",
         ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
     },
     {
-        key: '1',
+        key: '4',
         question: "What is an affiliate e-commerce website?",
         ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
     },
     {
-        key: '1',
+        key: '5',
         question: "What is an affiliate e-commerce website?",
         ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
     },
     {
-        key: '1',
-        question: "What is an affiliate e-commerce website?",
-        ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
-    },
-    {
-        key: '1',
+        key: '6',
         question: "What is an affiliate e-commerce website?",
         ans: 'convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at '
     },
@@ -42,7 +43,9 @@ const FAQ = () => {
     const [openEditModal, setOpenEditModal] = useState(false)
     const [showDelete, setShowDelete] = useState(false)
     const [deleteId, setDeleteId] = useState('')
-    const [editId, seteditId] = useState('')
+    const [editData, seteditData] = useState('')
+    const [question, setQuestion] = useState('')
+    const [ans, setans] = useState('')
     if (reFresh) {
         setTimeout(() => {
             setReFresh("")
@@ -50,6 +53,9 @@ const FAQ = () => {
     }
     const handeldelete = () => {
         setShowDelete(false)
+    }
+    const handelsubmit = (e) => {
+
     }
     return (
         <div>
@@ -93,7 +99,9 @@ const FAQ = () => {
                         <div className='w-[4%] flex justify-start items-center pt-3 gap-2'>
                             <CiEdit onClick={() => {
                                 setOpenAddModel(true)
-                                seteditId(item?.key)
+                                const filterdData = data.filter(filterId => filterId?.key === item?.key)
+                                setQuestion(filterdData[0]?.question)
+                                setans(filterdData[0]?.ans)
 
                             }} className='text-2xl cursor-pointer' />
                             <RxCross2 onClick={() => {
@@ -101,7 +109,7 @@ const FAQ = () => {
                                 setShowDelete(true)
                             }} className='text-2xl cursor-pointer' />
                         </div>
-                    
+
                     </div>)
                 }
             </div>
@@ -114,72 +122,64 @@ const FAQ = () => {
             >
                 <div className='p-6'>
                     <h1 style={{ marginBottom: "12px" }}>Add FAQ</h1>
-                    <Form
-                        name="normal_login"
-                        initialValues={{
-                            remember: true,
-                        }}
-                    >
-
+                    <form onSubmit={handelsubmit}>
                         <div style={{ marginBottom: "16px" }}>
-                            <label style={{ display: "block", marginBottom: "5px" }} htmlFor="question">Question</label>
-                            <Form.Item
-                                style={{ marginBottom: 0 }}
-                                name="question"
-                            >
-                                <Input
-                                    type="Text"
-                                    placeholder="Enter answer"
-                                    style={{
-                                        border: "1px solid #E0E4EC",
-                                        height: "52px",
-                                        background: "white",
-                                        borderRadius: "8px",
-                                        outline: "none",
-                                    }}
-                                />
-
-                            </Form.Item>
-                        </div>
-
-
-                        <div style={{ marginBottom: "16px" }}>
-                            <label style={{ display: "block", marginBottom: "5px" }} htmlFor="answer">Answer</label>
-                            <Form.Item
-                                style={{ marginBottom: 0 }}
-                                name="answer"
-                            >
-                                <TextArea
-                                    type="Text"
-                                    placeholder="Enter answer"
-                                    style={{
-                                        border: "1px solid #E0E4EC",
-                                        height: "152px",
-                                        background: "white",
-                                        borderRadius: "8px",
-                                        outline: "none",
-                                    }}
-                                />
-                            </Form.Item>
-                        </div>
-                        <Form.Item>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                block
+                            <label style={{ display: "block", marginBottom: "5px" }} >Question</label>
+                            <input
+                                onChange={(e) => {
+                                    setQuestion(e.target.value)
+                                }}
+                                type="Text"
+                                placeholder="Enter Question"
                                 style={{
-                                    border: "none",
+                                    border: "1px solid #E0E4EC",
+                                    padding: '10px',
                                     height: "52px",
-                                    background: "#B47000",
-                                    color: "white",
+                                    background: "white",
                                     borderRadius: "8px",
                                     outline: "none",
+                                    width: '100%'
                                 }}
-                            >
-                                Submit
-                            </Button>
-                        </Form.Item>
-                    </Form>
+                                value={question}
+                                name='question' />
+                        </div>
+                        <div style={{ marginBottom: "16px" }}>
+                            <label style={{ display: "block", marginBottom: "5px" }} >Answer</label>
+                            <textarea
+                                onChange={(e) => {
+                                    setans(e.target.value)
+                                }}
+                                type="Text"
+                                placeholder="Enter answer"
+                                style={{
+                                    border: "1px solid #E0E4EC",
+                                    padding: '10px',
+                                    height: "152px",
+                                    background: "white",
+                                    borderRadius: "8px",
+                                    outline: "none",
+                                    width: '100%',
+                                    resize: 'none'
+                                }}
+                                value={ans}
+                                name='ans'
+                            />
+                        </div>
+                        <input className='cursor-pointer'
+                            htmlType="submit"
+                            block
+                            style={{
+                                border: "none",
+                                height: "52px",
+                                background: "#B47000",
+                                color: "white",
+                                borderRadius: "8px",
+                                outline: "none",
+                                padding: '10px 20px'
+                            }}
+                            value={`Save & change`}
+                            type="submit" />
+                    </form>
                 </div>
             </Modal>
             <Modal
