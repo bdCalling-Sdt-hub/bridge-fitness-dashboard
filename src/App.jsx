@@ -34,6 +34,7 @@ import AdminProfile from "./Pages/Dashboard/AdminProfile";
 import AllSubscriber from "./Pages/Dashboard/AllSubscriber";
 import SubscriptionIncome from "./Pages/Dashboard/SubscriptionIncome";
 import EcommerceIncome from "./Pages/Dashboard/EcommerceIncome";
+import CreateProgram from "./Pages/Dashboard/CreateProgram";
 function App() {
   return (
     <>
@@ -59,6 +60,7 @@ function App() {
               <Route path="/privacy" element={<PrivacyPolicy/>} />
               <Route path="/terms-condition" element={<Terms/>} />
               <Route path="/blog" element={<Blog/>} />
+              <Route path="/create-program" element={<CreateProgram/>} />
               <Route path="/ecommerce-income" element={<EcommerceIncome/>} />
               <Route path="/admin-profile" element={<AdminProfile/>} />
               <Route path="/all-subscriber" element={<AllSubscriber/>} />
