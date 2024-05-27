@@ -20,6 +20,7 @@ const Dashboard = () => {
   const [dropdown, setDropdown] = useState(false)
   const [dropdown2, setDropdown2] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const [openAddModal, setOpenAddModal] = useState(false)
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const handleLogOut = () => {
@@ -83,11 +84,11 @@ const Dashboard = () => {
       path: "/income",
       icon: <LuDatabase size={24} />,
     },
-    {
-      title: "Manage Class",
-      path: "/class-management",
-      icon: <IoSpeedometerOutline size={24} />,
-    },
+    // {
+    //   title: "Manage Class",
+    //   path: "/class-management",
+    //   icon: <IoSpeedometerOutline size={24} />,
+    // },
     {
       title: "Manage Product",
       path: "/manage-products",
@@ -96,7 +97,7 @@ const Dashboard = () => {
   ];
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const onSubmit = data => console.log(data);
-  return (
+  return (// <input className="w-full p-4 border py-3 outline-none rounded-md" {...register("programName", { required: true })} />
     <Layout style={{ height: "100vh", width: "100vw" }}>
       <Sider
         width="233px"
@@ -182,7 +183,6 @@ const Dashboard = () => {
           ))}
 
           <li onClick={() => {
-            navigate('/create-program')
             setDropdown(false)
             setDropdown2(!dropdown2)
           }}
@@ -242,7 +242,7 @@ const Dashboard = () => {
                   zIndex: '100'
                 }}
               >
-                <Link to={`/create-program`} style={{
+                <Link className="" to={`/create-program`} style={{
                   textAlign: 'center',
                   color: '#242424',
                   width: '100%',
@@ -252,8 +252,18 @@ const Dashboard = () => {
                 }}>
                   <p>Create Program</p>
                 </Link>
-                <Link onClick={() => {
-                  setOpenModal(true)
+                <Link className="" to={`/series`} style={{
+                  textAlign: 'center',
+                  color: '#242424',
+                  width: '100%',
+                  backgroundColor: pathname === '/series' ? "#E8D3B0" : '#FBFBFB',
+                  display: 'block',
+                  padding: '6px 0px'
+                }}>
+                  <p>Create Series</p>
+                </Link>
+                {/* <Link className="" onClick={() => {
+                  setOpenAddModal(true)
                 }} style={{
                   textAlign: 'center',
                   color: '#242424',
@@ -262,8 +272,8 @@ const Dashboard = () => {
                   display: 'block',
                   padding: '6px 0px'
                 }}>
-                  <p>Create Series</p>
-                </Link>
+                  <p>Create Module</p>
+                </Link> */}
               </div>
             }
           </li>
@@ -423,17 +433,24 @@ const Dashboard = () => {
           <Outlet />
         </Content>
       </Layout>
-      <Modal
+
+      {/* <Modal
         centered
-        onCancel={() => setOpenModal(false)}
-        open={openModal}
+        onCancel={() => setOpenAddModal(false)}
+        open={openAddModal}
         footer={false}
       >
         <div className='p-6'>
-          <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>Add New Series</h1>
+          <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>Add New Module</h1>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <p className='text-[#6D6D6D] py-1'>Package Name</p>
-            <input className="w-full p-4 border py-3 outline-none rounded-md" {...register("programName", { required: true })} />
+          <div className="grid grid-cols-2 gap-2 items-start justify-start">
+            
+          </div>
+            <p className='text-[#6D6D6D] py-1'>Series Name</p>
+            <select className="w-full p-4 border py-3 outline-none rounded-md cursor-pointer" name="" id="">
+              {[...Array(5).keys()].map(item => <option className="cursor-pointer" key={item} value="">Basic Membership</option>)}
+
+            </select>
             {errors.programName && <p className="text-red-500">This field is required</p>}
             <div className="grid grid-cols-2 gap-2 items-start justify-start">
               <div>
@@ -462,7 +479,7 @@ const Dashboard = () => {
             </div>
           </form>
         </div>
-      </Modal>
+      </Modal> */}
     </Layout>
   );
 };

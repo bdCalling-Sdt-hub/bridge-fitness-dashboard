@@ -20,16 +20,9 @@ const data = [
     },
 ]
 
-const descriptions = [
-    { feature: 'On-demand Access to ourworkout library', id: 'bjasu1' },
-    { feature: 'New Classes Every Week', id: 'bjasu2' },
-    { feature: 'Join a Global Community', id: 'bjasu3' },
-]
-
 const CreateProgram = () => {
     const [subName, setsubName] = useState('');
     const [subPrice, setsubPrice] = useState('');
-    const [descriptionFeatures, setDescriptionFeatures] = useState(descriptions)
     const [openAddModel, setOpenAddModel] = useState(false);
     const [reFresh, setReFresh] = useState("");
     const [formTitle,setFormTitle]=useState('Add New Program')
