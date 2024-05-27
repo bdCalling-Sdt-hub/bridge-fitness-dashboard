@@ -1,11 +1,11 @@
-import { Layout, Badge, } from "antd";
+import { Layout, Badge, Modal, Input, } from "antd";
 import React, { useState } from "react";
-import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
+import { Link, Outlet, useNavigate, useLocation, Form } from "react-router-dom";
 import Logo from "../../assets/icon/logo.png";
 import { HiLogout } from "react-icons/hi";
 import { LuDatabase, LuUser } from "react-icons/lu";
 import { TbUserPlus } from "react-icons/tb";
-import { MdDashboard, MdOutlineManageHistory, MdOutlineSignalCellularAlt } from "react-icons/md";
+import { MdDashboard, MdDashboardCustomize, MdOutlineManageHistory, MdOutlineSignalCellularAlt } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
 import { RiNotification2Line } from "react-icons/ri";
 const { Header, Sider, Content } = Layout;
@@ -13,8 +13,13 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { LiaProductHunt } from "react-icons/lia";
+import { useForm } from "react-hook-form";
+import { IoIosDocument } from "react-icons/io";
+import { FaVideo } from "react-icons/fa6";
 const Dashboard = () => {
   const [dropdown, setDropdown] = useState(false)
+  const [dropdown2, setDropdown2] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const handleLogOut = () => {
@@ -89,7 +94,8 @@ const Dashboard = () => {
       icon: <LiaProductHunt size={24} />,
     },
   ];
-
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const onSubmit = data => console.log(data);
   return (
     <Layout style={{ height: "100vh", width: "100vw" }}>
       <Sider
@@ -102,8 +108,6 @@ const Dashboard = () => {
           overflowY: "hidden",
           zIndex: 2,
           backgroundColor: "#242424",
-          // boxSizing:'border-box',
-          // paddingRight:15
         }}
       >
         <>
@@ -153,7 +157,10 @@ const Dashboard = () => {
                   null
 
               }
-              <Link onClick={() => setDropdown(false)}
+              <Link onClick={() => {
+                setDropdown(false)
+                setDropdown2(false)
+              }}
                 to={item.path}
                 style={{
                   display: "flex",
@@ -174,7 +181,96 @@ const Dashboard = () => {
 
           ))}
 
-          <li onClick={() => setDropdown(!dropdown)}
+          <li onClick={() => {
+            navigate('/create-program')
+            setDropdown(false)
+            setDropdown2(!dropdown2)
+          }}
+            style={{
+              width: "100%",
+              height: "34px",
+              position: "relative",
+              padding: "0px 10px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {
+              dropdown2
+                ?
+                <div style={{ backgroundColor: "#FBFBFB", position: "absolute", left: 0, top: 0, width: "6px", height: "38px", borderRadius: "0 10px 10px 0" }}></div>
+                :
+                null
+
+            }
+            <div style={{
+              width: "100%",
+              marginTop: 0,
+              height: "38px",
+              display: "flex",
+              alignItems: "center",
+              paddingLeft: "47px",
+              position: "relative",
+              gap: "14px",
+              color: "#F2F2F2",
+              cursor: "pointer",
+              padding: '14px 14px',
+              position: "relative",
+              backgroundColor: dropdown2 ? "#B47000" : '#2F2F2F',
+            }}>
+              <MdDashboardCustomize size={24} />
+
+              <p style={{ fontSize: "15px", textAlign: "center" }}>Create Program</p>
+              {
+                dropdown2
+                  ?
+                  <MdKeyboardArrowDown className="absolute top-[50%] right-0 translate-y-[-50%]" size={24} />
+                  :
+                  <MdKeyboardArrowRight className="absolute top-[50%] right-0 translate-y-[-50%]" size={24} />
+              }
+            </div>
+            {
+              dropdown2
+              &&
+              <div
+                style={{
+                  position: "absolute",
+                  left: "0px",
+                  top: "40px",
+                  width: '100%',
+                  padding: "0px 10px",
+                  zIndex: '100'
+                }}
+              >
+                <Link to={`/create-program`} style={{
+                  textAlign: 'center',
+                  color: '#242424',
+                  width: '100%',
+                  backgroundColor: pathname === '/create-program' ? "#E8D3B0" : '#FBFBFB',
+                  display: 'block',
+                  padding: '6px 0px'
+                }}>
+                  <p>Create Program</p>
+                </Link>
+                <Link onClick={() => {
+                  setOpenModal(true)
+                }} style={{
+                  textAlign: 'center',
+                  color: '#242424',
+                  width: '100%',
+                  backgroundColor: '#FBFBFB',
+                  display: 'block',
+                  padding: '6px 0px'
+                }}>
+                  <p>Create Series</p>
+                </Link>
+              </div>
+            }
+          </li>
+          <li onClick={() => {
+            setDropdown2(false)
+            setDropdown(!dropdown)
+          }}
             style={{
               width: "100%",
               height: "34px",
@@ -204,6 +300,7 @@ const Dashboard = () => {
               color: "#F2F2F2",
               cursor: "pointer",
               padding: '14px 14px',
+              position: "relative",
               backgroundColor: dropdown ? "#B47000" : '#2F2F2F',
             }}>
               <IoSettingsOutline size={24} />
@@ -212,9 +309,9 @@ const Dashboard = () => {
               {
                 dropdown
                   ?
-                  <MdKeyboardArrowDown size={24} />
+                  <MdKeyboardArrowDown className="absolute top-[50%] right-0 translate-y-[-50%]" size={24} />
                   :
-                  <MdKeyboardArrowRight size={24} />
+                  <MdKeyboardArrowRight className="absolute top-[50%] right-0 translate-y-[-50%]" size={24} />
               }
             </div>
             {
@@ -227,7 +324,7 @@ const Dashboard = () => {
                   top: "40px",
                   width: '100%',
                   padding: "0px 10px",
-                  zIndex:'100'
+                  zIndex: '100'
                 }}
               >
                 {
@@ -237,7 +334,7 @@ const Dashboard = () => {
                     width: '100%',
                     backgroundColor: item.path === pathname ? "#E8D3B0" : '#FBFBFB',
                     display: 'block',
-                    padding:'6px 0px'
+                    padding: '6px 0px'
                   }}>
                     <p>{item?.title}</p>
                   </Link>)
@@ -326,6 +423,46 @@ const Dashboard = () => {
           <Outlet />
         </Content>
       </Layout>
+      <Modal
+        centered
+        onCancel={() => setOpenModal(false)}
+        open={openModal}
+        footer={false}
+      >
+        <div className='p-6'>
+          <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>Add New Series</h1>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <p className='text-[#6D6D6D] py-1'>Package Name</p>
+            <input className="w-full p-4 border py-3 outline-none rounded-md" {...register("programName", { required: true })} />
+            {errors.programName && <p className="text-red-500">This field is required</p>}
+            <div className="grid grid-cols-2 gap-2 items-start justify-start">
+              <div>
+                <p className='text-[#6D6D6D] py-1'>Title</p>
+                <input className="w-full p-4 border py-3 outline-none rounded-md" {...register("title", { required: true })} />
+                {errors.title && <p className="text-red-500">This field is required</p>}
+              </div>
+              <div>
+                <p className='text-[#6D6D6D] py-1'>Add video</p>
+                <label for="video" className="btn">
+                  <div className='border p-2 rounded-lg'>
+                    <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
+                      <FaVideo /> browse video
+                    </span>
+                  </div>
+                </label>
+                <input className="hidden" id='video'
+                  type="file"
+                  {...register("video", { required: true })}
+                />
+                {errors.video && <p className="text-red-500">This field is required</p>}
+              </div>
+            </div>
+            <div className="flex justify-center items-center mt-7">
+              <input className="px-6 py-2 bg-[#B47000] text-white cursor-pointer" value={`Save`} type="submit" />
+            </div>
+          </form>
+        </div>
+      </Modal>
     </Layout>
   );
 };

@@ -98,7 +98,7 @@ const FAQ = () => {
                         </div>
                         <div className='w-[4%] flex justify-start items-center pt-3 gap-2'>
                             <CiEdit onClick={() => {
-                                setOpenAddModel(true)
+                                setOpenEditModal(true)
                                 const filterdData = data.filter(filterId => filterId?.key === item?.key)
                                 setQuestion(filterdData[0]?.question)
                                 setans(filterdData[0]?.ans)
@@ -117,6 +117,73 @@ const FAQ = () => {
                 centered
                 open={openAddModel}
                 onCancel={() => setOpenAddModel(false)}
+                width={500}
+                footer={false}
+            >
+                <div className='p-6'>
+                    <h1 style={{ marginBottom: "12px" }}>Add FAQ</h1>
+                    <form onSubmit={handelsubmit}>
+                        <div style={{ marginBottom: "16px" }}>
+                            <label style={{ display: "block", marginBottom: "5px" }} >Question</label>
+                            <input
+                                onChange={(e) => {
+                                    setQuestion(e.target.value)
+                                }}
+                                type="Text"
+                                placeholder="Enter Question"
+                                style={{
+                                    border: "1px solid #E0E4EC",
+                                    padding: '10px',
+                                    height: "52px",
+                                    background: "white",
+                                    borderRadius: "8px",
+                                    outline: "none",
+                                    width: '100%'
+                                }}
+                                name='question' />
+                        </div>
+                        <div style={{ marginBottom: "16px" }}>
+                            <label style={{ display: "block", marginBottom: "5px" }} >Answer</label>
+                            <textarea
+                                onChange={(e) => {
+                                    setans(e.target.value)
+                                }}
+                                type="Text"
+                                placeholder="Enter answer"
+                                style={{
+                                    border: "1px solid #E0E4EC",
+                                    padding: '10px',
+                                    height: "152px",
+                                    background: "white",
+                                    borderRadius: "8px",
+                                    outline: "none",
+                                    width: '100%',
+                                    resize: 'none'
+                                }}
+                                name='ans'
+                            />
+                        </div>
+                        <input className='cursor-pointer'
+                            htmlType="submit"
+                            block
+                            style={{
+                                border: "none",
+                                height: "52px",
+                                background: "#B47000",
+                                color: "white",
+                                borderRadius: "8px",
+                                outline: "none",
+                                padding: '10px 20px'
+                            }}
+                            value={`Save & change`}
+                            type="submit" />
+                    </form>
+                </div>
+            </Modal>
+            <Modal
+                centered
+                open={openEditModal}
+                onCancel={() => setOpenEditModal(false)}
                 width={500}
                 footer={false}
             >

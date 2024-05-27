@@ -236,9 +236,6 @@ const MakeAdmin = () => {
                                 </div>
                             </Col>
                         </Row>
-
-
-
                         <div style={{ marginBottom: "16px" }}>
                             <label style={{ display: "block", marginBottom: "5px" }} htmlFor="password">Password</label>
                             <Form.Item
