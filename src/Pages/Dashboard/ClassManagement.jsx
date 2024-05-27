@@ -10,6 +10,7 @@ import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import TextArea from 'antd/es/input/TextArea';
 import { IoIosDocument } from "react-icons/io";
 import Swal from 'sweetalert2';
+import { useParams } from 'react-router-dom';
 const data = [
     {
         title: '45-min advance vinyasa yoga',
@@ -50,6 +51,9 @@ const data = [
 ]
 const ClassManagement = () => {
     const [pageNumber, setPageNumber] = useState(new URLSearchParams(window.location.search).get('page') || 0);
+    const [Program, setProgram] = useState(new URLSearchParams(window.location.search).get('program') || 'all');
+    const { name } = useParams()
+    console.log(Program, name)
     const totalPages = Math.ceil(data.length / 6)
     const pages = [...Array(totalPages).keys()];
     const [openAddModel, setOpenAddModel] = useState(false);
@@ -67,7 +71,7 @@ const ClassManagement = () => {
     }
     return (
         <div>
-            <div style={{ margin: "24px 0" }}>
+            <div style={{ marginTop: "24px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }} >
                     <h3 style={{ fontSize: "24px", fontWeight: 600, color: "#2F2F2F" }}>All Classes</h3>
                     <button
@@ -93,6 +97,9 @@ const ClassManagement = () => {
                         Add new class
                     </button>
                 </div>
+            </div>
+            <div className='flex justify-start items-center gap-2 mb-6'>
+                <p>{Program}</p> / <p>{name}</p>
             </div>
             <Modal
                 centered

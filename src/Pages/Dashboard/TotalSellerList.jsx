@@ -457,7 +457,7 @@ const TotalSellerList = () => {
                         <div className='w-32 h-32 rounded-full overflow-hidden'>
                             <img className='h-full w-full object-cover' src={avater} alt="" />
                         </div>
-                        <h1 className='text-2xl font-semibold mt-5'>Patient Mahmud</h1>
+                        <h1 className='text-2xl font-semibold mt-5'>Lisa Milbrand</h1>
                     </div>
                     <div className='p-5'>
                         <div>

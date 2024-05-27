@@ -35,6 +35,7 @@ import AllSubscriber from "./Pages/Dashboard/AllSubscriber";
 import SubscriptionIncome from "./Pages/Dashboard/SubscriptionIncome";
 import EcommerceIncome from "./Pages/Dashboard/EcommerceIncome";
 import CreateProgram from "./Pages/Dashboard/CreateProgram";
+import Series from "./Pages/Dashboard/Series";
 function App() {
   return (
     <>
@@ -52,7 +53,7 @@ function App() {
               <Route path="/manage-order" element={<ManageOrder/>} />
               <Route path="/add-subscription" element={<AddSubscription/>} />
               <Route path="/income" element={<Income/>} />
-              <Route path="/class-management" element={<ClassManagement/>} />
+              {/* <Route path="/class-management" element={<ClassManagement/>} /> */}
               <Route path="/manage-products" element={<ManageProducts/>} />
               <Route path="/about" element={<About/>} />
               <Route path="/contact" element={<Contact/>} />
@@ -60,6 +61,8 @@ function App() {
               <Route path="/privacy" element={<PrivacyPolicy/>} />
               <Route path="/terms-condition" element={<Terms/>} />
               <Route path="/blog" element={<Blog/>} />
+              <Route path="/series" element={<Series/>} />
+              <Route path="/series/:name" element={<ClassManagement/>} />
               <Route path="/create-program" element={<CreateProgram/>} />
               <Route path="/ecommerce-income" element={<EcommerceIncome/>} />
               <Route path="/admin-profile" element={<AdminProfile/>} />

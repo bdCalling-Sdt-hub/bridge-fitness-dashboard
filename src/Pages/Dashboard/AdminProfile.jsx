@@ -8,6 +8,7 @@ const AdminProfile = () => {
     const [oldPasswordType, setoldPasswordType] = useState('password')
     const [newPasswordType, setnewPasswordType] = useState('password')
     const [confirmNewPasswordType, setConfirmNewPasswordType] = useState('password')
+    const [image, setImage] = useState(null);
     const {
         register,
         handleSubmit,
@@ -20,8 +21,20 @@ const AdminProfile = () => {
             <h1 style={{ fontSize: "20px", fontWeight: 600, color: "#2F2F2F" }}>Admin Profile(Super Admin)</h1>
             <div className='flex justify-center items-center flex-col gap-3 bg-[#FEFEFE] py-6 max-w-[840px] mx-auto rounded-lg mt-12 mb-6'>
                 <div className='w-32 h-32 rounded-full relative'>
-                    <img className='w-full h-full object-cover rounded-full' src={avater} alt="" />
-                    <RiEditLine className='absolute bottom-3 bg-white right-1 text-3xl rounded-full p-1 cursor-pointer' />
+                    <img className='w-full h-full object-cover rounded-full' src={image || avater} alt="" />
+                    <label for="profile" className='absolute bottom-3 bg-white right-1 text-3xl rounded-full p-1 cursor-pointer'>
+                        <RiEditLine />
+                        <input onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                    setImage(reader.result);
+                                };
+                                reader.readAsDataURL(file);
+                            }
+                        }} type="file" className='hidden' id='profile' />
+                    </label>
                 </div>
                 <h3 className='text-3xl font-medium text-[#262727] mt-3'>Mr. Admin</h3>
             </div>
