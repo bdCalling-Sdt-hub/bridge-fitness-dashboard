@@ -1,12 +1,12 @@
 import { Form, Input, Modal, Button } from 'antd';
 import React, { useState } from 'react'
-import { FaFilePdf, FaPlus } from 'react-icons/fa6';
+import { FaFilePdf, FaImage, FaPlus } from 'react-icons/fa6';
 import course from "../../assets/course.png";
 import { Col, Row } from 'antd';
 import { CiCalendar } from 'react-icons/ci';
 import { SlArrowLeft } from "react-icons/sl";
 import { SlArrowRight } from "react-icons/sl";
-import {  CiVideoOn } from 'react-icons/ci';
+import { CiVideoOn } from 'react-icons/ci';
 import TextArea from 'antd/es/input/TextArea';
 import { IoIosDocument } from "react-icons/io";
 const data = [
@@ -84,7 +84,7 @@ const Blog = () => {
                 footer={false}
             >
                 <div className='p-6'>
-                    <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>Add new class</h1>
+                    <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>Add new Blog</h1>
                     <Form
                         name="normal_login"
                         initialValues={{
@@ -168,7 +168,7 @@ const Blog = () => {
                                 </Form.Item>
                             </div>
                             <div>
-                                <label for="video" style={{ display: "block", marginBottom: "5px" }}>Add video
+                                <label for="video" style={{ display: "block", marginBottom: "5px" }}>Add image
                                     <Form.Item
                                         style={{ marginBottom: 0 }}
                                         name="video"
@@ -182,7 +182,7 @@ const Blog = () => {
                                         <label for="video" className="btn">
                                             <div className='border p-2 rounded-lg'>
                                                 <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
-                                                    <CiVideoOn /> browse video
+                                                    <FaImage /> browse Image
                                                 </span>
                                             </div>
                                         </label>
@@ -204,7 +204,7 @@ const Blog = () => {
                                     </Form.Item>
                                 </label>
                             </div>
-                            <div className='row-span-2'>
+                            <div className='row-span-2 col-span-2'>
                                 <label style={{ display: "block", marginBottom: "5px" }}>Description </label>
                                 <Form.Item
                                     style={{ marginBottom: 0 }}
@@ -228,80 +228,6 @@ const Blog = () => {
                                         }}
                                     />
                                 </Form.Item>
-                            </div>
-                            <div>
-                                <label for="pdf" style={{ display: "block", marginBottom: "5px" }}>Add PDF
-                                    <Form.Item
-                                        style={{ marginBottom: 0 }}
-                                        name="pdf"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Please Add pdf ",
-                                            },
-                                        ]}
-                                    >
-                                        <label for="pdf" className="btn">
-                                            <div className='border p-2 rounded-lg'>
-                                                <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
-                                                    <FaFilePdf /> browse pdf
-                                                </span>
-                                            </div>
-                                        </label>
-                                        <div className='hidden'>
-                                            <Input id='pdf'
-                                                placeholder="tittle here..."
-                                                type="file"
-                                                value={``}
-                                                style={{
-                                                    border: "1px solid #E0E4EC",
-                                                    height: "52px",
-                                                    paddingTop: '10px',
-                                                    background: "white",
-                                                    borderRadius: "8px",
-                                                    outline: "none",
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Item>
-                                </label>
-                            </div>
-                            <div>
-                                <label for="doc" style={{ display: "block", marginBottom: "5px" }}>Add Doc File
-                                    <Form.Item
-                                        style={{ marginBottom: 0 }}
-                                        name="doc"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Please Add video ",
-                                            },
-                                        ]}
-                                    >
-                                        <label for="doc" className="btn">
-                                            <div className='border p-2 rounded-lg'>
-                                                <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
-                                                    <IoIosDocument /> browse doc
-                                                </span>
-                                            </div>
-                                        </label>
-                                        <div className='hidden'>
-                                            <Input id='doc'
-                                                placeholder="tittle here..."
-                                                type="file"
-                                                value={``}
-                                                style={{
-                                                    border: "1px solid #E0E4EC",
-                                                    height: "52px",
-                                                    paddingTop: '10px',
-                                                    background: "white",
-                                                    borderRadius: "8px",
-                                                    outline: "none",
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Item>
-                                </label>
                             </div>
                         </div>
 
@@ -330,7 +256,7 @@ const Blog = () => {
             <div style={{
                 background: 'white',
                 padding: '30px 20px',
-                borderRadius:'6px'
+                borderRadius: '6px'
             }}>
                 <Row gutter={30}>
                     {data.map((item, index) => {
