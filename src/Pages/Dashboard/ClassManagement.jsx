@@ -2,7 +2,7 @@ import { Form, Input, Modal, Table, Button } from 'antd';
 import React, { useState } from 'react'
 import { MdOutlineDelete } from 'react-icons/md';
 import BackButton from './BackButton';
-import { FaFilePdf, FaPlus } from 'react-icons/fa6';
+import { FaFilePdf, FaImage, FaPlus } from 'react-icons/fa6';
 import course from "../../assets/course.png";
 import { Col, Row } from 'antd';
 import { CiCalendar, CiVideoOn } from 'react-icons/ci';
@@ -193,7 +193,7 @@ const ClassManagement = () => {
                                 </Form.Item>
                             </div>
                             <div>
-                                <label for="video" style={{ display: "block", marginBottom: "5px" }}>Add video
+                                <label for="video" style={{ display: "block", marginBottom: "5px" }}>Add image
                                     <Form.Item
                                         style={{ marginBottom: 0 }}
                                         name="video"
@@ -207,7 +207,7 @@ const ClassManagement = () => {
                                         <label for="video" className="btn">
                                             <div className='border p-2 rounded-lg'>
                                                 <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
-                                                    <CiVideoOn /> browse video
+                                                    <FaImage /> browse Image
                                                 </span>
                                             </div>
                                         </label>
@@ -229,7 +229,7 @@ const ClassManagement = () => {
                                     </Form.Item>
                                 </label>
                             </div>
-                            <div className='row-span-2'>
+                            <div className='row-span-2 col-span-2'>
                                 <label style={{ display: "block", marginBottom: "5px" }}>Description </label>
                                 <Form.Item
                                     style={{ marginBottom: 0 }}
@@ -253,80 +253,6 @@ const ClassManagement = () => {
                                         }}
                                     />
                                 </Form.Item>
-                            </div>
-                            <div>
-                                <label for="pdf" style={{ display: "block", marginBottom: "5px" }}>Add PDF
-                                    <Form.Item
-                                        style={{ marginBottom: 0 }}
-                                        name="pdf"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Please Add pdf ",
-                                            },
-                                        ]}
-                                    >
-                                        <label for="pdf" className="btn">
-                                            <div className='border p-2 rounded-lg'>
-                                                <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
-                                                    <FaFilePdf /> browse pdf
-                                                </span>
-                                            </div>
-                                        </label>
-                                        <div className='hidden'>
-                                            <Input id='pdf'
-                                                placeholder="tittle here..."
-                                                type="file"
-                                                value={``}
-                                                style={{
-                                                    border: "1px solid #E0E4EC",
-                                                    height: "52px",
-                                                    paddingTop: '10px',
-                                                    background: "white",
-                                                    borderRadius: "8px",
-                                                    outline: "none",
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Item>
-                                </label>
-                            </div>
-                            <div>
-                                <label for="doc" style={{ display: "block", marginBottom: "5px" }}>Add Doc File
-                                    <Form.Item
-                                        style={{ marginBottom: 0 }}
-                                        name="doc"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Please Add video ",
-                                            },
-                                        ]}
-                                    >
-                                        <label for="doc" className="btn">
-                                            <div className='border p-2 rounded-lg'>
-                                                <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
-                                                    <IoIosDocument /> browse doc
-                                                </span>
-                                            </div>
-                                        </label>
-                                        <div className='hidden'>
-                                            <Input id='doc'
-                                                placeholder="tittle here..."
-                                                type="file"
-                                                value={``}
-                                                style={{
-                                                    border: "1px solid #E0E4EC",
-                                                    height: "52px",
-                                                    paddingTop: '10px',
-                                                    background: "white",
-                                                    borderRadius: "8px",
-                                                    outline: "none",
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Item>
-                                </label>
                             </div>
                         </div>
 
@@ -444,7 +370,7 @@ const ClassManagement = () => {
                                 </Form.Item>
                             </div>
                             <div>
-                                <label for="video" style={{ display: "block", marginBottom: "5px" }}>Add video
+                                <label for="video" style={{ display: "block", marginBottom: "5px" }}>Add image
                                     <Form.Item
                                         style={{ marginBottom: 0 }}
                                         name="video"
@@ -458,7 +384,7 @@ const ClassManagement = () => {
                                         <label for="video" className="btn">
                                             <div className='border p-2 rounded-lg'>
                                                 <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
-                                                    <CiVideoOn /> browse video
+                                                    <FaImage /> browse Image
                                                 </span>
                                             </div>
                                         </label>
@@ -480,7 +406,7 @@ const ClassManagement = () => {
                                     </Form.Item>
                                 </label>
                             </div>
-                            <div className='row-span-2'>
+                            <div className='row-span-2 col-span-2'>
                                 <label style={{ display: "block", marginBottom: "5px" }}>Description </label>
                                 <Form.Item
                                     style={{ marginBottom: 0 }}
@@ -504,80 +430,6 @@ const ClassManagement = () => {
                                         }}
                                     />
                                 </Form.Item>
-                            </div>
-                            <div>
-                                <label for="pdf" style={{ display: "block", marginBottom: "5px" }}>Add PDF
-                                    <Form.Item
-                                        style={{ marginBottom: 0 }}
-                                        name="pdf"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Please Add pdf ",
-                                            },
-                                        ]}
-                                    >
-                                        <label for="pdf" className="btn">
-                                            <div className='border p-2 rounded-lg'>
-                                                <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
-                                                    <FaFilePdf /> browse pdf
-                                                </span>
-                                            </div>
-                                        </label>
-                                        <div className='hidden'>
-                                            <Input id='pdf'
-                                                placeholder="tittle here..."
-                                                type="file"
-                                                value={``}
-                                                style={{
-                                                    border: "1px solid #E0E4EC",
-                                                    height: "52px",
-                                                    paddingTop: '10px',
-                                                    background: "white",
-                                                    borderRadius: "8px",
-                                                    outline: "none",
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Item>
-                                </label>
-                            </div>
-                            <div>
-                                <label for="doc" style={{ display: "block", marginBottom: "5px" }}>Add Doc File
-                                    <Form.Item
-                                        style={{ marginBottom: 0 }}
-                                        name="doc"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Please Add video ",
-                                            },
-                                        ]}
-                                    >
-                                        <label for="doc" className="btn">
-                                            <div className='border p-2 rounded-lg'>
-                                                <span className='flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md'>
-                                                    <IoIosDocument /> browse doc
-                                                </span>
-                                            </div>
-                                        </label>
-                                        <div className='hidden'>
-                                            <Input id='doc'
-                                                placeholder="tittle here..."
-                                                type="file"
-                                                value={``}
-                                                style={{
-                                                    border: "1px solid #E0E4EC",
-                                                    height: "52px",
-                                                    paddingTop: '10px',
-                                                    background: "white",
-                                                    borderRadius: "8px",
-                                                    outline: "none",
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Item>
-                                </label>
                             </div>
                         </div>
 
