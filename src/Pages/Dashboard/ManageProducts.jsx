@@ -407,7 +407,7 @@ const ManageProducts = () => {
                                 </Form.Item>
                             </div>
                             <div style={{ marginBottom: "16px" }}>
-                                <label style={{ display: "block", marginBottom: "5px" }}>Product Name</label>
+                                <label style={{ display: "block", marginBottom: "5px" }}>Gender</label>
                                 <div className='flex justify-between items-center'
                                     style={{
                                         height: "40px",

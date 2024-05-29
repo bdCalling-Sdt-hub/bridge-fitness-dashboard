@@ -104,7 +104,9 @@ const Login = () => {
           <Form.Item
             style={{ marginBottom: 0 }}
           >
-            <Button
+            <Button onClick={()=>{
+              navigate(`/`)
+            }}
               type="primary"
               htmlType="submit"
               className="login-form-button"
