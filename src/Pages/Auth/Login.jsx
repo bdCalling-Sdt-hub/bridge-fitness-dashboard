@@ -1,15 +1,46 @@
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
-import React from "react";
+import React,{useEffect} from "react";
 import { useNavigate } from "react-router";
 import loginImage from "../../assets/loginImage.png";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import { UserData, reset } from "../../ReduxSlices/SigninSlice";
+
+import { useDispatch, useSelector } from "react-redux";
+
+
 const Login = () => {
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-  };
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { isLoading, isError, isSuccess, userData, accessToken, message } = useSelector((state) => state.UserData);
+
+  useEffect(() => {
+    if (isError == true) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: message,
+      });
+    }
+    if (isSuccess == true) {
+      localStorage.setItem("yourInfo", JSON.stringify(userData));
+      localStorage.setItem("token", accessToken);
+      window.location.href = "/";
+    }
+
+    dispatch(reset());
+  }, [isLoading, isError, isSuccess, dispatch, navigate]);
+
+
+  const onFinish = (values) => {
+    //console.log("Received values of form: ", values);
+    dispatch(UserData(values));
+  };
+
+ 
 
   return (
     <div className="grid grid-cols-2 gap-0"
@@ -104,9 +135,7 @@ const Login = () => {
           <Form.Item
             style={{ marginBottom: 0 }}
           >
-            <Button onClick={()=>{
-              navigate(`/`)
-            }}
+            <Button
               type="primary"
               htmlType="submit"
               className="login-form-button"
