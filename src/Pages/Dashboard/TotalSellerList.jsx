@@ -10,6 +10,11 @@ import { CiMenuKebab } from 'react-icons/ci';
 import { LuRefreshCw } from "react-icons/lu";
 import avater from '../../assets/avater.png';
 import user from '../../assets/icon/user.png';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { AllUsers } from '../../ReduxSlices/AllUsersSlice';
+
+
 const data = [
   {
     key: "1",
@@ -201,6 +206,20 @@ const data = [
 ];
 
 const TotalSellerList = () => {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    
+    dispatch(AllUsers());
+  }, [dispatch, navigate]);
+
+  const {message} = useSelector((state) =>state.AllUsers);
+
+
+console.log(message)
+
   const [value, setValue] = useState(new URLSearchParams(window.location.search).get('date') || new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }));
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(new URLSearchParams(window.location.search).get('category') || "All")
