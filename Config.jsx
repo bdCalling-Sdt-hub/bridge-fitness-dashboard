@@ -8,3 +8,4 @@ const baseAxios = axios.create({
 });
 
 export default baseAxios;
+export const ServerUrl = 'http://192.168.10.116:8000'

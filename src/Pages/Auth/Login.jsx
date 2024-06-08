@@ -37,7 +37,7 @@ const Login = () => {
 
   const onFinish = (values) => {
     //console.log("Received values of form: ", values);
-    dispatch(UserData(values));
+    dispatch(UserData(values)).then((res)=>console.log(res));
   };
 
  

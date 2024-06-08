@@ -71,7 +71,7 @@ function App() {
               <Route path="/seller-details/:id" element={<SellerDetails />} />
               <Route path="/seller-product-list" element={<SellerProductList />} />
             </Route>
-            <Route path="/login" element={<PrivateRoute><Login /></PrivateRoute>} />
+            <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/otp" element={<Otp />} />
             <Route path="/update-password" element={<UpdatePassword />} />

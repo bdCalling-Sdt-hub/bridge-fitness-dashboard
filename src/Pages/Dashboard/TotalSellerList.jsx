@@ -206,19 +206,18 @@ const data = [
 ];
 
 const TotalSellerList = () => {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const  userData  = useSelector(state => state.UserData)
+  console.log(userData)
   useEffect(() => {
-    
+
     dispatch(AllUsers());
   }, [dispatch, navigate]);
 
-  const {message} = useSelector((state) =>state.AllUsers);
+  const { message } = useSelector((state) => state.AllUsers);
 
-
-console.log(message)
+  console.log(message)
 
   const [value, setValue] = useState(new URLSearchParams(window.location.search).get('date') || new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }));
   const [search, setSearch] = useState("");
@@ -338,8 +337,8 @@ console.log(message)
       dataIndex: "printView",
       key: "printView",
       render: (_, record) => (
-        <div style={{ position: "relative", display:'flex' ,justifyContent:'start',alignItems:'center',gap:'10px'}}>
-          <FiEye onClick={(e) => (e.stopPropagation(), setOpen(record.key),setOpenAddModel(true))} size={20} color='black' style={{ cursor: "pointer" }} />
+        <div style={{ position: "relative", display: 'flex', justifyContent: 'start', alignItems: 'center', gap: '10px' }}>
+          <FiEye onClick={(e) => (e.stopPropagation(), setOpen(record.key), setOpenAddModel(true))} size={20} color='black' style={{ cursor: "pointer" }} />
         </div>
       ),
     },
@@ -448,7 +447,7 @@ console.log(message)
         style={{
           background: "white",
           padding: "20px",
-          borderRadius:'6px'
+          borderRadius: '6px'
         }}
       >
         <div>
@@ -464,52 +463,52 @@ console.log(message)
         </div>
       </div>
       <Modal
-                centered
-                open={openAddModel}
-                onCancel={() => setOpenAddModel(false)}
-                width={500}
-                footer={false}
-                padding={0}
-            >
-                <div className='p-2 '>
-                    <div className='flex flex-col justify-center items-center bg-[#F4EAD9] p-6'>
-                        <div className='w-32 h-32 rounded-full overflow-hidden'>
-                            <img className='h-full w-full object-cover' src={avater} alt="" />
-                        </div>
-                        <h1 className='text-2xl font-semibold mt-5'>Lisa Milbrand</h1>
-                    </div>
-                    <div className='p-5'>
-                        <div>
-                            <p className='text-sm font-semibold text-[#555555] mb-1'>Status</p>
-                            <p className='text-[#B47000]'>Subscriber</p>
-                        </div>
-                        <div className='mt-3'>
-                            <p className='text-sm font-semibold text-[#555555] mb-1'>Name</p>
-                            <p className='text-[#555555]'>Patient Mahmud</p>
-                        </div>
-                        <div className='mt-3'>
-                            <p className='text-sm font-semibold text-[#555555] mb-1'>Email</p>
-                            <p className='text-[#555555]'>mahmud@gmail.com</p>
-                        </div>
-                        <div className='mt-3'>
-                            <p className='text-sm font-semibold text-[#555555] mb-1'>Contact No</p>
-                            <p className='text-[#555555]'>+919355574544</p>
-                        </div>
-                        <div className='mt-3'>
-                            <p className='text-sm font-semibold text-[#555555] mb-1'>Date of birth</p>
-                            <p className='text-[#555555]'>17 dec, 2024</p>
-                        </div>
-                        <div className='mt-3'>
-                            <p className='text-sm font-semibold text-[#555555] mb-1'>Designation</p>
-                            <p className='text-[#555555]'>Actor</p>
-                        </div>
-                        <div className='mt-3'>
-                            <p className='text-sm font-semibold text-[#555555] mb-1'>Address</p>
-                            <p className='text-[#555555]'>68/ Joker Vila, Gotham City</p>
-                        </div>
-                    </div>
-                </div>
-            </Modal>
+        centered
+        open={openAddModel}
+        onCancel={() => setOpenAddModel(false)}
+        width={500}
+        footer={false}
+        padding={0}
+      >
+        <div className='p-2 '>
+          <div className='flex flex-col justify-center items-center bg-[#F4EAD9] p-6'>
+            <div className='w-32 h-32 rounded-full overflow-hidden'>
+              <img className='h-full w-full object-cover' src={avater} alt="" />
+            </div>
+            <h1 className='text-2xl font-semibold mt-5'>Lisa Milbrand</h1>
+          </div>
+          <div className='p-5'>
+            <div>
+              <p className='text-sm font-semibold text-[#555555] mb-1'>Status</p>
+              <p className='text-[#B47000]'>Subscriber</p>
+            </div>
+            <div className='mt-3'>
+              <p className='text-sm font-semibold text-[#555555] mb-1'>Name</p>
+              <p className='text-[#555555]'>Patient Mahmud</p>
+            </div>
+            <div className='mt-3'>
+              <p className='text-sm font-semibold text-[#555555] mb-1'>Email</p>
+              <p className='text-[#555555]'>mahmud@gmail.com</p>
+            </div>
+            <div className='mt-3'>
+              <p className='text-sm font-semibold text-[#555555] mb-1'>Contact No</p>
+              <p className='text-[#555555]'>+919355574544</p>
+            </div>
+            <div className='mt-3'>
+              <p className='text-sm font-semibold text-[#555555] mb-1'>Date of birth</p>
+              <p className='text-[#555555]'>17 dec, 2024</p>
+            </div>
+            <div className='mt-3'>
+              <p className='text-sm font-semibold text-[#555555] mb-1'>Designation</p>
+              <p className='text-[#555555]'>Actor</p>
+            </div>
+            <div className='mt-3'>
+              <p className='text-sm font-semibold text-[#555555] mb-1'>Address</p>
+              <p className='text-[#555555]'>68/ Joker Vila, Gotham City</p>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }
