@@ -1,212 +1,45 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { FiEye, FiSearch } from 'react-icons/fi';
+import React, { useEffect, useState } from 'react';
+import { FiSearch } from 'react-icons/fi';
 import { IoClose } from 'react-icons/io5';
-import { Calendar, Dropdown, Input, Slider, Table } from 'antd';
-import { DownOutlined } from "@ant-design/icons";
-import { FaRegImage, FaRegTrashCan } from 'react-icons/fa6';
-import { Link } from 'react-router-dom';
+import { Input, Table } from 'antd';
+import { FaRegImage, } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
-import { CiMenuKebab } from 'react-icons/ci';
 import { LuRefreshCw } from "react-icons/lu";
-import product from '../../assets/icon/product.png';
-import user from '../../assets/icon/user.png';
 import { RiDeleteBin6Line, RiEditLine } from 'react-icons/ri';
 import { Form, Modal, Button } from 'antd';
-import { MdOutlineDelete } from 'react-icons/md';
-import BackButton from './BackButton';
 import { FaPlus } from 'react-icons/fa6';
 import TextArea from 'antd/es/input/TextArea';
-import { RxCross2 } from "react-icons/rx";
-const data = [
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-    {
-        key: "1",
-        name: "The Dumbbell",
-        gender: "Men",
-        price: "150 CND",
-        photo: product,
-        date: "05/12/2024",
-        store: "500",
-    },
-];
+import toast, { Toaster } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { AddProducts } from '../../ReduxSlices/Products/AddProductSlice';
+import { Select } from 'antd';
+import { GetProducts } from '../../ReduxSlices/Products/GetProductsSlice';
+import { ServerUrl } from '../../../Config';
+import { DeleteProducts } from '../../ReduxSlices/Products/DeleteProductSlice';
+import { UpdateProduct } from '../../ReduxSlices/Products/UpdateProductSlice';
 const ManageProducts = () => {
-    const [value, setValue] = useState(new URLSearchParams(window.location.search).get('date') || new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }));
+    const [form] = Form.useForm()
     const [search, setSearch] = useState("");
-    const [category, setCategory] = useState(new URLSearchParams(window.location.search).get('category') || "All")
-    const [gender, setGender] = useState([])
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
-    const [open, setOpen] = useState();
-    const [filter, setFilter] = useState(false);
-    const [date, setDate] = useState(false);
-    const dropdownRef = useRef();
     const [openAddModel, setOpenAddModel] = useState(false);
-    const [reFresh, setReFresh] = useState("");
-
-    if (reFresh) {
-        setTimeout(() => {
-            setReFresh("")
-        }, 1500)
-    }
-    const items = [
-        {
-            label: "male",
-            key: "male",
-        },
-        {
-            label: "female",
-            key: "female",
-        },
-    ];
-
-    const handleDelete = (id) => {
-        Swal.fire({
-            title: "Are you sure?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes",
-            cancelButtonText: "No"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-            }
-        });
-    }
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setDate(false)
-                setOpen("");
-                setFilter(false);
-            }
-        };
-        document.addEventListener('click', handleClickOutside);
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
-
-
+    const [reFresh, setReFresh] = useState(false);
+    const [images, setImages] = useState([])
+    const [imagesUploadError, setImagesUploadError] = useState(null)
+    const dispatch = useDispatch()
+    const { products, meta } = useSelector(state => state.GetProducts)
+    const [ItemPerPage, setItemPerPage] = useState(10)
+    const [editItemData, seteditItemData] = useState({})
+    const [submitType, setsubmitType] = useState('add')
+    const [selectedItemImage, setSelectedItemImage] = useState([]);
+    const [imageToDelete, setImageToDelete] = useState([])
     const columns = [
         {
             title: "S.No",
             dataIndex: "key",
-            key: "key",
+            key: "_id",
+            render: (_, data, index) => (
+                <p className='font-extrabold'>{index + 1}</p>
+            )
         },
         {
             title: "Products Name",
@@ -218,9 +51,9 @@ const ManageProducts = () => {
                     alignItems: 'center',
                     gap: '6px'
                 }}>
-                    <img src={record.photo} alt="" />
+                    <img className='w-10 h-10' src={`${ServerUrl}/${record.images[0]}`} alt="" />
                     <span>
-                        {record.name}
+                        {record.productName}
                     </span>
                 </span>
             ),
@@ -243,8 +76,8 @@ const ManageProducts = () => {
         },
         {
             title: "Store",
-            dataIndex: "store",
-            key: "store",
+            dataIndex: "quantity",
+            key: "quantity",
         },
         {
             title: "ACTION",
@@ -252,12 +85,46 @@ const ManageProducts = () => {
             key: "printView",
             render: (_, record) => (
                 <div style={{ position: "relative", display: 'flex', justifyContent: 'start', alignItems: 'center', gap: '10px' }}>
-                    <RiEditLine size={20} color='#5B52A3' style={{ cursor: "pointer" }} />
-                    <RiDeleteBin6Line size={20} color='#C11415' style={{ cursor: "pointer" }} />
+                    <RiEditLine onClick={() => {
+                        setsubmitType('update')
+                        setOpenAddModel(true)
+                        seteditItemData(record)
+                        setImageToDelete([])
+                        setImages([])
+                    }} size={20} color='#5B52A3' style={{ cursor: "pointer" }} />
+                    <RiDeleteBin6Line onClick={() => handleDelete(record._id)} size={20} color='#C11415' style={{ cursor: "pointer" }} />
                 </div>
             ),
         },
     ];
+    //delete
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // console.log(id)
+                dispatch(DeleteProducts({ id })).then((res) => {
+                    if (res.type == 'DeleteProducts/fulfilled') {
+                        dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your product has been deleted.",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                    }
+                })
+            }
+        });
+    }
 
     const handlePageChange = (page) => {
         setPage(page);
@@ -265,22 +132,93 @@ const ManageProducts = () => {
         params.set('page', page);
         window.history.pushState(null, "", `?${params.toString()}`);
     }
-    const onClick = ({ key }) => {
-        if (gender.find(item => key == item)) {
-            return
+    // add products 
+    const onFinish = (values) => {
+        form.setFieldsValue(values)
+        const formData = new FormData();
+        const { date, ...otherValues } = values
+        formData.append("date", date?.toString().split('T')[0]);
+        Object.keys(otherValues).forEach((key) => {
+            formData.append(key, values[key]);
+        });
+        for (const image of images) {
+            formData.append("image", image);
         }
-        setGender([...gender, key])
+        if (submitType === 'add') {
+            dispatch(AddProducts(formData)).then((res) => {
+                if (res.type == 'AddProducts/fulfilled') {
+                    toast.success('product Successfully added')
+                    setOpenAddModel(false)
+                    form.resetFields()
+                    setImages([])
+                    dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+                }
+            })
+        } else {
+            if (imageToDelete.length > 0) {
+                formData.append("imageToDelete", JSON.stringify(imageToDelete))
+            }
+
+            dispatch(UpdateProduct({ data: formData, id: editItemData?._id })).then((res) => {
+                if (res.type == 'UpdateProduct/fulfilled') {
+                    toast.success('product Successfully added')
+                    setOpenAddModel(false)
+                    form.resetFields()
+                    setImages([])
+                    setImageToDelete([])
+                    seteditItemData({})
+                    dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+                }
+            })
+            // dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+        }
     };
-    const handelGenderDelete = (key) => {
-        const newGenderList = gender.filter(item => item != key)
-        setGender(newGenderList)
+    // get products 
+    useEffect(() => {
+        dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+    }, [ItemPerPage, page, search, reFresh])
+
+
+    // image error message
+    useEffect(() => {
+        if (!imagesUploadError) return
+        console.log('running')
+        toast.error(imagesUploadError)
+        setImagesUploadError(null)
+    }, [imagesUploadError])
+
+
+
+    // image upload handler
+    const handleImageUpload = (e) => {
+        let imagesFiles = []
+        const FileList = Array.from(e.target.files)
+        FileList.map((item) => {
+            if (((images.length + (selectedItemImage.length)) + imagesFiles.length) >= 4) {
+                return setImagesUploadError("you can't upload more then 4 image")
+            }
+            if (item.type.startsWith('image')) {
+                imagesFiles.push(item)
+                setImages([...images, ...imagesFiles])
+
+            } else {
+                setImagesUploadError(`${item.type} is not allowed please select valid image`)
+            }
+        })
+
     }
+    useEffect(() => {
+        form.setFieldsValue(editItemData)
+        setSelectedItemImage(editItemData?.images ? editItemData?.images : [])
+    }, [editItemData])
+
+
+
     return (
         <div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "16px 0" }}>
                 <h1 style={{ fontSize: "20px", fontWeight: 600, color: "#2F2F2F" }}>All Products</h1>
                 <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-
                     <div
                         style={{
                             width: "304px",
@@ -290,7 +228,10 @@ const ManageProducts = () => {
                         }}
                     >
                         <Input
-                            onChange={(e) => setSearch(e.target.value)}
+                            onChange={(e) => {
+                                setSearch(e.target.value)
+                                setPage(1)
+                            }}
                             placeholder="Search..."
                             prefix={<FiSearch size={14} color="#868FA0" />}
                             style={{
@@ -305,7 +246,7 @@ const ManageProducts = () => {
                         />
                     </div>
                     <button
-                        onClick={() => setOpenAddModel(true)}
+                        onClick={() => { form.resetFields(); setSelectedItemImage([]); setsubmitType('add'); setOpenAddModel(true) }}
                         style={{
                             borderRadius: "4px",
                             color: "#F2F2F2",
@@ -337,7 +278,7 @@ const ManageProducts = () => {
                         borderRadius: '4px',
                         cursor: 'pointer'
                     }}>
-                        <button style={{
+                        <button onClick={() => setReFresh(!reFresh)} style={{
                             background: 'transparent',
                             border: 'none',
                             cursor: 'pointer'
@@ -350,17 +291,20 @@ const ManageProducts = () => {
                 style={{
                     background: "white",
                     padding: "20px",
-                    borderRadius:'6px'
+                    borderRadius: '6px'
                 }}
             >
                 <div>
                     <Table
                         columns={columns}
-                        dataSource={data}
+                        dataSource={products}
                         pagination={{
-                            pageSize: 10,
-                            defaultCurrent: parseInt(page),
-                            onChange: handlePageChange
+                            total: meta?.total,
+                            current: parseInt(page),
+                            onChange: handlePageChange,
+                            // onShowSizeChange: onShowSizeChange,
+                            showSizeChanger: false,
+                            // pageSize: ItemPerPage
                         }}
                     />
                 </div>
@@ -368,7 +312,11 @@ const ManageProducts = () => {
             <Modal
                 centered
                 open={openAddModel}
-                onCancel={() => setOpenAddModel(false)}
+                onCancel={() => {
+                    setOpenAddModel(false)
+                    setImageToDelete([])
+                    setImages([])
+                }}
                 width={700}
                 footer={false}
             >
@@ -376,16 +324,19 @@ const ManageProducts = () => {
                     <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>Add New Products</h1>
                     <Form
                         name="normal_login"
-                        initialValues={{
-                            remember: true,
-                        }}
+                        // initialValues={{
+                        //     remember: true,
+                        // }}
+                        onFinish={onFinish}
+                        form={form}
                     >
                         <div className='grid grid-cols-2 gap-5'>
+
                             <div style={{ marginBottom: "16px" }}>
                                 <label style={{ display: "block", marginBottom: "5px" }}>Product Name</label>
                                 <Form.Item
                                     style={{ marginBottom: 0 }}
-                                    name="product"
+                                    name="productName"
                                     rules={[
                                         {
                                             required: true,
@@ -406,43 +357,37 @@ const ManageProducts = () => {
                                     />
                                 </Form.Item>
                             </div>
+
+
                             <div style={{ marginBottom: "16px" }}>
                                 <label style={{ display: "block", marginBottom: "5px" }}>Gender</label>
-                                <div className='flex justify-between items-center'
+                                <Form.Item
                                     style={{
-                                        height: "40px",
-                                        borderRadius: "8px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "space-between",
-                                        color: "#8B8B8B",
-                                        background: '#fefefe',
-                                        border: '1px solid #e0e4ec',
-                                        padding: '23px 10px',
+                                        marginBottom: 0
                                     }}
-                                >
-                                    <div className=' w-full flex justify-start items-center'>
-                                        {
-                                            gender.length <= 0 && <p>select gender</p>
-                                        }
-                                        {
-                                            gender.map((item, index) => <button type='button' className='p-1 border mx-1 flex justify-start items-center gap-1 w-fit cursor-default' key={index}> {item} <RxCross2 onClick={() => handelGenderDelete(item)} className='cursor-pointer' /></button>)
-                                        }
-                                    </div>
-                                    <Dropdown menu={{ items, onClick }} >
-                                        <p
-                                            style={{
-                                                cursor: "pointer",
-                                                color: '#717171',
-                                                borderRadius: "4px",
-                                            }}
-                                            onClick={(e) => e.preventDefault()}
-                                        >
-                                            <DownOutlined style={{ paddingLeft: "18px" }} color='#717171' />
-                                        </p>
-                                    </Dropdown>
-                                </div>
+                                    name="gender">
+                                    <Select
+                                        style={{
+                                            border: "1px solid #E0E4EC",
+                                            height: "52px",
+                                            background: "white",
+                                            borderRadius: "8px",
+                                            outline: "none",
+                                        }}
+                                        options={[
+                                            {
+                                                value: 'male',
+                                                label: 'Male',
+                                            },
+                                            {
+                                                value: 'female',
+                                                label: 'Female',
+                                            },
+                                        ]}
+                                    />
+                                </Form.Item>
                             </div>
+
                             <div style={{ marginBottom: "16px" }}>
                                 <label style={{ display: "block", marginBottom: "5px" }}>date</label>
                                 <Form.Item
@@ -468,6 +413,7 @@ const ManageProducts = () => {
                                     />
                                 </Form.Item>
                             </div>
+
                             <div style={{ marginBottom: "16px" }}>
                                 <label style={{ display: "block", marginBottom: "5px" }}>Price</label>
                                 <Form.Item
@@ -493,125 +439,64 @@ const ManageProducts = () => {
                                     />
                                 </Form.Item>
                             </div>
+
+
                             <p className='font-bold -mb-5'>Products Image</p>
                             <div className='grid grid-cols-4 col-span-2 gap-2 p-4 pt-5 border  my-4 rounded-md'>
-                                <label for='product_img1' style={{ display: "block", marginBottom: "5px" }}>
-                                    <Form.Item
-                                        style={{ marginBottom: 0 }}
-                                        name="product_img1"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Please input product price",
-                                            },
-                                        ]}
-                                    >
-                                        <div className='flex justify-center items-center w-full h-full border-dashed border border-black py-10'>
-                                            <FaRegImage className='text-2xl' />
-                                        </div>
-                                        <div className='hidden'>
-                                            <Input id='product_img1'
-                                                placeholder="150 CND"
-                                                type="file"
-                                                style={{
-                                                    border: "1px solid #E0E4EC",
-                                                    height: "52px",
-                                                    background: "white",
-                                                    borderRadius: "8px",
-                                                    outline: "none",
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Item>
-                                </label>
-                                <label for='product_img2' style={{ display: "block", marginBottom: "5px" }}>
-                                    <Form.Item
-                                        style={{ marginBottom: 0 }}
-                                        name="product_img2"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message: "Please input product price",
-                                            },
-                                        ]}
-                                    >
-                                        <div className='flex justify-center items-center w-full h-full border-dashed border border-black py-10'>
-                                            <FaRegImage className='text-2xl' />
-                                        </div>
-                                        <div className='hidden'>
-                                            <Input id='product_img2'
-                                                placeholder="150 CND"
-                                                type="file"
-                                                style={{
-                                                    border: "1px solid #E0E4EC",
-                                                    height: "52px",
-                                                    background: "white",
-                                                    borderRadius: "8px",
-                                                    outline: "none",
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Item>
-                                </label>
-                                <label for='product_img3' style={{ display: "block", marginBottom: "5px" }}>
-                                    <Form.Item
-                                        style={{ marginBottom: 0 }}
-                                        name="product_img3"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message: "Please input product price",
-                                            },
-                                        ]}
-                                    >
-                                        <div className='flex justify-center items-center w-full h-full border-dashed border border-black py-10'>
-                                            <FaRegImage className='text-2xl' />
-                                        </div>
-                                        <div className='hidden'>
-                                            <Input id='product_img3'
-                                                placeholder="150 CND"
-                                                type="file"
-                                                style={{
-                                                    border: "1px solid #E0E4EC",
-                                                    height: "52px",
-                                                    background: "white",
-                                                    borderRadius: "8px",
-                                                    outline: "none",
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Item>
-                                </label>
-                                <label for='product_img4' style={{ display: "block", marginBottom: "5px" }}>
-                                    <Form.Item
-                                        style={{ marginBottom: 0 }}
-                                        name="product_img4"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message: "Please input product price",
-                                            },
-                                        ]}
-                                    >
-                                        <div className='flex justify-center items-center w-full h-full border-dashed border border-black py-10'>
-                                            <FaRegImage className='text-2xl' />
-                                        </div>
-                                        <div className='hidden'>
-                                            <Input id='product_img4'
-                                                placeholder="150 CND"
-                                                type="file"
-                                                style={{
-                                                    border: "1px solid #E0E4EC",
-                                                    height: "52px",
-                                                    background: "white",
-                                                    borderRadius: "8px",
-                                                    outline: "none",
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Item>
-                                </label>
+                                {
+                                    selectedItemImage.map((item, index) => <div className='relative flex justify-center items-center w-full h-full border-dashed border border-black py-10' key={index}>
+                                        <img className='w-full h-full object-cover' src={`${ServerUrl}${item}`} alt="" />
+                                        <button onClick={() => {
+                                            const filterImage = selectedItemImage.filter((image, i) => index == i)
+                                            setImageToDelete([...imageToDelete, filterImage[0]])
+                                            const NewImages = selectedItemImage.filter((image, i) => index !== i)
+                                            setSelectedItemImage(NewImages)
+                                        }} type='button' className='absolute p-1 rounded-full text-xl text-white bg-red-500 top-1 right-1'>
+                                            <IoClose />
+                                        </button>
+                                    </div>)
+                                }
+                                {
+                                    images.map((item, index) => <div className='relative flex justify-center items-center w-full h-full border-dashed border border-black py-10' key={index}>
+                                        <img className='w-full h-full object-cover' src={URL.createObjectURL(item)} alt="" />
+                                        <button onClick={() => {
+                                            const NewImages = images.filter((image, i) => index !== i)
+                                            setImages(NewImages)
+                                        }} type='button' className='absolute p-1 rounded-full text-xl text-white bg-red-500 top-1 right-1'>
+                                            <IoClose />
+                                        </button>
+                                    </div>)
+                                }
+                                {
+                                    [...Array((images.length + (selectedItemImage.length)) <= 4 ? 4 - (images.length + (selectedItemImage.length)) : 0).keys()].map((item) => <label key={item} htmlFor='product_img1' className='cursor-pointer' style={{ display: "block", marginBottom: "5px" }}>
+                                        <Form.Item
+                                            style={{ marginBottom: 0 }}
+                                            name="product_img1"
+
+                                        >
+                                            <div className='flex justify-center items-center w-full h-full border-dashed border border-black py-10'>
+                                                <FaRegImage className='text-2xl' />
+                                            </div>
+                                            <div className='hidden'>
+                                                <Input id='product_img1'
+                                                    type="file"
+                                                    multiple
+                                                    onChange={handleImageUpload}
+                                                    style={{
+                                                        border: "1px solid #E0E4EC",
+                                                        height: "52px",
+                                                        background: "white",
+                                                        borderRadius: "8px",
+                                                        outline: "none",
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Item>
+                                    </label>)
+                                }
+
                             </div>
+
                         </div>
                         <div style={{ marginBottom: "16px" }}>
                             <label style={{ display: "block", marginBottom: "5px" }}>Description</label>
@@ -631,6 +516,31 @@ const ManageProducts = () => {
                                     style={{
                                         border: "1px solid #E0E4EC",
                                         height: "152px",
+                                        background: "white",
+                                        borderRadius: "8px",
+                                        outline: "none",
+                                    }}
+                                />
+                            </Form.Item>
+                        </div>
+                        <div style={{ marginBottom: "16px" }}>
+                            <label style={{ display: "block", marginBottom: "5px" }}>quantity</label>
+                            <Form.Item
+                                style={{ marginBottom: 0 }}
+                                name="quantity"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please input quantity",
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    placeholder="topic here..."
+                                    type="text"
+                                    style={{
+                                        border: "1px solid #E0E4EC",
+                                        height: "52px",
                                         background: "white",
                                         borderRadius: "8px",
                                         outline: "none",
@@ -658,6 +568,10 @@ const ManageProducts = () => {
                     </Form>
                 </div>
             </Modal>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
         </div>
     )
 }

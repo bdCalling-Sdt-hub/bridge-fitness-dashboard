@@ -34,7 +34,7 @@ const About = () => {
                 marginTop:'30px',
                 fontWeight:'500',
                 color:'white'
-            }}>Save & change</button>
+            }}>Save</button>
         </>
     );
 };
