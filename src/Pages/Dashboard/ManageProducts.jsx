@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { IoClose } from 'react-icons/io5';
 import { Input, Table } from 'antd';
@@ -15,6 +15,7 @@ import { AddProducts } from '../../ReduxSlices/Products/AddProductSlice';
 import { Select } from 'antd';
 import { GetProducts } from '../../ReduxSlices/Products/GetProductsSlice';
 import { ServerUrl } from '../../../Config';
+import { DeleteProducts } from '../../ReduxSlices/Products/DeleteProductSlice';
 const ManageProducts = () => {
     const [form] = Form.useForm()
     const [search, setSearch] = useState("");
@@ -43,13 +44,19 @@ const ManageProducts = () => {
             cancelButtonText: "No"
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
+                // console.log(id)
+                dispatch(DeleteProducts({ id })).then((res) => {
+                    if (res.type == 'DeleteProducts/fulfilled') {
+                        dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your product has been deleted.",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                    }
+                })
             }
         });
     }
@@ -108,7 +115,7 @@ const ManageProducts = () => {
             render: (_, record) => (
                 <div style={{ position: "relative", display: 'flex', justifyContent: 'start', alignItems: 'center', gap: '10px' }}>
                     <RiEditLine size={20} color='#5B52A3' style={{ cursor: "pointer" }} />
-                    <RiDeleteBin6Line onClick={()=>handleDelete(record._id)} size={20} color='#C11415' style={{ cursor: "pointer" }} />
+                    <RiDeleteBin6Line onClick={() => handleDelete(record._id)} size={20} color='#C11415' style={{ cursor: "pointer" }} />
                 </div>
             ),
         },
@@ -144,8 +151,8 @@ const ManageProducts = () => {
     };
     // get products 
     useEffect(() => {
-        dispatch(GetProducts({ page: page, limit: ItemPerPage ,searchTerm:search}))
-    }, [ItemPerPage,page,search])
+        dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+    }, [ItemPerPage, page, search])
     // image error message
     useEffect(() => {
         if (!imagesUploadError) return
@@ -261,7 +268,7 @@ const ManageProducts = () => {
                             current: parseInt(page),
                             onChange: handlePageChange,
                             // onShowSizeChange: onShowSizeChange,
-                            showSizeChanger:false,
+                            showSizeChanger: false,
                             // pageSize: ItemPerPage
                         }}
                     />
@@ -467,27 +474,27 @@ const ManageProducts = () => {
                         <div style={{ marginBottom: "16px" }}>
                             <label style={{ display: "block", marginBottom: "5px" }}>quantity</label>
                             <Form.Item
-                                    style={{ marginBottom: 0 }}
-                                    name="quantity"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Please input quantity",
-                                        },
-                                    ]}
-                                >
-                                    <Input
-                                        placeholder="topic here..."
-                                        type="text"
-                                        style={{
-                                            border: "1px solid #E0E4EC",
-                                            height: "52px",
-                                            background: "white",
-                                            borderRadius: "8px",
-                                            outline: "none",
-                                        }}
-                                    />
-                                </Form.Item>
+                                style={{ marginBottom: 0 }}
+                                name="quantity"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please input quantity",
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    placeholder="topic here..."
+                                    type="text"
+                                    style={{
+                                        border: "1px solid #E0E4EC",
+                                        height: "52px",
+                                        background: "white",
+                                        borderRadius: "8px",
+                                        outline: "none",
+                                    }}
+                                />
+                            </Form.Item>
                         </div>
                         <Form.Item>
                             <Button
