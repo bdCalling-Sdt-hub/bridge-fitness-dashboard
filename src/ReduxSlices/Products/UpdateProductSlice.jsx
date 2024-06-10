@@ -8,25 +8,30 @@ const initialState = {
 };
 
 
-export const DeleteProducts = createAsyncThunk(
-    "DeleteProducts",
+export const UpdateProduct = createAsyncThunk(
+    "UpdateProduct",
     async (value, thunkAPI) => {
+        const {id, data}= value;
         try {
-            let response = await baseAxios.delete(`/product/delete/${value.id}`, {
+            // console.log(`/product/edit/${value.id}`)
+            let response = await baseAxios.patch(`/product/edit/${id}`, data, {
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
                 }
             });
+            console.log(response.data)
+
             return response.data;
         } catch (error) {
+            console.log(error)
             const message = error?.response?.data?.message
             return thunkAPI.rejectWithValue(message);
         }
     }
 );
-export const DeleteProductsSlice = createSlice({
-    name: "DeleteProducts",
+export const UpdateProductSlice = createSlice({
+    name: "UpdateProduct",
     initialState,
 
     reducers: {
@@ -34,30 +39,34 @@ export const DeleteProductsSlice = createSlice({
             state.isLoading = false;
             state.isSuccess = false;
             state.isError = false;
+            state.message = "";
+            state.accessToken = "";
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(DeleteProducts.pending, (state, { payload }) => {
+        builder.addCase(UpdateProduct.pending, (state, { payload }) => {
             state.isLoading = true;
 
         })
-        builder.addCase(DeleteProducts.fulfilled, (state, { payload }) => {
+        builder.addCase(UpdateProduct.fulfilled, (state, { payload }) => {
             state.isError = false;
             state.isSuccess = true;
             state.isLoading = false;
             state.message = payload.message;
+            // console.log(payload)
         })
-        builder.addCase(DeleteProducts.rejected, (state, { payload }) => {
+        builder.addCase(UpdateProduct.rejected, (state, { payload }) => {
 
             state.isSuccess = false;
             state.isError = true;
             state.isLoading = false;
             state.message = payload.message
+
         })
     },
 
 });
 
-export const { reset } = DeleteProductsSlice.actions;
+export const { reset } = UpdateProductSlice.actions;
 
-export default DeleteProductsSlice.reducer;
+export default UpdateProductSlice.reducer;

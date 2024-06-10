@@ -16,51 +16,22 @@ import { Select } from 'antd';
 import { GetProducts } from '../../ReduxSlices/Products/GetProductsSlice';
 import { ServerUrl } from '../../../Config';
 import { DeleteProducts } from '../../ReduxSlices/Products/DeleteProductSlice';
+import { UpdateProduct } from '../../ReduxSlices/Products/UpdateProductSlice';
 const ManageProducts = () => {
     const [form] = Form.useForm()
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const [openAddModel, setOpenAddModel] = useState(false);
-    const [reFresh, setReFresh] = useState("");
+    const [reFresh, setReFresh] = useState(false);
     const [images, setImages] = useState([])
     const [imagesUploadError, setImagesUploadError] = useState(null)
     const dispatch = useDispatch()
     const { products, meta } = useSelector(state => state.GetProducts)
     const [ItemPerPage, setItemPerPage] = useState(10)
-    if (reFresh) {
-        setTimeout(() => {
-            setReFresh("")
-        }, 1500)
-    }
-
-    const handleDelete = (id) => {
-        Swal.fire({
-            title: "Are you sure?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes",
-            cancelButtonText: "No"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // console.log(id)
-                dispatch(DeleteProducts({ id })).then((res) => {
-                    if (res.type == 'DeleteProducts/fulfilled') {
-                        dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: "Your product has been deleted.",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1500,
-                        });
-                    }
-                })
-            }
-        });
-    }
-
+    const [editItemData, seteditItemData] = useState({})
+    const [submitType, setsubmitType] = useState('add')
+    const [selectedItemImage, setSelectedItemImage] = useState([]);
+    const [imageToDelete, setImageToDelete] = useState([])
     const columns = [
         {
             title: "S.No",
@@ -114,12 +85,46 @@ const ManageProducts = () => {
             key: "printView",
             render: (_, record) => (
                 <div style={{ position: "relative", display: 'flex', justifyContent: 'start', alignItems: 'center', gap: '10px' }}>
-                    <RiEditLine size={20} color='#5B52A3' style={{ cursor: "pointer" }} />
+                    <RiEditLine onClick={() => {
+                        setsubmitType('update')
+                        setOpenAddModel(true)
+                        seteditItemData(record)
+                        setImageToDelete([])
+                        setImages([])
+                    }} size={20} color='#5B52A3' style={{ cursor: "pointer" }} />
                     <RiDeleteBin6Line onClick={() => handleDelete(record._id)} size={20} color='#C11415' style={{ cursor: "pointer" }} />
                 </div>
             ),
         },
     ];
+    //delete
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // console.log(id)
+                dispatch(DeleteProducts({ id })).then((res) => {
+                    if (res.type == 'DeleteProducts/fulfilled') {
+                        dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your product has been deleted.",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                    }
+                })
+            }
+        });
+    }
 
     const handlePageChange = (page) => {
         setPage(page);
@@ -136,23 +141,44 @@ const ManageProducts = () => {
         Object.keys(otherValues).forEach((key) => {
             formData.append(key, values[key]);
         });
-
         for (const image of images) {
             formData.append("image", image);
         }
-        dispatch(AddProducts(formData)).then((res) => {
-            if (res.type == 'AddProducts/fulfilled') {
-                toast.success('product Successfully added')
-                setOpenAddModel(false)
-                form.resetFields()
-                setImages([])
+        if (submitType === 'add') {
+            dispatch(AddProducts(formData)).then((res) => {
+                if (res.type == 'AddProducts/fulfilled') {
+                    toast.success('product Successfully added')
+                    setOpenAddModel(false)
+                    form.resetFields()
+                    setImages([])
+                    dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+                }
+            })
+        } else {
+            if (imageToDelete.length > 0) {
+                formData.append("imageToDelete", JSON.stringify(imageToDelete))
             }
-        })
+
+            dispatch(UpdateProduct({ data: formData, id: editItemData?._id })).then((res) => {
+                if (res.type == 'UpdateProduct/fulfilled') {
+                    toast.success('product Successfully added')
+                    setOpenAddModel(false)
+                    form.resetFields()
+                    setImages([])
+                    setImageToDelete([])
+                    seteditItemData({})
+                    dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+                }
+            })
+            // dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+        }
     };
     // get products 
     useEffect(() => {
         dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
-    }, [ItemPerPage, page, search])
+    }, [ItemPerPage, page, search, reFresh])
+
+
     // image error message
     useEffect(() => {
         if (!imagesUploadError) return
@@ -160,12 +186,15 @@ const ManageProducts = () => {
         toast.error(imagesUploadError)
         setImagesUploadError(null)
     }, [imagesUploadError])
+
+
+
     // image upload handler
     const handleImageUpload = (e) => {
         let imagesFiles = []
         const FileList = Array.from(e.target.files)
         FileList.map((item) => {
-            if ((images.length + imagesFiles.length) >= 4) {
+            if (((images.length + (selectedItemImage.length)) + imagesFiles.length) >= 4) {
                 return setImagesUploadError("you can't upload more then 4 image")
             }
             if (item.type.startsWith('image')) {
@@ -178,12 +207,18 @@ const ManageProducts = () => {
         })
 
     }
+    useEffect(() => {
+        form.setFieldsValue(editItemData)
+        setSelectedItemImage(editItemData?.images ? editItemData?.images : [])
+    }, [editItemData])
+
+
+
     return (
         <div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "16px 0" }}>
                 <h1 style={{ fontSize: "20px", fontWeight: 600, color: "#2F2F2F" }}>All Products</h1>
                 <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-
                     <div
                         style={{
                             width: "304px",
@@ -211,7 +246,7 @@ const ManageProducts = () => {
                         />
                     </div>
                     <button
-                        onClick={() => setOpenAddModel(true)}
+                        onClick={() => { form.resetFields(); setSelectedItemImage([]); setsubmitType('add'); setOpenAddModel(true) }}
                         style={{
                             borderRadius: "4px",
                             color: "#F2F2F2",
@@ -243,7 +278,7 @@ const ManageProducts = () => {
                         borderRadius: '4px',
                         cursor: 'pointer'
                     }}>
-                        <button style={{
+                        <button onClick={() => setReFresh(!reFresh)} style={{
                             background: 'transparent',
                             border: 'none',
                             cursor: 'pointer'
@@ -277,7 +312,11 @@ const ManageProducts = () => {
             <Modal
                 centered
                 open={openAddModel}
-                onCancel={() => setOpenAddModel(false)}
+                onCancel={() => {
+                    setOpenAddModel(false)
+                    setImageToDelete([])
+                    setImages([])
+                }}
                 width={700}
                 footer={false}
             >
@@ -289,6 +328,7 @@ const ManageProducts = () => {
                         //     remember: true,
                         // }}
                         onFinish={onFinish}
+                        form={form}
                     >
                         <div className='grid grid-cols-2 gap-5'>
 
@@ -334,7 +374,6 @@ const ManageProducts = () => {
                                             borderRadius: "8px",
                                             outline: "none",
                                         }}
-                                        defaultValue="male"
                                         options={[
                                             {
                                                 value: 'male',
@@ -405,7 +444,20 @@ const ManageProducts = () => {
                             <p className='font-bold -mb-5'>Products Image</p>
                             <div className='grid grid-cols-4 col-span-2 gap-2 p-4 pt-5 border  my-4 rounded-md'>
                                 {
-                                    images.map((item, index) => <div className='relative flex justify-center items-center w-full h-full border-dashed border border-black py-10' key={item.name}>
+                                    selectedItemImage.map((item, index) => <div className='relative flex justify-center items-center w-full h-full border-dashed border border-black py-10' key={index}>
+                                        <img className='w-full h-full object-cover' src={`${ServerUrl}${item}`} alt="" />
+                                        <button onClick={() => {
+                                            const filterImage = selectedItemImage.filter((image, i) => index == i)
+                                            setImageToDelete([...imageToDelete, filterImage[0]])
+                                            const NewImages = selectedItemImage.filter((image, i) => index !== i)
+                                            setSelectedItemImage(NewImages)
+                                        }} type='button' className='absolute p-1 rounded-full text-xl text-white bg-red-500 top-1 right-1'>
+                                            <IoClose />
+                                        </button>
+                                    </div>)
+                                }
+                                {
+                                    images.map((item, index) => <div className='relative flex justify-center items-center w-full h-full border-dashed border border-black py-10' key={index}>
                                         <img className='w-full h-full object-cover' src={URL.createObjectURL(item)} alt="" />
                                         <button onClick={() => {
                                             const NewImages = images.filter((image, i) => index !== i)
@@ -416,7 +468,7 @@ const ManageProducts = () => {
                                     </div>)
                                 }
                                 {
-                                    [...Array(images.length <= 4 ? 4 - images.length : 0).keys()].map((item) => <label key={item} for='product_img1' className='cursor-pointer' style={{ display: "block", marginBottom: "5px" }}>
+                                    [...Array((images.length + (selectedItemImage.length)) <= 4 ? 4 - (images.length + (selectedItemImage.length)) : 0).keys()].map((item) => <label key={item} htmlFor='product_img1' className='cursor-pointer' style={{ display: "block", marginBottom: "5px" }}>
                                         <Form.Item
                                             style={{ marginBottom: 0 }}
                                             name="product_img1"
