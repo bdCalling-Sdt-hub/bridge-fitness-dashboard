@@ -1,91 +1,15 @@
-import { Table, } from "antd";
+import { Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { CiMenuKebab } from "react-icons/ci";
-import avater from '../../assets/avater.png'
+import avater from "../../assets/avater.png";
 import { FiEye } from "react-icons/fi";
-const data = [
-  {
-    key: "1",
-    name: "Tushar",
-    photo: avater,
-    email: "tushar@gmail.com",
-    contact:"(201) 555-0124",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
-  },
-  {
-    key: "2",
-    name: "Rahman",
-    photo: avater,
-    email: "rahman@gmail.com",
-    contact:"(201) 555-0124",
-    location: "Banasree",
-    status: "Inactive",
-    selling: "500",
-    balance: "600",
-  },
-  {
-    key: "3",
-    name: "Rafsan",
-    photo: avater,
-    email: "rafsan@gmail.com",
-    contact:"(201) 555-0124",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
-  },
-  {
-    key: "4",
-    name: "jusef",
-    photo: avater,
-    email: "jusef@gmail.com",
-    contact:"(201) 555-0124",
-    location: "Banasree",
-    status: "Inactive",
-    selling: "500",
-    balance: "600",
-  },
-  {
-    key: "5",
-    name: "Asad",
-    photo: avater,
-    email: "asad@gmail.com",
-    contact:"(201) 555-0124",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
-  },
-  {
-    key: "6",
-    name: "Fahim",
-    photo: avater,
-    email: "fahim@gmail.com",
-    contact:"(201) 555-0124",
-    status: "Inactive",
-    selling: "500",
-    balance: "600",
-  },
-  {
-    key: "7",
-    name: "Nadir",
-    photo: avater,
-    email: "nadir@gmail.com",
-    contact:"(201) 555-0124",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
-  }
-];
 
-const TotalSellerListTable = () => {
-  const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
+const TotalSellerListTable = ({ Subscribers }) => {
+  const [page, setPage] = useState(
+    new URLSearchParams(window.location.search).get("page") || 1
+  );
   const [open, setOpen] = useState();
   const dropdownRef = useRef();
   const handleDelete = (id) => {
@@ -96,7 +20,7 @@ const TotalSellerListTable = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
-      cancelButtonText: "No"
+      cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
@@ -108,7 +32,19 @@ const TotalSellerListTable = () => {
         });
       }
     });
-  }
+  };
+
+  const newSubscriber = Subscribers.newSubscribers;
+  console.log(newSubscriber);
+
+  const data = newSubscriber?.map((subs, index) => ({
+    key: index + 1,
+    name: subs.user_id.name,
+    photo: subs.user_id.profile_image,
+    email: subs.user_id.email,
+    contact: subs.user_id.phone_number,
+    location: subs.user_id.address,
+  }));
 
   const columns = [
     {
@@ -120,16 +56,16 @@ const TotalSellerListTable = () => {
       title: "Name",
       dataIndex: "name",
       render: (text, record) => (
-        <span style={{
-          display: 'flex',
-          justifyContent: "start",
-          alignItems: 'center',
-          gap:'6px'
-        }}>
-          <img src={record.photo} alt="" />
-          <span>
-            {record.name}
-          </span>
+        <span
+          style={{
+            display: "flex",
+            justifyContent: "start",
+            alignItems: "center",
+            gap: "6px",
+          }}
+        >
+          <img src={record.photo} className=" h-10 w-14" alt="" />
+          <span>{record.name}</span>
         </span>
       ),
       key: "username",
@@ -155,8 +91,13 @@ const TotalSellerListTable = () => {
       dataIndex: "printView",
       key: "printView",
       render: (_, record) => (
-        <div style={{ position: "relative",width:'100%' }}>
-          <FiEye  onClick={(e) => (e.stopPropagation(), setOpen(record.key))} size={20} color='black' style={{ cursor: "pointer"}} />
+        <div style={{ position: "relative", width: "100%" }}>
+          <FiEye
+            onClick={(e) => (e.stopPropagation(), setOpen(record.key))}
+            size={20}
+            color="black"
+            style={{ cursor: "pointer" }}
+          />
 
           <div
             onClick={(e) => e.stopPropagation()}
@@ -173,8 +114,7 @@ const TotalSellerListTable = () => {
               background: "white",
               boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
               padding: "10px 0",
-              cursor: "pointer"
-
+              cursor: "pointer",
             }}
           >
             <p
@@ -189,7 +129,7 @@ const TotalSellerListTable = () => {
                 color: "#2FD5C7",
                 margin: "0 auto 0 auto",
                 cursor: "pointer",
-                marginBottom: "8px"
+                marginBottom: "8px",
               }}
             >
               Approve
@@ -206,7 +146,7 @@ const TotalSellerListTable = () => {
                 background: "#FFC3C3",
                 color: "#9C0101",
                 margin: "0 auto 0 auto",
-                marginBottom: "8px"
+                marginBottom: "8px",
               }}
             >
               Block
@@ -235,13 +175,12 @@ const TotalSellerListTable = () => {
     },
   ];
 
-
   const handlePageChange = (page) => {
     setPage(page);
     const params = new URLSearchParams(window.location.search);
-    params.set('page', page);
+    params.set("page", page);
     window.history.pushState(null, "", `?${params.toString()}`);
-  }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -249,18 +188,42 @@ const TotalSellerListTable = () => {
         setOpen("");
       }
     };
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
   return (
-    <div style={{ height: "fit-content", background: "white", padding: "15px 24px 0 24px" ,width:'100%'}}>
-      <div style={{ display: "flex", alignItems: "center", marginBottom: "15px", justifyContent: "space-between" }}>
-        <h1 style={{ fontSize: "20px", fontWeight: 600, color: "#2F2F2F" }}>New Subscriber</h1>
+    <div
+      style={{
+        height: "fit-content",
+        background: "white",
+        padding: "15px 24px 0 24px",
+        width: "100%",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "15px",
+          justifyContent: "space-between",
+        }}
+      >
+        <h1 style={{ fontSize: "20px", fontWeight: 600, color: "#2F2F2F" }}>
+          New Subscriber
+        </h1>
         <Link to="/all-subscriber">
-          <p style={{ color: " #707070", fontSize: "12px", textDecoration: "underline" }}>VIEW ALL</p>
+          <p
+            style={{
+              color: " #707070",
+              fontSize: "12px",
+              textDecoration: "underline",
+            }}
+          >
+            VIEW ALL
+          </p>
         </Link>
       </div>
       <Table
@@ -269,11 +232,10 @@ const TotalSellerListTable = () => {
         pagination={{
           pageSize: 4,
           defaultCurrent: parseInt(page),
-          onChange: handlePageChange
+          onChange: handlePageChange,
         }}
       />
     </div>
-  )
-
+  );
 };
 export default TotalSellerListTable;
