@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "../../Config";
+import baseAxios from "../../../Config";
 
 const initialState = {
   isError: false,
@@ -9,17 +9,21 @@ const initialState = {
   userData: [],
 };
 
-export const AllUsers = createAsyncThunk(
-  "AllUsers",
-  async (value, thunkAPI) => {
+export const AddAdmin = createAsyncThunk(
+  "AddAdmin",
+  async (addAdminData, thunkAPI) => {
     try {
-      let token = localStorage.getItem("token");
-      let response = await axios.get("/auth/admin/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(response);
+      let response = await baseAxios.post(
+        "/auth/admin/add-admin",
+        { ...addAdminData },
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      console.log(response.data);
 
       return response.data;
     } catch (error) {
@@ -33,8 +37,8 @@ export const AllUsers = createAsyncThunk(
   }
 );
 
-export const allUsersSlice = createSlice({
-  name: "alluser",
+export const AddAdminSlice = createSlice({
+  name: "addadmin",
   initialState,
 
   reducers: {
@@ -49,18 +53,18 @@ export const allUsersSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(AllUsers.pending, (state, { payload }) => {
+    builder.addCase(AddAdmin.pending, (state, { payload }) => {
       state.isLoading = true;
     });
-    builder.addCase(AllUsers.fulfilled, (state, { payload }) => {
+    builder.addCase(AddAdmin.fulfilled, (state, { payload }) => {
       console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;
       state.message = payload.message;
-      state.userData = payload.data;
+      state.userData.push(payload.data);
     });
-    builder.addCase(AllUsers.rejected, (state, { payload }) => {
+    builder.addCase(AddAdmin.rejected, (state, { payload }) => {
       state.isSuccess = false;
       state.isError = true;
       state.isLoading = false;
@@ -70,6 +74,6 @@ export const allUsersSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { reset } = allUsersSlice.actions;
+export const { reset } = AddAdminSlice.actions;
 
-export default allUsersSlice.reducer;
+export default AddAdminSlice.reducer;

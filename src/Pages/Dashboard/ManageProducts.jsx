@@ -573,6 +573,8 @@ const ManageProducts = () => {
                 reverseOrder={false}
             />
         </div>
-    )
-}
-export default ManageProducts
+
+  );
+};
+
+export default ManageProducts;
