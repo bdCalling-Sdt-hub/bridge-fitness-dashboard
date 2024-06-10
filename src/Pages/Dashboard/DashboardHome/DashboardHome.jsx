@@ -19,8 +19,6 @@ function DashboardHome() {
   }, [dispatch]);
 
   const user = useSelector((state) => state.NewSubscriber.userData);
-  console.log(user);
-
   const KFormatter = (num) => {
     return Math.abs(num) > 999
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
@@ -81,9 +79,8 @@ function DashboardHome() {
               lg={{ span: 6 }}
             >
               <div
-                className={`${
-                  index === data.length - 1 ? "" : "borderLeft"
-                } income-card`}
+                className={`${index === data.length - 1 ? "" : "borderLeft"
+                  } income-card`}
                 style={{
                   background: "transparent",
                   borderRadius: "0px",

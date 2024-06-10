@@ -11,30 +11,38 @@ const MakeAdmin = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
   const [reFresh, setReFresh] = useState("");
   const [showDelete, setShowDelete] = useState(false);
+  const [deleteID, setdeleteID] = useState('')
   const dispatch = useDispatch();
 
   const onFinish = (values) => {
     dispatch(AddAdmin(values)).then((response) => {
+      console.log(response)
       if (response.type === "AddAdmin/fulfilled") {
         setOpenAddModel(false);
+        Swal.fire({
+          title: "Admin Added",
+          text: "new admin has been added.",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     });
   };
 
-  useEffect(() => {
-    dispatch(AddAdmin());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(AddAdmin()).then((res)=>console.log(res));
+  // }, [dispatch]);
 
   const admins = useSelector((state) => state.AddAdmin.userData);
-  console.log(admins);
-
+  console.log(admins)
   const data = admins
     ? admins.map((admin, index) => ({
-        key: index + 1,
-        fullName: admin.name,
-        email: admin.email,
-        userType: admin.role,
-      }))
+      key: index + 1,
+      fullName: admin.name,
+      email: admin.email,
+      userType: admin.role,
+    }))
     : [];
 
   if (reFresh) {
@@ -43,42 +51,26 @@ const MakeAdmin = () => {
     }, 1500);
   }
 
-  const handleDelete = async (id) => {
-    Swal.fire({
-      title: "Are you sure to delete this User?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      showCancelButton: "No",
-      confirmButtonText: "Yes",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        console.log(id);
-        dispatch(DeleteAdmin({ id })).then((res) => {
-          if (res.type == "DeleteProducts/fulfilled") {
-            dispatch(
-              GetProducts({
-                page: page,
-                limit: ItemPerPage,
-                searchTerm: search,
-              })
-            );
-            Swal.fire({
-              position: "center",
-              title: "Deleted!",
-              text: "User Deleted Successfully",
-              icon: "success",
-              timer: 1500,
-              showConfirmButton: false,
-            }).then(() => {
-              dispatch(AllAdmin());
-            });
-          }
+  const handleDelete = async () => {
+    dispatch(DeleteAdmin({ id: deleteID })).then((res) => {
+      console.log(res)
+      if (res.type == "DeleteAdmin/fulfilled") {
+        Swal.fire({
+          position: "center",
+          title: "Deleted!",
+          text: "User Deleted Successfully",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          setShowDelete(false);
+          setdeleteID('')
+          dispatch(AllAdmin());
         });
       }
     });
   };
+
   const columns = [
     {
       title: "S.No",
@@ -108,7 +100,7 @@ const MakeAdmin = () => {
         <MdOutlineDelete
           onClick={() => {
             setShowDelete(true);
-            handleDelete(record.id);
+            setdeleteID(record.id);
           }}
           className="cursor-pointer"
           style={{
@@ -120,9 +112,6 @@ const MakeAdmin = () => {
       ),
     },
   ];
-  const handeldelete = () => {
-    setShowDelete(false);
-  };
 
   return (
     <div id="makeAdmin">
@@ -345,7 +334,7 @@ const MakeAdmin = () => {
             Do you want to delete this content ?
           </p>
           <button
-            onClick={handeldelete}
+            onClick={handleDelete}
             className="bg-[#B47000] py-2 px-5 text-white rounded-md"
           >
             Confirm

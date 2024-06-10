@@ -11,11 +11,11 @@ const initialState = {
 
 export const DeleteAdmin = createAsyncThunk(
   "DeleteAdmin",
-  async (id, thunkAPI) => {
+  async (value, thunkAPI) => {
     try {
-      console.log("tushar", id);
+      console.log(`admin/delete/${value.id}`);
       let token = localStorage.getItem("token");
-      let response = await axios.delete(`admin/delete/${id}`, {
+      let response = await axios.delete(`admin/delete/${value.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
