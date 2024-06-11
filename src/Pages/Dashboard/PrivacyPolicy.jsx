@@ -1,11 +1,38 @@
 
 import React, { useState, useRef, useMemo } from 'react';
 import JoditEditor from 'jodit-react';
-
+import { useDispatch } from 'react-redux';
+import { AddPrivecy } from '../../ReduxSlices/Privecy/AddPrivecySlice';
+import Swal from 'sweetalert2';
 const PrivacyPolicy = () => {
     const editor = useRef(null);
     const [content, setContent] = useState('');
-
+    const [isLoading, seLoading] = useState(false)
+    const dispatch = useDispatch()
+    const handleTerms = () => {
+        seLoading(true)
+        dispatch(AddPrivecy({ description: content })).then((res) => {
+            seLoading(false)
+            setContent('')
+            if (res.type == 'AddPrivecy/fulfilled') {
+                Swal.fire({
+                    title: "Added",
+                    text: "New Terms has been Added.",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            } else {
+                Swal.fire({
+                    title: "opps!",
+                    text: "something went's wrong",
+                    icon: "error",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        })
+    }
     const config = {
         readonly: false,
         placeholder: 'Start typings...',
@@ -26,9 +53,8 @@ const PrivacyPolicy = () => {
                     onChange={newContent => { }}
                 />
             </div>
-            <button style={{
+            <button disabled={isLoading} onClick={handleTerms} className='disabled:bg-gray-300 bg-[#B47000]' style={{
                 display: 'block',
-                background: '#B47000',
                 padding: '12px 24px',
                 margin: "0 auto",
                 marginTop: '30px',

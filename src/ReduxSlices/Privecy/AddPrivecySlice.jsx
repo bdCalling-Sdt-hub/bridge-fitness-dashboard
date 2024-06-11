@@ -1,24 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import baseAxios from "../../../Config";
+
 const initialState = {
   isError: false,
   isSuccess: false,
   isLoading: false,
-  message: "",
-  userData: [],
 };
 
-export const DeleteAdmin = createAsyncThunk(
-  "DeleteAdmin",
+export const AddPrivecy = createAsyncThunk(
+  "AddPrivecy",
   async (value, thunkAPI) => {
     try {
-      let response = await baseAxios.delete(`/auth/admin/delete/${value}`, {
+      let response = await baseAxios.post("/manage/add-privacy-policy",value, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response.data);
+      console.log(response);
 
       return response.data;
     } catch (error) {
@@ -32,8 +31,8 @@ export const DeleteAdmin = createAsyncThunk(
   }
 );
 
-export const DeleteAdminSlice = createSlice({
-  name: "deleteAdmin",
+export const AddPrivecySlice = createSlice({
+  name: "AddPrivecy",
   initialState,
 
   reducers: {
@@ -42,33 +41,28 @@ export const DeleteAdminSlice = createSlice({
       state.isSuccess = false;
       state.isError = false;
       state.message = "";
-      state.userData = [];
-      state.accessToken = "";
     },
   },
 
   extraReducers: (builder) => {
-    builder.addCase(DeleteAdmin.pending, (state, { payload }) => {
+    builder.addCase(AddPrivecy.pending, (state, { payload }) => {
       state.isLoading = true;
     });
-    builder.addCase(DeleteAdmin.fulfilled, (state, { payload }) => {
+    builder.addCase(AddPrivecy.fulfilled, (state, { payload }) => {
       console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;
-      state.message = payload.message;
-      state.userData = payload.data;
     });
-    builder.addCase(DeleteAdmin.rejected, (state, { payload }) => {
+    builder.addCase(AddPrivecy.rejected, (state, { payload }) => {
       state.isSuccess = false;
       state.isError = true;
       state.isLoading = false;
-      state.message = payload.message;
     });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { reset } = DeleteAdminSlice.actions;
+export const { reset } = AddPrivecySlice.actions;
 
-export default DeleteAdminSlice.reducer;
+export default AddPrivecySlice.reducer;
