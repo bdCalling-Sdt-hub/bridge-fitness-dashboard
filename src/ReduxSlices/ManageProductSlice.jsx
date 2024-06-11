@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "../../Config";
+import baseAxios from "../../Config";
 
 const initialState = {
   isError: false,
@@ -9,32 +9,34 @@ const initialState = {
   userData: [],
 };
 
-export const AllUsers = createAsyncThunk(
-  "AllUsers",
-  async (value, thunkAPI) => {
+export const ManageProduct = createAsyncThunk(
+  "ManageProduct",
+  async (addProductData, thunkAPI) => {
     try {
-      let token = localStorage.getItem("token");
-      let response = await axios.get("/auth/admin/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await baseAxios.post(
+        "/product/add-product",
+        addProductData,
+        {
+          headers: {
+            "Content-type": "multipart/form-data",
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
       console.log(response);
 
       return response.data;
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data) ||
-        error.message ||
-        error.toString();
-
+      console.log(error);
+      const message = error.response.data;
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
-export const allUsersSlice = createSlice({
-  name: "alluser",
+export const ManageProductSlice = createSlice({
+  name: " manageProduct",
   initialState,
 
   reducers: {
@@ -49,18 +51,18 @@ export const allUsersSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(AllUsers.pending, (state, { payload }) => {
+    builder.addCase(ManageProduct.pending, (state, { payload }) => {
       state.isLoading = true;
     });
-    builder.addCase(AllUsers.fulfilled, (state, { payload }) => {
+    builder.addCase(ManageProduct.fulfilled, (state, { payload }) => {
       console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;
       state.message = payload.message;
-      state.userData = payload.data;
+      state.userData.push(payload.data);
     });
-    builder.addCase(AllUsers.rejected, (state, { payload }) => {
+    builder.addCase(ManageProduct.rejected, (state, { payload }) => {
       state.isSuccess = false;
       state.isError = true;
       state.isLoading = false;
@@ -70,6 +72,6 @@ export const allUsersSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { reset } = allUsersSlice.actions;
+export const { reset } = ManageProductSlice.actions;
 
-export default allUsersSlice.reducer;
+export default ManageProductSlice.reducer;

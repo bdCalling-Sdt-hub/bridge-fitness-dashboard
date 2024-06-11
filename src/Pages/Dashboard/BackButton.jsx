@@ -6,7 +6,7 @@ const BackButton = ({ link }) => {
     const navigate = useNavigate()
     return (
         <div 
-            onClick={()=>navigate(`${link}`)}
+            onClick={()=>navigate(link)}
             style={{
                 width: "fit-content",
                 color: "#62676C",

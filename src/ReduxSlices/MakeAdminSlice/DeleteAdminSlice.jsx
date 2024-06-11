@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "../../Config";
+import axios from "../../../Config";
 
 const initialState = {
   isError: false,
@@ -9,17 +9,18 @@ const initialState = {
   userData: [],
 };
 
-export const AllUsers = createAsyncThunk(
-  "AllUsers",
+export const DeleteAdmin = createAsyncThunk(
+  "DeleteAdmin",
   async (value, thunkAPI) => {
     try {
+      console.log(`admin/delete/${value.id}`);
       let token = localStorage.getItem("token");
-      let response = await axios.get("/auth/admin/users", {
+      let response = await axios.delete(`admin/delete/${value.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
+      // console.log(response.data)
 
       return response.data;
     } catch (error) {
@@ -33,8 +34,8 @@ export const AllUsers = createAsyncThunk(
   }
 );
 
-export const allUsersSlice = createSlice({
-  name: "alluser",
+export const DeleteAdminSlice = createSlice({
+  name: "deleteAdmin",
   initialState,
 
   reducers: {
@@ -49,10 +50,10 @@ export const allUsersSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(AllUsers.pending, (state, { payload }) => {
+    builder.addCase(DeleteAdmin.pending, (state, { payload }) => {
       state.isLoading = true;
     });
-    builder.addCase(AllUsers.fulfilled, (state, { payload }) => {
+    builder.addCase(DeleteAdmin.fulfilled, (state, { payload }) => {
       console.log(payload);
       state.isError = false;
       state.isSuccess = true;
@@ -60,7 +61,7 @@ export const allUsersSlice = createSlice({
       state.message = payload.message;
       state.userData = payload.data;
     });
-    builder.addCase(AllUsers.rejected, (state, { payload }) => {
+    builder.addCase(DeleteAdmin.rejected, (state, { payload }) => {
       state.isSuccess = false;
       state.isError = true;
       state.isLoading = false;
@@ -70,6 +71,6 @@ export const allUsersSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { reset } = allUsersSlice.actions;
+export const { reset } = DeleteAdminSlice.actions;
 
-export default allUsersSlice.reducer;
+export default DeleteAdminSlice.reducer;

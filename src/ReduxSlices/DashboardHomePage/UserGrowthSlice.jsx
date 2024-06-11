@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "../../Config";
+import axios from "../../../Config";
 
 const initialState = {
   isError: false,
@@ -9,12 +9,12 @@ const initialState = {
   userData: [],
 };
 
-export const AllUsers = createAsyncThunk(
-  "AllUsers",
+export const UserGrowth = createAsyncThunk(
+  "UserGrowth",
   async (value, thunkAPI) => {
     try {
       let token = localStorage.getItem("token");
-      let response = await axios.get("/auth/admin/users", {
+      let response = await axios.get("/dashboard/user-growth", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -33,8 +33,8 @@ export const AllUsers = createAsyncThunk(
   }
 );
 
-export const allUsersSlice = createSlice({
-  name: "alluser",
+export const UserGrowthSlice = createSlice({
+  name: "userGrowth",
   initialState,
 
   reducers: {
@@ -49,10 +49,10 @@ export const allUsersSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(AllUsers.pending, (state, { payload }) => {
+    builder.addCase(UserGrowth.pending, (state, { payload }) => {
       state.isLoading = true;
     });
-    builder.addCase(AllUsers.fulfilled, (state, { payload }) => {
+    builder.addCase(UserGrowth.fulfilled, (state, { payload }) => {
       console.log(payload);
       state.isError = false;
       state.isSuccess = true;
@@ -60,7 +60,7 @@ export const allUsersSlice = createSlice({
       state.message = payload.message;
       state.userData = payload.data;
     });
-    builder.addCase(AllUsers.rejected, (state, { payload }) => {
+    builder.addCase(UserGrowth.rejected, (state, { payload }) => {
       state.isSuccess = false;
       state.isError = true;
       state.isLoading = false;
@@ -70,6 +70,6 @@ export const allUsersSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { reset } = allUsersSlice.actions;
+export const { reset } = UserGrowthSlice.actions;
 
-export default allUsersSlice.reducer;
+export default UserGrowthSlice.reducer;

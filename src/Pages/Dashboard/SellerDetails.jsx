@@ -123,7 +123,7 @@ const SellerDetails = () => {
     return (
         <div>
             <div style={{marginBottom: "15px"}}>
-                <BackButton link='/seller-list' />
+                <BackButton link={-1} />
             </div>
             
             <div style={{marginBottom: "10px", display: "flex", alignItems: "center", gap: "20px"}}>

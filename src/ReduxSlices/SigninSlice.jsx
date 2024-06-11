@@ -10,22 +10,18 @@ const initialState = {
   accessToken: "",
 };
 
-
 export const UserData = createAsyncThunk(
   "UserData",
   async (value, thunkAPI) => {
     try {
-      let response = await baseAxios.post("/auth/admin/login", value, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+      console.log("tushar", value);
+      let response = await axios.post("/auth/admin/login", value);
+      console.log(response.data);
+
       return response.data;
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data) ||
+        (error.response && error.response.data && error.response.data) ||
         error.message ||
         error.toString();
 
@@ -49,32 +45,25 @@ export const signinSlice = createSlice({
     },
   },
 
-
   extraReducers: (builder) => {
     builder.addCase(UserData.pending, (state, { payload }) => {
       state.isLoading = true;
-
-    })
+    });
     builder.addCase(UserData.fulfilled, (state, { payload }) => {
-      console.log(payload)
+      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;
       state.message = payload.message;
       state.userData = payload.data.yourInfo;
-      state.accessToken = payload.data.accessToken
-
-
-
-    })
+      state.accessToken = payload.data.accessToken;
+    });
     builder.addCase(UserData.rejected, (state, { payload }) => {
-
       state.isSuccess = payload.success;
       state.isError = true;
       state.isLoading = false;
-      state.message = payload.message
-
-    })
+      state.message = payload.message;
+    });
   },
 
   // extraReducers: {
