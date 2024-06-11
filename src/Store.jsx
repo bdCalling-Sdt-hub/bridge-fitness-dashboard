@@ -16,24 +16,26 @@ import NewSubscriberReducer from "./ReduxSlices/DashboardHomePage/HomeSlice";
 import SubscriptionGrowthReducer from "./ReduxSlices/DashboardHomePage/SubscriptionGrowthSlice";
 import UserGrowthReducer from "./ReduxSlices/DashboardHomePage/UserGrowthSlice";
 import DeleteAdminReducer from "./ReduxSlices/MakeAdminSlice/DeleteAdminSlice";
+import AllAdminsReducer from "./ReduxSlices/MakeAdminSlice/GetAdminSlice";
 export const Store = configureStore({
-    reducer: {
-        UserData: SigninReducer,
-        AllUsers: AllUsersReducer,
-        AddProducts: AddProductSlice,
-        GetProducts: GetProductsSlice,
-        DeleteProducts: DeleteProductSlice,
-        UpdateProduct: UpdateProductSlice,
-        SubscriberUser: SubscribersReducer,
-        AllProducts: AllProductsReducer,
-        AddAdmin: AddAdminReducer,
-        ManageProduct: AddProductReducer,
-        Subscription: SubscriptionReducer,
-        TotalIncome: IncomesReducer,
-        IncomeGrowth: IncomeGrowthReducer,
-        NewSubscriber: NewSubscriberReducer,
-        SubscriptionGrowth: SubscriptionGrowthReducer,
-        UserGrowth: UserGrowthReducer,
-        DeleteAdmin: DeleteAdminReducer,
-    },
+  reducer: {
+    UserData: SigninReducer,
+    AllUsers: AllUsersReducer,
+    AddProducts: AddProductSlice,
+    GetProducts: GetProductsSlice,
+    DeleteProducts: DeleteProductSlice,
+    UpdateProduct: UpdateProductSlice,
+    SubscriberUser: SubscribersReducer,
+    AllProducts: AllProductsReducer,
+    AddAdmin: AddAdminReducer,
+    ManageProduct: AddProductReducer,
+    Subscription: SubscriptionReducer,
+    TotalIncome: IncomesReducer,
+    IncomeGrowth: IncomeGrowthReducer,
+    NewSubscriber: NewSubscriberReducer,
+    SubscriptionGrowth: SubscriptionGrowthReducer,
+    UserGrowth: UserGrowthReducer,
+    DeleteAdmin: DeleteAdminReducer,
+    AllAdmin: AllAdminsReducer,
+  },
 });

@@ -4,21 +4,23 @@ import { MdOutlineDelete } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { AddAdmin } from "../../ReduxSlices/MakeAdminSlice/AddAdminSlice";
-import { DeleteAdmin } from "../../ReduxSlices/MakeAdminSlice/DeleteAdminSlice";
 import Swal from "sweetalert2";
+import { AllAdmins } from "../../ReduxSlices/MakeAdminSlice/GetAdminSlice";
+import { DeleteAdmin } from "../../ReduxSlices/MakeAdminSlice/DeleteAdminSlice";
 
 const MakeAdmin = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
   const [reFresh, setReFresh] = useState("");
   const [showDelete, setShowDelete] = useState(false);
-  const [deleteID, setdeleteID] = useState('')
+  const [deleteID, setdeleteID] = useState("");
   const dispatch = useDispatch();
 
   const onFinish = (values) => {
     dispatch(AddAdmin(values)).then((response) => {
-      console.log(response)
+      console.log(response);
       if (response.type === "AddAdmin/fulfilled") {
         setOpenAddModel(false);
+        // dispatch(AllAdmins());
         Swal.fire({
           title: "Admin Added",
           text: "new admin has been added.",
@@ -30,19 +32,21 @@ const MakeAdmin = () => {
     });
   };
 
-  // useEffect(() => {
-  //   dispatch(AddAdmin()).then((res)=>console.log(res));
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(AllAdmins());
+  }, [dispatch]);
 
-  const admins = useSelector((state) => state.AddAdmin.userData);
-  console.log(admins)
-  const data = admins
-    ? admins.map((admin, index) => ({
-      key: index + 1,
-      fullName: admin.name,
-      email: admin.email,
-      userType: admin.role,
-    }))
+  const getAdmin = useSelector((state) => state?.AllAdmin?.userData);
+  console.log(getAdmin);
+
+  const data = getAdmin
+    ? getAdmin.map((admin, index) => ({
+        key: index + 1,
+        fullName: admin.name,
+        email: admin.email,
+        userType: admin.role,
+        id: admin._id,
+      }))
     : [];
 
   if (reFresh) {
@@ -52,23 +56,8 @@ const MakeAdmin = () => {
   }
 
   const handleDelete = async () => {
-    dispatch(DeleteAdmin({ id: deleteID })).then((res) => {
-      console.log(res)
-      if (res.type == "DeleteAdmin/fulfilled") {
-        Swal.fire({
-          position: "center",
-          title: "Deleted!",
-          text: "User Deleted Successfully",
-          icon: "success",
-          timer: 1500,
-          showConfirmButton: false,
-        }).then(() => {
-          setShowDelete(false);
-          setdeleteID('')
-          dispatch(AllAdmin());
-        });
-      }
-    });
+    console.log(deleteID);
+    dispatch(DeleteAdmin(deleteID)).then((res) => console.log(res));
   };
 
   const columns = [
@@ -100,7 +89,7 @@ const MakeAdmin = () => {
         <MdOutlineDelete
           onClick={() => {
             setShowDelete(true);
-            setdeleteID(record.id);
+            setdeleteID(record?.id);
           }}
           className="cursor-pointer"
           style={{
