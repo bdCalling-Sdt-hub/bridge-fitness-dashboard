@@ -17,7 +17,7 @@ const MakeAdmin = () => {
 
   const onFinish = (values) => {
     dispatch(AddAdmin(values)).then((response) => {
-      console.log(response);
+      dispatch(AllAdmins());
       if (response.type === "AddAdmin/fulfilled") {
         setOpenAddModel(false);
         // dispatch(AllAdmins());
@@ -37,27 +37,32 @@ const MakeAdmin = () => {
   }, [dispatch]);
 
   const getAdmin = useSelector((state) => state?.AllAdmin?.userData);
-  console.log(getAdmin);
-
   const data = getAdmin
     ? getAdmin.map((admin, index) => ({
-        key: index + 1,
-        fullName: admin.name,
-        email: admin.email,
-        userType: admin.role,
-        id: admin._id,
-      }))
+      key: index + 1,
+      fullName: admin.name,
+      email: admin.email,
+      userType: admin.role,
+      id: admin._id,
+    }))
     : [];
 
-  if (reFresh) {
-    setTimeout(() => {
-      setReFresh("");
-    }, 1500);
-  }
 
   const handleDelete = async () => {
     console.log(deleteID);
-    dispatch(DeleteAdmin(deleteID)).then((res) => console.log(res));
+    dispatch(DeleteAdmin(deleteID)).then((res) => {
+      if (res.type == 'DeleteAdmin/fulfilled') {
+        setShowDelete(false)
+        dispatch(AllAdmins());
+        Swal.fire({
+          title: "Deleted!",
+          text: "admin has been deleted.",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
   };
 
   const columns = [

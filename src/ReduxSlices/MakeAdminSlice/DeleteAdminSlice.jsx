@@ -12,9 +12,7 @@ export const DeleteAdmin = createAsyncThunk(
   "DeleteAdmin",
   async (value, thunkAPI) => {
     try {
-      console.log(value);
-      console.log(`admin/delete/${value}`);
-      let response = await baseAxios.delete(`admin/delete/${value}`, {
+      let response = await baseAxios.delete(`/auth/admin/delete/${value}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
