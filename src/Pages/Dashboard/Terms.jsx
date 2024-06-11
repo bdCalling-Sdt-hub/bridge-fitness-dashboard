@@ -12,6 +12,8 @@ const Terms = () => {
     const handleTerms = () => {
         seLoading(true)
         dispatch(AddTerms({ description: content })).then((res) => {
+            seLoading(false)
+            setContent('')
             if (res.type == 'AddTerms/fulfilled') {
                 Swal.fire({
                     title: "Added",
@@ -29,8 +31,6 @@ const Terms = () => {
                     timer: 1500,
                 });
             }
-            seLoading(false)
-            setContent('')
         })
     }
     const config = {
