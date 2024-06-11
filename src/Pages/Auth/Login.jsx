@@ -12,8 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const { isLoading, isError, isSuccess, userData, accessToken, message } =
-  //   useSelector((state) => state.yourInfo);
+  const { isLoading, isError, isSuccess, userData, accessToken, message } =
+    useSelector((state) => state.UserData);
   // console.log(userData);
   // useEffect(() => {
   //   if (isError == true) {
@@ -32,8 +32,19 @@ const Login = () => {
   // }, [isLoading, isError, isSuccess, dispatch, navigate]);
 
   const onFinish = (values) => {
-    //console.log("Received values of form: ", values);
-    dispatch(UserData(values)).then((res) => console.log(res));
+    dispatch(UserData(values)).then((res) => {
+      if (res.type == 'UserData/fulfilled') {
+        navigate('/')
+        location.reload()
+      }
+      if (res.type == 'UserData/rejected') {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: message,
+        });
+      }
+    });
   };
 
   return (
