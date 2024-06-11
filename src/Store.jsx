@@ -16,24 +16,34 @@ import NewSubscriberReducer from "./ReduxSlices/DashboardHomePage/HomeSlice";
 import SubscriptionGrowthReducer from "./ReduxSlices/DashboardHomePage/SubscriptionGrowthSlice";
 import UserGrowthReducer from "./ReduxSlices/DashboardHomePage/UserGrowthSlice";
 import DeleteAdminReducer from "./ReduxSlices/MakeAdminSlice/DeleteAdminSlice";
+import AllAdminsReducer from "./ReduxSlices/MakeAdminSlice/GetAdminSlice";
+import GetAllBlogSlice from "./ReduxSlices/Blog/GetAllBlogSlice";
+import AddBlogSlice from "./ReduxSlices/Blog/AddBlogSlice";
+import UpdateBlogSlice from "./ReduxSlices/Blog/UpdateBlogSlice";
+import DeleteBlogSlice from "./ReduxSlices/Blog/DeleteBlogSlice";
 export const Store = configureStore({
-    reducer: {
-        UserData: SigninReducer,
-        AllUsers: AllUsersReducer,
-        AddProducts: AddProductSlice,
-        GetProducts: GetProductsSlice,
-        DeleteProducts: DeleteProductSlice,
-        UpdateProduct: UpdateProductSlice,
-        SubscriberUser: SubscribersReducer,
-        AllProducts: AllProductsReducer,
-        AddAdmin: AddAdminReducer,
-        ManageProduct: AddProductReducer,
-        Subscription: SubscriptionReducer,
-        TotalIncome: IncomesReducer,
-        IncomeGrowth: IncomeGrowthReducer,
-        NewSubscriber: NewSubscriberReducer,
-        SubscriptionGrowth: SubscriptionGrowthReducer,
-        UserGrowth: UserGrowthReducer,
-        DeleteAdmin: DeleteAdminReducer,
-    },
+  reducer: {
+    UserData: SigninReducer,
+    AllUsers: AllUsersReducer,
+    AddProducts: AddProductSlice,
+    GetProducts: GetProductsSlice,
+    DeleteProducts: DeleteProductSlice,
+    UpdateProduct: UpdateProductSlice,
+    SubscriberUser: SubscribersReducer,
+    AllProducts: AllProductsReducer,
+    AddAdmin: AddAdminReducer,
+    ManageProduct: AddProductReducer,
+    Subscription: SubscriptionReducer,
+    TotalIncome: IncomesReducer,
+    IncomeGrowth: IncomeGrowthReducer,
+    NewSubscriber: NewSubscriberReducer,
+    SubscriptionGrowth: SubscriptionGrowthReducer,
+    UserGrowth: UserGrowthReducer,
+    DeleteAdmin: DeleteAdminReducer,
+    AllAdmin: AllAdminsReducer,
+    GetAllBlog :GetAllBlogSlice,
+    AddBlog :AddBlogSlice,
+    UpdateBlog : UpdateBlogSlice,
+    DeleteBlog:DeleteBlogSlice,
+  },
 });

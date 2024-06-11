@@ -1,6 +1,6 @@
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import loginImage from "../../assets/loginImage.png";
 import { Link } from "react-router-dom";
@@ -9,41 +9,36 @@ import { UserData, reset } from "../../ReduxSlices/SigninSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 
-
 const Login = () => {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // const { isLoading, isError, isSuccess, userData, accessToken, message } =
+  //   useSelector((state) => state.yourInfo);
+  // console.log(userData);
+  // useEffect(() => {
+  //   if (isError == true) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: message,
+  //     });
+  //   }
+  //   if (isSuccess == true) {
+  //     localStorage.setItem("yourInfo", JSON.stringify(userData));
+  //     window.location.href = "/";
+  //   }
 
-  const { isLoading, isError, isSuccess, userData, accessToken, message } = useSelector((state) => state.UserData);
-
-  useEffect(() => {
-    if (isError == true) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: message,
-      });
-    }
-    if (isSuccess == true) {
-      localStorage.setItem("yourInfo", JSON.stringify(userData));
-      localStorage.setItem("token", accessToken);
-      window.location.href = "/";
-    }
-
-    dispatch(reset());
-  }, [isLoading, isError, isSuccess, dispatch, navigate]);
-
+  //   dispatch(reset());
+  // }, [isLoading, isError, isSuccess, dispatch, navigate]);
 
   const onFinish = (values) => {
     //console.log("Received values of form: ", values);
-    dispatch(UserData(values)).then((res)=>console.log(res));
+    dispatch(UserData(values)).then((res) => console.log(res));
   };
 
- 
-
   return (
-    <div className="grid grid-cols-2 gap-0"
+    <div
+      className="grid grid-cols-2 gap-0"
       style={{
         width: "100%",
         background: "#F4EAD9",
@@ -60,12 +55,27 @@ const Login = () => {
           initialValues={{
             remember: true,
           }}
-          style={{ width: "630px", background: "white", borderRadius: "12px", padding: "90px 57px" }}
+          style={{
+            width: "630px",
+            background: "white",
+            borderRadius: "12px",
+            padding: "90px 57px",
+          }}
           onFinish={onFinish}
         >
-          <h1 style={{ fontSize: "32px", color: "#6A6D7C", textAlign: "center" }}>Login to Account</h1>
+          <h1
+            style={{ fontSize: "32px", color: "#6A6D7C", textAlign: "center" }}
+          >
+            Login to Account
+          </h1>
           <div style={{ marginBottom: "24px" }}>
-            <label htmlFor="email" style={{ display: "block", marginBottom: "5px" }}> Email address: </label>
+            <label
+              htmlFor="email"
+              style={{ display: "block", marginBottom: "5px" }}
+            >
+              {" "}
+              Email address:{" "}
+            </label>
             <Form.Item
               style={{ marginBottom: 0 }}
               name="email"
@@ -87,13 +97,17 @@ const Login = () => {
                   borderRadius: "8px",
                   outline: "none",
                 }}
-
               />
             </Form.Item>
           </div>
 
           <div style={{ marginBottom: "24px" }}>
-            <label style={{ display: "block", marginBottom: "5px" }} htmlFor="password">Password</label>
+            <label
+              style={{ display: "block", marginBottom: "5px" }}
+              htmlFor="password"
+            >
+              Password
+            </label>
             <Form.Item
               style={{ marginBottom: 0 }}
               name="password"
@@ -118,8 +132,13 @@ const Login = () => {
             </Form.Item>
           </div>
 
-
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox style={{ color: "#6A6D7C" }}>Remember me</Checkbox>
             </Form.Item>
@@ -132,9 +151,7 @@ const Login = () => {
             </Link>
           </div>
 
-          <Form.Item
-            style={{ marginBottom: 0 }}
-          >
+          <Form.Item style={{ marginBottom: 0 }}>
             <Button
               type="primary"
               htmlType="submit"

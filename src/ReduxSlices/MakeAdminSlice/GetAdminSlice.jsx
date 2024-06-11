@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import baseAxios from "../../../Config";
+
 const initialState = {
   isError: false,
   isSuccess: false,
@@ -8,19 +9,18 @@ const initialState = {
   userData: [],
 };
 
-export const DeleteAdmin = createAsyncThunk(
-  "DeleteAdmin",
+export const AllAdmins = createAsyncThunk(
+  "AllAdmins",
   async (value, thunkAPI) => {
     try {
-      console.log(value);
-      console.log(`admin/delete/${value}`);
-      let response = await baseAxios.delete(`admin/delete/${value}`, {
+      let token = localStorage.getItem("token");
+      let response = await baseAxios.get("/auth/admin/admins", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
+      console.log(response);
 
       return response.data;
     } catch (error) {
@@ -34,8 +34,8 @@ export const DeleteAdmin = createAsyncThunk(
   }
 );
 
-export const DeleteAdminSlice = createSlice({
-  name: "deleteAdmin",
+export const allAdminsSlice = createSlice({
+  name: "alladmins",
   initialState,
 
   reducers: {
@@ -50,10 +50,10 @@ export const DeleteAdminSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(DeleteAdmin.pending, (state, { payload }) => {
+    builder.addCase(AllAdmins.pending, (state, { payload }) => {
       state.isLoading = true;
     });
-    builder.addCase(DeleteAdmin.fulfilled, (state, { payload }) => {
+    builder.addCase(AllAdmins.fulfilled, (state, { payload }) => {
       console.log(payload);
       state.isError = false;
       state.isSuccess = true;
@@ -61,7 +61,7 @@ export const DeleteAdminSlice = createSlice({
       state.message = payload.message;
       state.userData = payload.data;
     });
-    builder.addCase(DeleteAdmin.rejected, (state, { payload }) => {
+    builder.addCase(AllAdmins.rejected, (state, { payload }) => {
       state.isSuccess = false;
       state.isError = true;
       state.isLoading = false;
@@ -71,6 +71,6 @@ export const DeleteAdminSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { reset } = DeleteAdminSlice.actions;
+export const { reset } = allAdminsSlice.actions;
 
-export default DeleteAdminSlice.reducer;
+export default allAdminsSlice.reducer;

@@ -14,17 +14,14 @@ export const UserData = createAsyncThunk(
   "UserData",
   async (value, thunkAPI) => {
     try {
-      console.log("tushar", value);
-      let response = await axios.post("/auth/admin/login", value);
-      console.log(response.data);
-
+      const response = await baseAxios.post("/auth/login", value);
+      localStorage.setItem("token", response?.data.data.accessToken);
       return response.data;
     } catch (error) {
       const message =
         (error.response && error.response.data && error.response.data) ||
         error.message ||
         error.toString();
-
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -55,7 +52,7 @@ export const signinSlice = createSlice({
       state.isSuccess = true;
       state.isLoading = false;
       state.message = payload.message;
-      state.userData = payload.data.yourInfo;
+      state.userData = payload.data;
       state.accessToken = payload.data.accessToken;
     });
     builder.addCase(UserData.rejected, (state, { payload }) => {
