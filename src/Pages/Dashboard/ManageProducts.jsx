@@ -23,11 +23,11 @@ const ManageProducts = () => {
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const [openAddModel, setOpenAddModel] = useState(false);
     const [reFresh, setReFresh] = useState(false);
+    const dispatch = useDispatch()
+    const [ItemPerPage, setItemPerPage] = useState(10)
+    const { products, meta } = useSelector(state => state.GetProducts)
     const [images, setImages] = useState([])
     const [imagesUploadError, setImagesUploadError] = useState(null)
-    const dispatch = useDispatch()
-    const { products, meta } = useSelector(state => state.GetProducts)
-    const [ItemPerPage, setItemPerPage] = useState(10)
     const [editItemData, seteditItemData] = useState({})
     const [submitType, setsubmitType] = useState('add')
     const [selectedItemImage, setSelectedItemImage] = useState([]);
@@ -182,7 +182,6 @@ const ManageProducts = () => {
     // image error message
     useEffect(() => {
         if (!imagesUploadError) return
-        console.log('running')
         toast.error(imagesUploadError)
         setImagesUploadError(null)
     }, [imagesUploadError])
@@ -321,7 +320,7 @@ const ManageProducts = () => {
                 footer={false}
             >
                 <div className='p-6'>
-                    <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>Add New Products</h1>
+                    <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>{submitType == 'add' ? "Add New Products" : 'Update Product'} </h1>
                     <Form
                         name="normal_login"
                         // initialValues={{
@@ -574,7 +573,7 @@ const ManageProducts = () => {
             />
         </div>
 
-  );
+    );
 };
 
 export default ManageProducts;

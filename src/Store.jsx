@@ -17,6 +17,10 @@ import SubscriptionGrowthReducer from "./ReduxSlices/DashboardHomePage/Subscript
 import UserGrowthReducer from "./ReduxSlices/DashboardHomePage/UserGrowthSlice";
 import DeleteAdminReducer from "./ReduxSlices/MakeAdminSlice/DeleteAdminSlice";
 import AllAdminsReducer from "./ReduxSlices/MakeAdminSlice/GetAdminSlice";
+import GetAllBlogSlice from "./ReduxSlices/Blog/GetAllBlogSlice";
+import AddBlogSlice from "./ReduxSlices/Blog/AddBlogSlice";
+import UpdateBlogSlice from "./ReduxSlices/Blog/UpdateBlogSlice";
+import DeleteBlogSlice from "./ReduxSlices/Blog/DeleteBlogSlice";
 export const Store = configureStore({
   reducer: {
     UserData: SigninReducer,
@@ -37,5 +41,9 @@ export const Store = configureStore({
     UserGrowth: UserGrowthReducer,
     DeleteAdmin: DeleteAdminReducer,
     AllAdmin: AllAdminsReducer,
+    GetAllBlog :GetAllBlogSlice,
+    AddBlog :AddBlogSlice,
+    UpdateBlog : UpdateBlogSlice,
+    DeleteBlog:DeleteBlogSlice,
   },
 });

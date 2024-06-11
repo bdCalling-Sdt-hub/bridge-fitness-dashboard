@@ -1,53 +1,129 @@
-import { Form, Input, Modal, Button } from "antd";
-import React, { useState } from "react";
-import { FaFilePdf, FaImage, FaPlus } from "react-icons/fa6";
-import course from "../../assets/course.png";
+import { Form, Input, Modal, Button, Pagination, Select } from "antd";
+import React, { useEffect, useState } from "react";
+import { FaImage, FaPlus, FaRegImage } from "react-icons/fa6";
 import { Col, Row } from "antd";
 import { CiCalendar } from "react-icons/ci";
-import { SlArrowLeft } from "react-icons/sl";
-import { SlArrowRight } from "react-icons/sl";
-import { CiVideoOn } from "react-icons/ci";
-import TextArea from "antd/es/input/TextArea";
-import { IoIosDocument } from "react-icons/io";
-const data = [
-  {
-    title: "45-min advance vinyasa yoga",
-    img: course,
-    topic: "Yoga",
-    date: "Mon 11/ 06/ 2024",
-  },
-  {
-    title: "45-min advance vinyasa yoga",
-    img: course,
-    topic: "Yoga",
-    date: "Mon 11/ 06/ 2024",
-  },
-  {
-    title: "45-min advance vinyasa yoga",
-    img: course,
-    topic: "Yoga",
-    date: "Mon 11/ 06/ 2024",
-  },
-];
 
+import TextArea from "antd/es/input/TextArea";
+import { useDispatch, useSelector } from "react-redux";
+import { GetAllBlog } from "../../ReduxSlices/Blog/GetAllBlogSlice";
+import { ServerUrl } from "../../../Config";
+import { AddBlog } from "../../ReduxSlices/Blog/AddBlogSlice";
+import { IoClose } from "react-icons/io5";
+import toast from "react-hot-toast";
+import { UpdateBlog } from "../../ReduxSlices/Blog/UpdateBlogSlice";
+import Swal from "sweetalert2";
+import { DeleteBlog } from "../../ReduxSlices/Blog/DeleteBlogSlice";
 const Blog = () => {
-  const [pageNumber, setPageNumber] = useState(
-    new URLSearchParams(window.location.search).get("page") || 0
-  );
-  const totalPages = Math.ceil(data.length / 6);
-  const pages = [...Array(totalPages).keys()];
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [reFresh, setReFresh] = useState("");
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
-  if (reFresh) {
-    setTimeout(() => {
-      setReFresh("");
-    }, 1500);
-  }
-  const handeldelete = () => {
-    setShowDelete(false);
+  const dispatch = useDispatch()
+  const { AllBlog, meta } = useSelector(state => state.GetAllBlog)
+  const [itemPerPage, setItemPerPage] = useState(10)
+  const [page, setPage] = useState(1)
+  const [form] = Form.useForm()
+  const [images, setImages] = useState([])
+  const [imagesUploadError, setImagesUploadError] = useState(null)
+  const [editItemData, seteditItemData] = useState({})
+  const [submitType, setsubmitType] = useState('add')
+  const [selectedItemImage, setSelectedItemImage] = useState([]);
+  const [imageToDelete, setImageToDelete] = useState([])
+  useEffect(() => {
+    dispatch(GetAllBlog({ page: page, limit: itemPerPage, }))
+  }, [page, itemPerPage])
+  const onChange = (pageNumber) => {
+    setPage(pageNumber)
   };
+  const onShowSizeChange = (current, size) => {
+    setItemPerPage(size);
+  }
+
+  const handeldelete = () => {
+    dispatch(DeleteBlog({ id: deleteId })).then((res) => {
+      if (res.type == 'DeleteBlog/fulfilled') {
+        setShowDelete(false)
+        dispatch(GetAllBlog({ page: page, limit: itemPerPage }))
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your Blog has been deleted.",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    })
+  };
+  // add update blog
+  const onFinish = (values) => {
+    form.setFieldsValue(values)
+    const formData = new FormData();
+    const { date, ...otherValues } = values
+    formData.append("date", date?.toString().split('T')[0]);
+    Object.keys(otherValues).forEach((key) => {
+      formData.append(key, values[key]);
+    });
+    for (const image of images) {
+      formData.append("image", image);
+    }
+    if (submitType === 'add') {
+      dispatch(AddBlog(formData)).then((res) => {
+        if (res.type == 'AddBlog/fulfilled') {
+          toast.success('product Successfully added')
+          setOpenAddModel(false)
+          form.resetFields()
+          setImages([])
+          dispatch(GetAllBlog({ page: page, limit: itemPerPage, }))
+        }
+      })
+    } else {
+      if (imageToDelete.length > 0) {
+        formData.append("imageToDelete", JSON.stringify(imageToDelete))
+      }
+
+      dispatch(UpdateBlog({ data: formData, id: editItemData?._id })).then((res) => {
+        console.log(res)
+        if (res.type == 'UpdateBlog/fulfilled') {
+          toast.success('product Successfully added')
+          setOpenAddModel(false)
+          form.resetFields()
+          setImages([])
+          setImageToDelete([])
+          seteditItemData({})
+          dispatch(GetAllBlog({ page: page, limit: itemPerPage }))
+        }
+      })
+      // dispatch(GetProducts({ page: page, limit: ItemPerPage, searchTerm: search }))
+    }
+  };
+  useEffect(() => {
+    if (!imagesUploadError) return
+    toast.error(imagesUploadError)
+    setImagesUploadError(null)
+  }, [imagesUploadError])
+
+  // image upload handler
+  const handleImageUpload = (e) => {
+    let imagesFiles = []
+    const FileList = Array.from(e.target.files)
+    FileList.map((item) => {
+      if (((images.length + (selectedItemImage.length)) + imagesFiles.length) >= 4) {
+        return setImagesUploadError("you can't upload more then 4 image")
+      }
+      if (item.type.startsWith('image')) {
+        imagesFiles.push(item)
+        setImages([...images, ...imagesFiles])
+
+      } else {
+        setImagesUploadError(`${item.type} is not allowed please select valid image`)
+      }
+    })
+
+  }
+  useEffect(() => {
+    form.setFieldsValue({ ...editItemData, date: editItemData.createdAt?.split('T')[0] })
+    setSelectedItemImage(editItemData?.images ? editItemData?.images : [])
+  }, [editItemData])
   return (
     <div>
       <div style={{ margin: "24px 0" }}>
@@ -63,7 +139,7 @@ const Blog = () => {
             Blogs
           </h3>
           <button
-            onClick={() => setOpenAddModel(true)}
+            onClick={() => { setsubmitType('add'); setOpenAddModel(true) }}
             style={{
               borderRadius: "4px",
               color: "#F2F2F2",
@@ -95,24 +171,17 @@ const Blog = () => {
         width={700}
         footer={false}
       >
-        <div className="p-6">
-          <h1
-            className="text-2xl font-semibold"
-            style={{ marginBottom: "12px" }}
-          >
-            Add new Blog
-          </h1>
+        <div className='p-6'>
+          <h1 className='text-2xl font-semibold' style={{ marginBottom: "12px" }}>{submitType == 'add' ? "Add New Blog" : 'Update Blog'}</h1>
           <Form
             name="normal_login"
-            initialValues={{
-              remember: true,
-            }}
+            onFinish={onFinish}
+            form={form}
           >
-            <div className="grid grid-cols-2 gap-3 py-6">
-              <div>
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Topic
-                </label>
+            <div className='grid grid-cols-2 gap-5'>
+
+              <div style={{ marginBottom: "16px" }}>
+                <label style={{ display: "block", marginBottom: "5px" }}>Topic Name</label>
                 <Form.Item
                   style={{ marginBottom: 0 }}
                   name="topic"
@@ -124,7 +193,7 @@ const Blog = () => {
                   ]}
                 >
                   <Input
-                    placeholder="Topic here ..."
+                    placeholder="topic here..."
                     type="text"
                     style={{
                       border: "1px solid #E0E4EC",
@@ -136,49 +205,21 @@ const Blog = () => {
                   />
                 </Form.Item>
               </div>
-              <div>
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Tittle
-                </label>
-                <Form.Item
-                  style={{ marginBottom: 0 }}
-                  name="title"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input tittle ",
-                    },
-                  ]}
-                >
-                  <Input
-                    placeholder="tittle here..."
-                    type="text"
-                    style={{
-                      border: "1px solid #E0E4EC",
-                      height: "52px",
-                      background: "white",
-                      borderRadius: "8px",
-                      outline: "none",
-                    }}
-                  />
-                </Form.Item>
-              </div>
-              <div>
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Date
-                </label>
+
+              <div style={{ marginBottom: "16px" }}>
+                <label style={{ display: "block", marginBottom: "5px" }}>date</label>
                 <Form.Item
                   style={{ marginBottom: 0 }}
                   name="date"
                   rules={[
                     {
                       required: true,
-                      message: "Please input date ",
+                      message: "Please input date",
                     },
                   ]}
                 >
                   <Input
-                    placeholder="tittle here..."
+                    placeholder="topic here..."
                     type="date"
                     style={{
                       border: "1px solid #E0E4EC",
@@ -190,39 +231,76 @@ const Blog = () => {
                   />
                 </Form.Item>
               </div>
-              <div>
-                <label
-                  htmlFor="video"
-                  style={{ display: "block", marginBottom: "5px" }}
-                >
-                  Add image
+            </div>
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "5px" }}>Blog Name</label>
+              <Form.Item
+                style={{ marginBottom: 0 }}
+                name="title"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input title",
+                  },
+                ]}
+              >
+                <Input
+                  placeholder="title"
+                  type="text"
+                  style={{
+                    border: "1px solid #E0E4EC",
+                    height: "52px",
+                    background: "white",
+                    borderRadius: "8px",
+                    outline: "none",
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <p className='font-bold -mb-5'>Products Image</p>
+            <div className='grid grid-cols-4 col-span-2 gap-2 p-4 pt-5 border  my-4 rounded-md'>
+              {
+                selectedItemImage.map((item, index) => <div className='relative flex justify-center items-center w-full h-full border-dashed border border-black py-10' key={index}>
+                  <img className='w-full h-full object-cover' src={`${ServerUrl}${item}`} alt="" />
+                  <button onClick={() => {
+                    const filterImage = selectedItemImage.filter((image, i) => index == i)
+                    setImageToDelete([...imageToDelete, filterImage[0]])
+                    const NewImages = selectedItemImage.filter((image, i) => index !== i)
+                    setSelectedItemImage(NewImages)
+                  }} type='button' className='absolute p-1 rounded-full text-xl text-white bg-red-500 top-1 right-1'>
+                    <IoClose />
+                  </button>
+                </div>)
+              }
+              {
+                images.map((item, index) => <div className='relative flex justify-center items-center w-full h-full border-dashed border border-black py-10' key={index}>
+                  <img className='w-full h-full object-cover' src={URL.createObjectURL(item)} alt="" />
+                  <button onClick={() => {
+                    const NewImages = images.filter((image, i) => index !== i)
+                    setImages(NewImages)
+                  }} type='button' className='absolute p-1 rounded-full text-xl text-white bg-red-500 top-1 right-1'>
+                    <IoClose />
+                  </button>
+                </div>)
+              }
+              {
+                [...Array((images.length + (selectedItemImage.length)) <= 4 ? 4 - (images.length + (selectedItemImage.length)) : 0).keys()].map((item) => <label key={item} htmlFor='product_img1' className='cursor-pointer' style={{ display: "block", marginBottom: "5px" }}>
                   <Form.Item
                     style={{ marginBottom: 0 }}
-                    name="video"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please Add pdf ",
-                      },
-                    ]}
+                    name="product_img1"
+
                   >
-                    <label htmlFor="video" className="btn">
-                      <div className="border p-2 rounded-lg">
-                        <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
-                          <FaImage /> browse Image
-                        </span>
-                      </div>
-                    </label>
-                    <div className="hidden">
-                      <Input
-                        id="video"
-                        placeholder="tittle here..."
+                    <div className='flex justify-center items-center w-full h-full border-dashed border border-black py-10'>
+                      <FaRegImage className='text-2xl' />
+                    </div>
+                    <div className='hidden'>
+                      <Input id='product_img1'
                         type="file"
-                        value={``}
+                        multiple
+                        onChange={handleImageUpload}
                         style={{
                           border: "1px solid #E0E4EC",
                           height: "52px",
-                          paddingTop: "10px",
                           background: "white",
                           borderRadius: "8px",
                           outline: "none",
@@ -230,37 +308,36 @@ const Blog = () => {
                       />
                     </div>
                   </Form.Item>
-                </label>
-              </div>
-              <div className="row-span-2 col-span-2">
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Description{" "}
-                </label>
-                <Form.Item
-                  style={{ marginBottom: 0 }}
-                  name="description"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please Description ",
-                    },
-                  ]}
-                >
-                  <TextArea
-                    placeholder="tittle here..."
-                    style={{
-                      border: "1px solid #E0E4EC",
-                      height: "140px",
-                      paddingTop: "10px",
-                      background: "white",
-                      borderRadius: "8px",
-                      outline: "none",
-                    }}
-                  />
-                </Form.Item>
-              </div>
+                </label>)
+              }
+
             </div>
 
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "5px" }}>Description</label>
+              <Form.Item
+                style={{ marginBottom: 0 }}
+                name="description"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input Description",
+                  },
+                ]}
+              >
+                <TextArea
+                  placeholder="Write here..."
+                  type="text"
+                  style={{
+                    border: "1px solid #E0E4EC",
+                    height: "152px",
+                    background: "white",
+                    borderRadius: "8px",
+                    outline: "none",
+                  }}
+                />
+              </Form.Item>
+            </div>
             <Form.Item>
               <Button
                 type="primary"
@@ -275,7 +352,7 @@ const Blog = () => {
                   outline: "none",
                 }}
               >
-                Publish
+                Submit
               </Button>
             </Form.Item>
           </Form>
@@ -289,11 +366,11 @@ const Blog = () => {
         }}
       >
         <Row gutter={30}>
-          {data.map((item, index) => {
+          {AllBlog.map((item, index) => {
             const key = `col-${index}`;
             return (
               <Col
-                key={key}
+                key={item?._id}
                 xs={{ flex: "100%" }}
                 sm={{ flex: "50%" }}
                 lg={{ flex: "33.33%" }}
@@ -309,7 +386,7 @@ const Blog = () => {
                     style={{
                       width: "100%",
                     }}
-                    src={item?.img}
+                    src={`${ServerUrl}${item?.images[0]}`}
                     alt=""
                   />
                   <div
@@ -317,7 +394,7 @@ const Blog = () => {
                       display: "flex",
                       justifyContent: "start",
                       alignItems: "center",
-                      gap: "35px",
+                      gap: "10px",
                       fontSize: "14px",
                       marginTop: "8px",
                     }}
@@ -334,20 +411,21 @@ const Blog = () => {
                       <CiCalendar
                         style={{
                           fontSize: "18px",
+                          marginTop: '-3px',
                         }}
                       />{" "}
-                      {item?.date}
+                      {item?.createdAt?.split('T')[0]}
                     </p>
-                    <p>Topic: {item?.topic}</p>
+                    <p>Topic : {item?.topic}</p>
                   </div>
                   <p
                     style={{
                       color: "#2F2F2F",
-                      marginTop: "4px",
+                      marginTop: "8px",
                       marginBottom: "22px",
                     }}
                   >
-                    45-min advance vinyasa yoga
+                    {item?.title}
                   </p>
                   <div
                     style={{
@@ -374,6 +452,8 @@ const Blog = () => {
                     </button>
                     <button
                       onClick={() => {
+                        setsubmitType('update')
+                        seteditItemData(item)
                         setOpenAddModel(true);
                       }}
                       style={{
@@ -393,39 +473,8 @@ const Blog = () => {
             );
           })}
         </Row>
-        <div className={`flex justify-center items-center gap-4 mx-4`}>
-          <button
-            disabled={pageNumber === 0}
-            className={`flex justify-start items-center gap-4 mx-4 ${
-              pageNumber !== 0 ? "text-[#555555]" : "text-[#C2C2C2]"
-            }`}
-          >
-            <SlArrowLeft className="-mt-1" />
-            Previous
-          </button>
-          {pages.map((item, index) => (
-            <button
-              className={`${
-                pageNumber === item
-                  ? "text-[#555555] border rounded-full"
-                  : "text-[#C2C2C2]"
-              } py-1 px-3 `}
-              key={index}
-            >
-              {item + 1}
-            </button>
-          ))}
-          <button
-            disabled={pageNumber !== pageNumber.length - 1}
-            className={`flex justify-start items-center gap-4 mx-4 ${
-              pageNumber !== pageNumber.length - 1
-                ? "text-[#C2C2C2]"
-                : " text-[#555555]"
-            }`}
-          >
-            Next
-            <SlArrowRight className="-mt-1" />
-          </button>
+        <div className='text-center mt-8'>
+          <Pagination defaultCurrent={page} total={meta?.total} pageSize={itemPerPage} onShowSizeChange={onShowSizeChange} onChange={onChange} />
         </div>
       </div>
       <Modal
