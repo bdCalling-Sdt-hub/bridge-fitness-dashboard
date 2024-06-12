@@ -6,14 +6,14 @@ const initialState = {
     isSuccess: false,
     isLoading: false,
     message: "",
-    ContactData: [],
 };
 
-export const GetContact = createAsyncThunk(
-    "GetContact",
+export const UpdateContact = createAsyncThunk(
+    "UpdateContact",
     async (value, thunkAPI) => {
+        const {id,...otherValue}=value
         try {
-            let response = await baseAxios.get("/manage/get-contact-info", {
+            let response = await baseAxios.patch(`/manage/edit-contact-info/${id}`,otherValue, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
@@ -24,13 +24,14 @@ export const GetContact = createAsyncThunk(
                 (error.response && error.response.data && error.response.data) ||
                 error.message ||
                 error.toString();
+
             return thunkAPI.rejectWithValue(message);
         }
     }
 );
 
-export const GetContactSlice = createSlice({
-    name: "GetContact",
+export const UpdateContactSlice = createSlice({
+    name: "UpdateContact",
     initialState,
 
     reducers: {
@@ -38,17 +39,17 @@ export const GetContactSlice = createSlice({
     },
 
     extraReducers: (builder) => {
-        builder.addCase(GetContact.pending, (state, { payload }) => {
+        builder.addCase(UpdateContact.pending, (state, { payload }) => {
             state.isLoading = true;
         });
-        builder.addCase(GetContact.fulfilled, (state, { payload }) => {
+        builder.addCase(UpdateContact.fulfilled, (state, { payload }) => {
+            console.log(payload);
             state.isError = false;
             state.isSuccess = true;
             state.isLoading = false;
             state.message = payload.message;
-            state.ContactData = payload.data;
         });
-        builder.addCase(GetContact.rejected, (state, { payload }) => {
+        builder.addCase(UpdateContact.rejected, (state, { payload }) => {
             state.isSuccess = false;
             state.isError = true;
             state.isLoading = false;
@@ -58,6 +59,6 @@ export const GetContactSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { reset } = GetContactSlice.actions;
+export const { reset } = UpdateContactSlice.actions;
 
-export default GetContactSlice.reducer;
+export default UpdateContactSlice.reducer;

@@ -5,6 +5,9 @@ import { FaPlus, FaXmark } from 'react-icons/fa6';
 import { CgMail } from "react-icons/cg";
 import { useDispatch, useSelector } from 'react-redux';
 import { GetContact } from '../../ReduxSlices/Contact/GetContactSlice';
+import { UpdateContact } from '../../ReduxSlices/Contact/UpdateContactSlice';
+import { AddContact } from '../../ReduxSlices/Contact/AddContactSlice';
+import Swal from 'sweetalert2';
 function generateRandomNumber() {
     const randomNumber = Array.from({ length: 10 }, () => Math.floor(Math.random() * 10)).join('');
     return randomNumber;
@@ -17,17 +20,16 @@ const Contact = () => {
     const { ContactData } = useSelector(state => state.GetContact)
     const [error, setError] = useState([])
     const [emailError, setEmailError] = useState([])
-    console.log(emailError)
     useEffect(() => {
         dispatch(GetContact())
     }, [])
     useEffect(() => {
-        setCemailIds(ContactData[0]?.email)
-        setCallingNumbers(ContactData[0]?.phone)
+        setCemailIds(ContactData?.email || [])
+        setCallingNumbers(ContactData?.number || [])
     }, [ContactData])
     const saveData = () => {
         callingNumers?.map(item => {
-            if (!item?.phone) {
+            if (!item?.number) {
                 setError([...error, item.id])
             }
         })
@@ -39,7 +41,37 @@ const Contact = () => {
         if (emailError.length > 0 || error.length > 0) {
             return false
         }
-
+        const data = {
+            email: emailIds,
+            number: callingNumers
+        }
+        if (ContactData?._id) {
+            dispatch(UpdateContact({ id: ContactData._id, data })).then((res) => {
+                if (res.type == 'UpdateContact/fulfilled') {
+                    dispatch(GetContact())
+                    Swal.fire({
+                        title: "updated!",
+                        text: "Your Contact info been Updated.",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                }
+            })
+        } else {
+            dispatch(AddContact(data)).then((res) => {
+                if (res.type == 'AddContact/fulfilled') {
+                    dispatch(GetContact())
+                    Swal.fire({
+                        title: "Added!",
+                        text: "Your Contact info been added.",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                }
+            })
+        }
     }
     return (
         <>
@@ -59,13 +91,13 @@ const Contact = () => {
                                         setError([])
                                         const newArray = callingNumers.map(items => {
                                             if (items?.id == item.id) {
-                                                return { ...items, phone: e.target.value }
+                                                return { ...items, number: e.target.value }
                                             } else {
                                                 return items
                                             }
                                         })
                                         setCallingNumbers(newArray)
-                                    }} className='w-[90%] bg-[#FEFEFE] border py-3 px-2' type="text" disabled={!isAdmin} name="" id="" placeholder='please insert a number' defaultValue={item?.phone || ''} />
+                                    }} className='w-[90%] bg-[#FEFEFE] border py-3 px-2' type="text" disabled={!isAdmin} name="" id="" placeholder='please insert a number' defaultValue={item?.number || ''} />
                                     <FaXmark onClick={() => {
                                         const newNumbers = callingNumers.filter((filterItem) => filterItem?.id !== item?.id)
                                         setCallingNumbers(newNumbers)
@@ -78,7 +110,7 @@ const Contact = () => {
 
                             <div className='w-full relative py-3'>
                                 <button onClick={() => {
-                                    setCallingNumbers([...callingNumers, { phone: false, id: generateRandomNumber() }])
+                                    setCallingNumbers([...callingNumers, { number: false, id: generateRandomNumber() }])
                                 }} className='p-2 bg-[#B47000] rounded-full absolute right-[4px]'>
                                     <FaPlus className='text-2xl text-white' />
                                 </button>
