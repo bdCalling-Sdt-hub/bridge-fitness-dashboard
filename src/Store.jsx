@@ -30,6 +30,7 @@ import TermsConditionsSlice from "./ReduxSlices/Terms/TermsConditionsSlice";
 import AddSubscriptionSlice from "./ReduxSlices/Subscription/AddSubscriptionSlice";
 import GetFAQSlice from "./ReduxSlices/FAQ/GetFAQSlice";
 import AddFAQSlice from "./ReduxSlices/FAQ/AddFAQSlice";
+import UpdateFAQSlice from "./ReduxSlices/FAQ/UpdateFAQSlice";
 export const Store = configureStore({
   reducer: {
     UserData: SigninReducer,
@@ -63,5 +64,6 @@ export const Store = configureStore({
     AddSubscriptions: AddSubscriptionSlice,
     GetFAQ: GetFAQSlice,
     AddFAQ:AddFAQSlice,
+    UpdateFAQ:UpdateFAQSlice,
   },
 });
