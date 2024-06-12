@@ -57,14 +57,12 @@ const ClassManagement = () => {
     new URLSearchParams(window.location.search).get("program") || "all"
   );
   const { name } = useParams();
-  console.log(Program, name);
   const totalPages = Math.ceil(data.length / 6);
   const pages = [...Array(totalPages).keys()];
   const [openAddModel, setOpenAddModel] = useState(false);
   const [openUpdateModel, setOpenUpdateModel] = useState(false);
   const [reFresh, setReFresh] = useState("");
   const [showDelete, setShowDelete] = useState(false);
-  const [deleteId, setDeleteId] = useState("");
   if (reFresh) {
     setTimeout(() => {
       setReFresh("");

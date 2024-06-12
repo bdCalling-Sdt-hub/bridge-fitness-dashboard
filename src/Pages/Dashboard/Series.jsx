@@ -7,33 +7,24 @@ import { Link } from 'react-router-dom';
 const data = [
     {
         key: "1",
-        program: "Basic Membership",
-        name: "Core Crushed",
+        program: "program name",
+        name: "Core Crushed pre",
     },
     {
         key: "2",
-        program: "Standard Membership",
+        program: "program name",
         name: "Core Crushed",
     },
     {
         key: "3",
-        program: "Premium Membership",
+        program: "program name",
         name: "Core Crushed",
     },
 ]
-
-
 const Series = () => {
     const [openAddModel, setOpenAddModel] = useState(false);
-    const [reFresh, setReFresh] = useState("");
     const [formTitle, setFormTitle] = useState('Add New Series')
     const [series, setSeries] = useState('')
-    if (reFresh) {
-        setTimeout(() => {
-            setReFresh("")
-        }, 1500)
-    }
-
     const columns = [
         {
             title: "S.No",
@@ -82,7 +73,13 @@ const Series = () => {
         },
     ];
     const handleSubmit = e => {
-        console.log(e.target)
+        e.preventDefault()
+        console.log(e.target.program.value, series)
+        if (formTitle == 'Add New Series') {
+            // for add product
+        } else {
+            // for update product 
+        }
     }
     return (
         <div>
@@ -135,7 +132,7 @@ const Series = () => {
                     <form onSubmit={handleSubmit}>
                         <p className='text-[#6D6D6D] py-1'>Package Name</p>
                         <select name='program' className="w-full p-4 border py-3 outline-none rounded-md cursor-pointer" id="">
-                            {[...Array(5).keys()].map(item => <option className="cursor-pointer" key={item} value="">Basic Membership</option>)}
+                            {[...Array(5).keys()].map(item => <option className="cursor-pointer" key={item} value={`program name ${item}`}>{`program name ${item}`}</option>)}
                         </select>
                         <p className='text-[#6D6D6D] py-1'>Title</p>
                         <input value={series} onChange={(e) => setSeries(e.target.value)} className="w-full p-4 border py-3 outline-none rounded-md" name='title' />
