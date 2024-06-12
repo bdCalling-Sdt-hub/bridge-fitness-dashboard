@@ -36,6 +36,7 @@ import getProgramReducer from "./ReduxSlices/CreateProgram/GetCreateProgramesSli
 import AddProgramReducer from "./ReduxSlices/CreateProgram/AddCreateProgramSlice";
 import AddCreateProgramSlice from "./ReduxSlices/CreateProgram/AddCreateProgramSlice";
 import UpdateProgramSlice from "./ReduxSlices/CreateProgram/UpdateProgramSlice";
+import GetContactSlice from "./ReduxSlices/Contact/GetContactSlice";
 export const Store = configureStore({
   reducer: {
     UserData: SigninReducer,
@@ -74,5 +75,6 @@ export const Store = configureStore({
     AddProgram:AddCreateProgramSlice,
     AllProgram:getProgramReducer,
     UpdateProgram:UpdateProgramSlice,
+    GetContact:GetContactSlice,
   },
 });
