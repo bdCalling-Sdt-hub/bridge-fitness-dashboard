@@ -32,6 +32,13 @@ import GetFAQSlice from "./ReduxSlices/FAQ/GetFAQSlice";
 import AddFAQSlice from "./ReduxSlices/FAQ/AddFAQSlice";
 import UpdateFAQSlice from "./ReduxSlices/FAQ/UpdateFAQSlice";
 import DeleteFAQSlice from "./ReduxSlices/FAQ/DeleteFAQSlice";
+import getProgramReducer from "./ReduxSlices/CreateProgram/GetCreateProgramesSlice";
+import AddProgramReducer from "./ReduxSlices/CreateProgram/AddCreateProgramSlice";
+import AddCreateProgramSlice from "./ReduxSlices/CreateProgram/AddCreateProgramSlice";
+import UpdateProgramSlice from "./ReduxSlices/CreateProgram/UpdateProgramSlice";
+import GetContactSlice from "./ReduxSlices/Contact/GetContactSlice";
+import UpdateContactSlice from "./ReduxSlices/Contact/UpdateContactSlice";
+import AddContactSlice from "./ReduxSlices/Contact/AddContactSlice";
 export const Store = configureStore({
   reducer: {
     UserData: SigninReducer,
@@ -64,8 +71,14 @@ export const Store = configureStore({
     TermsConditions: TermsConditionsSlice,
     AddSubscriptions: AddSubscriptionSlice,
     GetFAQ: GetFAQSlice,
-    AddFAQ:AddFAQSlice,
-    UpdateFAQ:UpdateFAQSlice,
-    DeleteFAQ:DeleteFAQSlice,
+    AddFAQ: AddFAQSlice,
+    UpdateFAQ: UpdateFAQSlice,
+    DeleteFAQ: DeleteFAQSlice,
+    AddProgram: AddCreateProgramSlice,
+    AllProgram: getProgramReducer,
+    UpdateProgram: UpdateProgramSlice,
+    GetContact: GetContactSlice,
+    UpdateContact: UpdateContactSlice,
+    AddContact :AddContactSlice,
   },
 });

@@ -17,8 +17,6 @@ export const Incomes = createAsyncThunk("Incomes", async (value, thunkAPI) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response);
-
     return response.data;
   } catch (error) {
     const message =

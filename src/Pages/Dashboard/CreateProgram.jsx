@@ -1,36 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiEditLine } from "react-icons/ri";
-import { Modal, Table } from "antd";
+import { Form, Input, Modal, Table } from "antd";
 import { FaPlus, FaRegImage } from "react-icons/fa6";
-const data = [
-  {
-    key: "1",
-    name: "Basic Membership",
-    date: "15 May 2020 8:00 am",
-  },
-  {
-    key: "2",
-    name: "Standard Membership",
-    date: "15 May 2020 8:00 am",
-  },
-  {
-    key: "3",
-    name: "Premium Membership",
-    date: "15 May 2020 8:00 am",
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
+import moment from "moment";
+import { AddProgram } from "../../ReduxSlices/CreateProgram/AddCreateProgramSlice";
+import { ServerUrl } from "../../../Config";
+import Swal from "sweetalert2";
+import { UpdateProgram } from "../../ReduxSlices/CreateProgram/UpdateProgramSlice";
 
 const CreateProgram = () => {
-  const [subName, setsubName] = useState("");
-  const [subPrice, setsubPrice] = useState("");
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [reFresh, setReFresh] = useState("");
   const [formTitle, setFormTitle] = useState("Add New Program");
-  if (reFresh) {
-    setTimeout(() => {
-      setReFresh("");
-    }, 1500);
-  }
+  const [imgFile, setImgFile] = useState(null);
+  const [itemForEdit, setItemForEdit] = useState(null)
+  const dispatch = useDispatch();
+  const [form] = Form.useForm()
+  useEffect(() => {
+    dispatch(AllProgram());
+  }, [dispatch]);
+  const programs = useSelector((state) => state.AllProgram?.userData?.data);
+  const data = programs?.map((program, index) => ({
+    key: index + 1,
+    name: program?.title,
+    date: moment(program?.createdAt).format("l"),
+    img: program?.image,
+    id:program?._id
+  }));
+
 
   const columns = [
     {
@@ -57,12 +55,8 @@ const CreateProgram = () => {
           <button
             onClick={() => {
               setOpenAddModel(true);
-              const manageSubscription = data.filter(
-                (item) => item.key == record.key
-              );
-              setsubName(manageSubscription[0].name);
-              setsubPrice(manageSubscription[0].price);
               setFormTitle("Edit Program");
+              setItemForEdit(record)
             }}
             style={{
               display: "flex",
@@ -83,7 +77,72 @@ const CreateProgram = () => {
       ),
     },
   ];
-  const handelsubmit = (e) => {};
+
+  const onFinish = (values) => {
+    const formData = new FormData();
+    if (formTitle == 'Add New Program') {
+      if (imgFile) {
+        formData.append("image", imgFile);
+      }
+      if (!imgFile) {
+        return false;
+      }
+      formData.append("title", values.title);
+      dispatch(AddProgram(formData)).then((res) => {
+        if (res.type == 'AddProgram/fulfilled') {
+          Swal.fire({
+            title: "Added!",
+            text: "New Program has been added.",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(()=>{
+            form.resetFields()
+            dispatch(AllProgram());
+            setImgFile(null)
+            setOpenAddModel(false)
+            setItemForEdit(null)
+          });;
+        }
+      });
+    } else {
+      if (imgFile) {
+        formData.append("image", imgFile);
+      } else {
+        formData.append("image", itemForEdit.img);
+      }
+      formData.append("title", values.title);
+      dispatch(UpdateProgram({id:itemForEdit?.id,data:formData})).then((res) => {
+        if (res.type == 'UpdateProgram/fulfilled') {
+          dispatch(AllProgram());
+          Swal.fire({
+            title: "Updated!",
+            text: "Program has been Updated.",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(()=>{
+            form.resetFields()
+            dispatch(AllProgram());
+            setImgFile(null)
+            setOpenAddModel(false)
+            setItemForEdit(null)
+          });
+        }
+      });
+    }
+
+  };
+  // images
+  const handleChange = (e) => {
+    setImgFile(e.target.files[0]);
+  };
+  useEffect(() => {
+    if (!itemForEdit) {
+      return
+    }
+    form.setFieldsValue({ title: itemForEdit.name })
+  }, [itemForEdit])
   return (
     <div>
       <div style={{ margin: "24px 0" }}>
@@ -100,6 +159,7 @@ const CreateProgram = () => {
           </h3>
           <button
             onClick={() => {
+              setItemForEdit(null)
               setFormTitle("Add New Program");
               setOpenAddModel(true);
             }}
@@ -133,7 +193,7 @@ const CreateProgram = () => {
       <Modal
         centered
         open={openAddModel}
-        onCancel={() => setOpenAddModel(false)}
+        onCancel={() => { setItemForEdit(null); setImgFile(null); setOpenAddModel(false) }}
         width={500}
         footer={false}
       >
@@ -144,48 +204,66 @@ const CreateProgram = () => {
           >
             {formTitle}
           </h1>
-          <form onSubmit={handelsubmit}>
+          <Form onFinish={onFinish} form={form}>
             <div>
               <p className="text-[#6D6D6D] py-1">Package Name</p>
-              <input
-                onChange={(e) => {
-                  setsubName(e.target.value);
-                }}
-                className="w-[100%] border outline-none px-3 py-[10px]"
-                type="text"
-                value={subName}
-              />
-            </div>
-            <p className="text-[#6D6D6D] py-1">Package Image</p>
-            <label
-              htmlFor="product_img1"
-              style={{ display: "block", margin: "4px 0" }}
-              className="p-3 border "
-            >
-              <div className="flex justify-center items-center w-full h-full border-dashed border border-black py-10">
-                <FaRegImage className="text-2xl" />
-              </div>
-              <div className="hidden">
-                <input
-                  id="product_img1"
-                  placeholder="150 CND"
-                  type="file"
-                  style={{
-                    border: "1px solid #E0E4EC",
-                    height: "52px",
-                    background: "white",
-                    borderRadius: "8px",
-                    outline: "none",
-                  }}
+              <Form.Item
+                name="title"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input Package Name",
+                  },
+                ]}
+              >
+                <Input
+                  className="w-[100%] border outline-none px-3 py-[10px]"
+                  type="text"
                 />
-              </div>
-            </label>
-          </form>
-          <div className="text-center mt-6">
-            <button className="bg-[#B47000] px-6 py-3 text-[#FEFEFE]">
-              Save
-            </button>
-          </div>
+              </Form.Item>
+            </div>
+
+            <div>
+              <p className="text-[#6D6D6D] py-1">Package Image</p>
+
+              <label
+                htmlFor="image"
+                style={{ display: "block", margin: "4px 0" }}
+                className="p-3 border"
+              >
+                <Form.Item name="image">
+
+                  <div className="flex justify-center items-center w-full h-full border-dashed border border-black py-10">
+                    {imgFile ? (
+                      <img src={URL.createObjectURL(imgFile)} alt="" />
+                    ) : itemForEdit?.img ? <img src={`${ServerUrl}${itemForEdit.img}`} alt="" /> : (
+                      <FaRegImage className="text-2xl" />)}
+                  </div>
+
+                  <div className="hidden">
+                    <Input
+                      id="image"
+                      placeholder="150 CND"
+                      type="file"
+                      onChange={handleChange}
+                      style={{
+                        border: "1px solid #E0E4EC",
+                        height: "52px",
+                        background: "white",
+                        borderRadius: "8px",
+                        outline: "none",
+                      }}
+                    />
+                  </div>
+                </Form.Item>
+              </label>
+            </div>
+            <div className="text-center mt-6">
+              <button className="bg-[#B47000] px-6 py-3 text-[#FEFEFE]">
+                Save
+              </button>
+            </div>
+          </Form>
         </div>
       </Modal>
     </div>

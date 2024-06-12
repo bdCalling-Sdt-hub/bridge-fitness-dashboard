@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "../../Config";
+import baseAxios from "../../../Config";
 
 const initialState = {
   isError: false,
@@ -9,18 +9,18 @@ const initialState = {
   userData: [],
 };
 
-export const AllProducts = createAsyncThunk(
-  "AllProducts",
+export const AllProgram = createAsyncThunk(
+  "AllProgram",
   async (value, thunkAPI) => {
     try {
-      console.log("tushar", value);
       let token = localStorage.getItem("token");
-      let response = await axios.get("order/all", {
+      let response = await baseAxios.get("/program/all", {
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-      // console.log(response.data)
+      console.log(response);
 
       return response.data;
     } catch (error) {
@@ -34,8 +34,8 @@ export const AllProducts = createAsyncThunk(
   }
 );
 
-export const AllProductsSlice = createSlice({
-  name: "allproducts",
+export const allProgramSlice = createSlice({
+  name: "allProgram",
   initialState,
 
   reducers: {
@@ -50,10 +50,10 @@ export const AllProductsSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(AllProducts.pending, (state, { payload }) => {
+    builder.addCase(AllProgram.pending, (state, { payload }) => {
       state.isLoading = true;
     });
-    builder.addCase(AllProducts.fulfilled, (state, { payload }) => {
+    builder.addCase(AllProgram.fulfilled, (state, { payload }) => {
       console.log(payload);
       state.isError = false;
       state.isSuccess = true;
@@ -61,7 +61,7 @@ export const AllProductsSlice = createSlice({
       state.message = payload.message;
       state.userData = payload.data;
     });
-    builder.addCase(AllProducts.rejected, (state, { payload }) => {
+    builder.addCase(AllProgram.rejected, (state, { payload }) => {
       state.isSuccess = false;
       state.isError = true;
       state.isLoading = false;
@@ -71,6 +71,6 @@ export const AllProductsSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { reset } = AllProductsSlice.actions;
+export const { reset } = allProgramSlice.actions;
 
-export default AllProductsSlice.reducer;
+export default allProgramSlice.reducer;

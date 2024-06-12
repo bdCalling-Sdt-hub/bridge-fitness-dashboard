@@ -27,8 +27,6 @@ const Income = () => {
   }, [dispatch]);
 
   const totalIncomes = useSelector((state) => state.TotalIncome.userData);
-  console.log(totalIncomes);
-
   const kFormatter = (num) => {
     return Math.abs(num) > 999
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
