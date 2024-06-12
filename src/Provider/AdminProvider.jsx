@@ -6,7 +6,8 @@ import { Profile } from "../ReduxSlices/ProfileSlice";
 export const AdminContext = createContext(null || {});
 const AdminProvider = ({ children }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.Profile);
+  const user = "mithila";
+  // const user = useSelector((state) => state.Profile);
   console.log(user);
   useEffect(() => {
     dispatch(Profile());

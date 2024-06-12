@@ -1,24 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiEditLine } from "react-icons/ri";
-import { Modal, Table } from "antd";
+import { Form, Input, Modal, Table } from "antd";
 import { FaPlus, FaRegImage } from "react-icons/fa6";
-const data = [
-  {
-    key: "1",
-    name: "Basic Membership",
-    date: "15 May 2020 8:00 am",
-  },
-  {
-    key: "2",
-    name: "Standard Membership",
-    date: "15 May 2020 8:00 am",
-  },
-  {
-    key: "3",
-    name: "Premium Membership",
-    date: "15 May 2020 8:00 am",
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
+import moment from "moment";
+import { AddProgram } from "../../ReduxSlices/CreateProgram/AddCreateProgramSlice";
 
 const CreateProgram = () => {
   const [subName, setsubName] = useState("");
@@ -26,6 +13,22 @@ const CreateProgram = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
   const [reFresh, setReFresh] = useState("");
   const [formTitle, setFormTitle] = useState("Add New Program");
+  const [imgFile, setImgFile] = useState(null);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(AllProgram());
+  }, [dispatch]);
+
+  const programs = useSelector((state) => state.GetProgram.userData.data);
+  console.log(programs);
+
+  const data = programs?.map((program, index) => ({
+    key: index + 1,
+    name: program?.title,
+    date: moment(program?.createdAt).format("l"),
+  }));
+
   if (reFresh) {
     setTimeout(() => {
       setReFresh("");
@@ -83,7 +86,23 @@ const CreateProgram = () => {
       ),
     },
   ];
-  const handelsubmit = (e) => {};
+
+  const onFinish = (values) => {
+    const formData = new FormData();
+    if (imgFile) {
+      formData.append("image", imgFile);
+    }
+    if (!imgFile) {
+      return false;
+    }
+    formData.append("title", values.title);
+    dispatch(AddProgram(formData)).then((res) => console.log(res));
+  };
+  // images
+  const handleChange = (e) => {
+    setImgFile(e.target.files[0]);
+  };
+
   return (
     <div>
       <div style={{ margin: "24px 0" }}>
@@ -144,48 +163,68 @@ const CreateProgram = () => {
           >
             {formTitle}
           </h1>
-          <form onSubmit={handelsubmit}>
+          <Form onFinish={onFinish}>
             <div>
               <p className="text-[#6D6D6D] py-1">Package Name</p>
-              <input
-                onChange={(e) => {
-                  setsubName(e.target.value);
-                }}
-                className="w-[100%] border outline-none px-3 py-[10px]"
-                type="text"
-                value={subName}
-              />
-            </div>
-            <p className="text-[#6D6D6D] py-1">Package Image</p>
-            <label
-              htmlFor="product_img1"
-              style={{ display: "block", margin: "4px 0" }}
-              className="p-3 border "
-            >
-              <div className="flex justify-center items-center w-full h-full border-dashed border border-black py-10">
-                <FaRegImage className="text-2xl" />
-              </div>
-              <div className="hidden">
-                <input
-                  id="product_img1"
-                  placeholder="150 CND"
-                  type="file"
-                  style={{
-                    border: "1px solid #E0E4EC",
-                    height: "52px",
-                    background: "white",
-                    borderRadius: "8px",
-                    outline: "none",
+              <Form.Item
+                name="title"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input Package Name",
+                  },
+                ]}
+              >
+                <Input
+                  onChange={(e) => {
+                    setsubName(e.target.value);
                   }}
+                  className="w-[100%] border outline-none px-3 py-[10px]"
+                  type="text"
                 />
-              </div>
-            </label>
-          </form>
-          <div className="text-center mt-6">
-            <button className="bg-[#B47000] px-6 py-3 text-[#FEFEFE]">
-              Save
-            </button>
-          </div>
+              </Form.Item>
+            </div>
+
+            <div>
+              <p className="text-[#6D6D6D] py-1">Package Image</p>
+
+              <label
+                htmlFor="image"
+                style={{ display: "block", margin: "4px 0" }}
+                className="p-3 border"
+              >
+                <Form.Item name="image">
+                  {imgFile ? (
+                    <img src={URL.createObjectURL(imgFile)} alt="" />
+                  ) : (
+                    <div className="flex justify-center items-center w-full h-full border-dashed border border-black py-10">
+                      <FaRegImage className="text-2xl" />
+                    </div>
+                  )}
+                  <div className="hidden">
+                    <Input
+                      id="image"
+                      placeholder="150 CND"
+                      type="file"
+                      onChange={handleChange}
+                      style={{
+                        border: "1px solid #E0E4EC",
+                        height: "52px",
+                        background: "white",
+                        borderRadius: "8px",
+                        outline: "none",
+                      }}
+                    />
+                  </div>
+                </Form.Item>
+              </label>
+            </div>
+            <div className="text-center mt-6">
+              <button className="bg-[#B47000] px-6 py-3 text-[#FEFEFE]">
+                Save
+              </button>
+            </div>
+          </Form>
         </div>
       </Modal>
     </div>

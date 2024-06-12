@@ -24,6 +24,8 @@ import DeleteBlogSlice from "./ReduxSlices/Blog/DeleteBlogSlice";
 import AddTermsSlice from "./ReduxSlices/Terms/AddTermsSlice";
 import AddPrivecySlice from "./ReduxSlices/Privecy/AddPrivecySlice";
 import AddAboutSlice from "./ReduxSlices/About/AddAboutSlice";
+import getProgramReducer from "./ReduxSlices/CreateProgram/GetCreateProgramesSlice";
+import AddProgramReducer from "./ReduxSlices/CreateProgram/AddCreateProgramSlice";
 export const Store = configureStore({
   reducer: {
     UserData: SigninReducer,
@@ -44,12 +46,14 @@ export const Store = configureStore({
     UserGrowth: UserGrowthReducer,
     DeleteAdmin: DeleteAdminReducer,
     AllAdmin: AllAdminsReducer,
-    GetAllBlog :GetAllBlogSlice,
-    AddBlog :AddBlogSlice,
-    UpdateBlog : UpdateBlogSlice,
-    DeleteBlog:DeleteBlogSlice,
-    AddTerms :AddTermsSlice,
-    AddPrivecy:AddPrivecySlice,
-    AddAbout :AddAboutSlice,
+    GetAllBlog: GetAllBlogSlice,
+    AddBlog: AddBlogSlice,
+    UpdateBlog: UpdateBlogSlice,
+    DeleteBlog: DeleteBlogSlice,
+    AddTerms: AddTermsSlice,
+    AddPrivecy: AddPrivecySlice,
+    AddAbout: AddAboutSlice,
+    GetProgram: getProgramReducer,
+    AddProgram: AddProgramReducer,
   },
 });

@@ -39,11 +39,11 @@ const TotalSellerListTable = ({ Subscribers }) => {
 
   const data = newSubscriber?.map((subs, index) => ({
     key: index + 1,
-    name: subs.user_id.name,
-    photo: subs.user_id.profile_image,
-    email: subs.user_id.email,
-    contact: subs.user_id.phone_number,
-    location: subs.user_id.address,
+    name: subs.user_id?.name,
+    photo: subs.user_id?.profile_image,
+    email: subs.user_id?.email,
+    contact: subs.user_id?.phone_number,
+    location: subs.user_id?.address,
   }));
 
   const columns = [

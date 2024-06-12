@@ -20,6 +20,7 @@ const ManageOrder = () => {
   }, [dispatch]);
 
   const products = useSelector((state) => state.AllProducts.userData.data);
+  console.log(products);
   const loading = useSelector((state) => state.AllProducts.loading);
   const error = useSelector((state) => state.AllProducts.error);
 
@@ -40,11 +41,11 @@ const ManageOrder = () => {
     name: product?.name,
     email: product?.email,
     deliveryTime: moment(product?.updatedAt).format("MM/DD/YYYY"),
-    photo: product.images[0],
-    product: product.productName,
-    status: product?.status,
-    totalItems: products?.items,
-    Price: product.price,
+    photo: product?.images,
+    product: product?.productName,
+    status: product?.orderStatus,
+    totalItems: product?.quantity,
+    Price: product?.totalAmount,
   }));
 
   const handlePageChange = (page) => {
