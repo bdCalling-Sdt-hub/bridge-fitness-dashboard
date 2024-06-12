@@ -1,10 +1,13 @@
 import { Form, Input, Modal, Table, Button, Row, Col } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CiEdit } from 'react-icons/ci';
 import { FaPlus } from 'react-icons/fa6';
 import { RxCross2 } from "react-icons/rx";
 import { useForm } from "react-hook-form"
+import { useDispatch, useSelector } from 'react-redux';
+import { GetFAQ } from '../../ReduxSlices/FAQ/GetFAQSlice';
+import { AddFAQ } from '../../ReduxSlices/FAQ/AddFAQSlice';
 const data = [
     {
         key: '1',
@@ -39,23 +42,29 @@ const data = [
 ]
 const FAQ = () => {
     const [openAddModel, setOpenAddModel] = useState(false);
-    const [reFresh, setReFresh] = useState("");
     const [openEditModal, setOpenEditModal] = useState(false)
     const [showDelete, setShowDelete] = useState(false)
     const [deleteId, setDeleteId] = useState('')
     const [editData, seteditData] = useState('')
     const [question, setQuestion] = useState('')
     const [ans, setans] = useState('')
-    if (reFresh) {
-        setTimeout(() => {
-            setReFresh("")
-        }, 1500)
-    }
+    const dispatch = useDispatch()
+    const { FAQData } = useSelector(state => state.GetFAQ)
+    console.log(FAQData)
+    useEffect(() => {
+        dispatch(GetFAQ())
+    }, [])
     const handeldelete = () => {
         setShowDelete(false)
     }
     const handelsubmit = (e) => {
-
+        e.preventDefault()
+        const question = e.target.question.value;
+        const ans = e.target.ans.value;
+        if (!question || !ans) {
+            return false
+        }
+        dispatch(AddFAQ({ question: question, answer: ans })).then((res) => console.log(res))
     }
     return (
         <div>
