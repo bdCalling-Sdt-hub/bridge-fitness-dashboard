@@ -10,6 +10,7 @@ import { GetFAQ } from '../../ReduxSlices/FAQ/GetFAQSlice';
 import { AddFAQ } from '../../ReduxSlices/FAQ/AddFAQSlice';
 import Swal from 'sweetalert2';
 import { UpdateFAQ } from '../../ReduxSlices/FAQ/UpdateFAQSlice';
+import { DeleteFAQ } from '../../ReduxSlices/FAQ/DeleteFAQSlice';
 const data = [
     {
         key: '1',
@@ -56,7 +57,19 @@ const FAQ = () => {
         dispatch(GetFAQ())
     }, [])
     const handeldelete = () => {
-        setShowDelete(false)
+        dispatch(DeleteFAQ({ id: deleteId })).then((res) => {
+            if (res.type == 'DeleteFAQ/fulfilled') {
+                dispatch(GetFAQ())
+                Swal.fire({
+                    title: "Deleted",
+                    text: "FAQ has been Deleted.",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                setShowDelete(false)
+            }
+        })
     }
     const handelsubmit = (e) => {
         e.preventDefault()
@@ -146,14 +159,12 @@ const FAQ = () => {
                                 setQuestion(filterdData[0]?.question)
                                 setans(filterdData[0]?.answer)
                                 seteditID(item?._id)
-
                             }} className='text-2xl cursor-pointer' />
                             <RxCross2 onClick={() => {
                                 setDeleteId(item?._id)
                                 setShowDelete(true)
                             }} className='text-2xl cursor-pointer' />
                         </div>
-
                     </div>)
                 }
             </div>

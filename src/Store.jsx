@@ -31,6 +31,7 @@ import AddSubscriptionSlice from "./ReduxSlices/Subscription/AddSubscriptionSlic
 import GetFAQSlice from "./ReduxSlices/FAQ/GetFAQSlice";
 import AddFAQSlice from "./ReduxSlices/FAQ/AddFAQSlice";
 import UpdateFAQSlice from "./ReduxSlices/FAQ/UpdateFAQSlice";
+import DeleteFAQSlice from "./ReduxSlices/FAQ/DeleteFAQSlice";
 export const Store = configureStore({
   reducer: {
     UserData: SigninReducer,
@@ -65,5 +66,6 @@ export const Store = configureStore({
     GetFAQ: GetFAQSlice,
     AddFAQ:AddFAQSlice,
     UpdateFAQ:UpdateFAQSlice,
+    DeleteFAQ:DeleteFAQSlice,
   },
 });
