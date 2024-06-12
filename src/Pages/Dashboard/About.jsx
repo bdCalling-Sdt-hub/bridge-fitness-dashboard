@@ -1,8 +1,9 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import Swal from 'sweetalert2';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AddAbout } from '../../ReduxSlices/About/AddAboutSlice';
+import { GetAboutContent } from '../../ReduxSlices/About/GetAboutContentSlice';
 
 
 const About = () => {
@@ -10,6 +11,13 @@ const About = () => {
     const [content, setContent] = useState('');
     const [isLoading, seLoading] = useState(false)
     const dispatch = useDispatch()
+    const { AboutUs } = useSelector(state => state.GetAboutContent)
+    useEffect(() => {
+        setContent(AboutUs?.description)
+    }, [AboutUs])
+    useEffect(() => {
+        dispatch(GetAboutContent())
+    }, [])
     const handleTerms = () => {
         seLoading(true)
         dispatch(AddAbout({ description: content })).then((res) => {

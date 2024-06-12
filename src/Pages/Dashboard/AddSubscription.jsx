@@ -5,60 +5,35 @@ import { FaPlus } from "react-icons/fa6";
 import { CiCircleMinus } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { Subscription } from "../../ReduxSlices/AddSubscription";
-// const data = [
-//   {
-//     key: "1",
-//     name: "Basic Membership",
-//     price: "40 CND",
-//   },
-//   {
-//     key: "2",
-//     name: "Standard Membership",
-//     price: "80 CND",
-//   },
-//   {
-//     key: "3",
-//     name: "Premium Membership",
-//     price: "100 CND",
-//   },
-// ];
+import { useForm } from "react-hook-form";
+import { AddSubscriptions } from "../../ReduxSlices/Subscription/AddSubscriptionSlice";
+import Swal from "sweetalert2";
 function generateRandomNumber() {
   const randomNumber = Array.from({ length: 10 }, () =>
     Math.floor(Math.random() * 10)
   ).join("");
   return randomNumber;
 }
-const descriptions = [
-  { feature: "On-demand Access to ourworkout library", id: "bjasu1" },
-  { feature: "New Classes Every Week", id: "bjasu2" },
-  { feature: "Join a Global Community", id: "bjasu3" },
-];
 const AddSubscription = () => {
   const [subName, setsubName] = useState("");
   const [subPrice, setsubPrice] = useState("");
-  const [descriptionFeatures, setDescriptionFeatures] = useState(descriptions);
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [reFresh, setReFresh] = useState("");
   const dispatch = useDispatch();
-
+  const [descriptionFeatures, setDescriptionFeatures] = useState([]);
+  const [error, setError] = useState([])
+  const [seubId, setSubId] = useState()
   useEffect(() => {
     dispatch(Subscription());
   }, [dispatch]);
 
   const subscriptions = useSelector((state) => state.Subscription.userData);
-  console.log(subscriptions);
-
   const data = subscriptions?.map((subs, index) => ({
     key: index + 1,
-    name: subs.title,
-    price: subs.price,
+    name: subs?.title,
+    price: subs?.price,
+    feature: subs?.items,
+    id: subs?._id
   }));
-
-  if (reFresh) {
-    setTimeout(() => {
-      setReFresh("");
-    }, 1500);
-  }
 
   const columns = [
     {
@@ -88,8 +63,10 @@ const AddSubscription = () => {
               const manageSubscription = data.filter(
                 (item) => item.key == record.key
               );
-              setsubName(manageSubscription[0].name);
-              setsubPrice(manageSubscription[0].price);
+              setsubName(manageSubscription[0]?.name);
+              setsubPrice(manageSubscription[0]?.price);
+              setDescriptionFeatures(manageSubscription[0]?.feature)
+              setSubId(manageSubscription[0]?.id)
             }}
             style={{
               display: "flex",
@@ -110,7 +87,35 @@ const AddSubscription = () => {
       ),
     },
   ];
-  const handelsubmit = (e) => {};
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const onSubmit = data => {
+    setError([])
+    const SubscriptionData = {
+      title: subName,
+      price: subPrice,
+      items: descriptionFeatures
+    }
+    SubscriptionData?.items?.map(item => {
+      if (!item?.title) {
+        setError([...error, item.id])
+      }
+    })
+    if (error.length > 0) {
+      return false
+    }
+    dispatch(AddSubscriptions({ id: seubId, SubscriptionData })).then((res) => {
+      if (res.type == 'AddSubscriptions/fulfilled') {
+        dispatch(Subscription());
+        Swal.fire({
+          title: "updated!",
+          text: "plan has been updated.",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+      });
+      }
+    })
+  };
   return (
     <div>
       <div
@@ -142,7 +147,7 @@ const AddSubscription = () => {
           >
             Manage Subscriptions
           </h1>
-          <form onSubmit={handelsubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <p className="text-[#6D6D6D] py-1">Package Name</p>
               <input
@@ -165,51 +170,65 @@ const AddSubscription = () => {
                 value={subPrice}
               />
             </div>
-          </form>
-          <p className="text-[#6D6D6D] py-1">Description </p>
-          <div className="w-full  py-3 pb-10 px-3  border">
-            <div className="w-full  flex flex-col justify-start items-start gap-2">
-              {descriptionFeatures?.map((item) => (
-                <span key={item?.id} className="relative w-full">
-                  <input
-                    className="w-[90%] bg-[#FEFEFE] border py-3 px-2"
-                    type="text"
-                    name=""
-                    id=""
-                    defaultValue={item?.feature || "please insert a feature"}
-                  />
-                  <CiCircleMinus
-                    onClick={() => {
-                      const newfeatures = descriptionFeatures.filter(
-                        (filterItem) => filterItem?.id !== item?.id
-                      );
-                      setDescriptionFeatures(newfeatures);
-                    }}
-                    className="absolute right-3 top-[50%] translate-y-[-50%] text-2xl cursor-pointer text-[#E2BCC1]"
-                  />
-                </span>
-              ))}
+            <p className="text-[#6D6D6D] py-1">Description </p>
+            <div className="w-full  py-3 pb-10 px-3  border">
+              <div className="w-full  flex flex-col justify-start items-start gap-2">
+                {descriptionFeatures?.map((item) => (
+                  <span key={item?.id} className="relative w-full">
+                    <input
+                      onInput={(e) => {
+                        const newArray = descriptionFeatures.map(items => {
+                          if (items?.id == item.id) {
+                            return { ...items, title: e.target.value }
+                          } else {
+                            return items
+                          }
+                        })
+                        setDescriptionFeatures(newArray)
+                      }}
+                      className="w-[90%] bg-[#FEFEFE] border py-3 px-2"
+                      type="text"
+                      name=""
+                      id=""
+                      defaultValue={item?.title || ""}
+                      placeholder="please insert a feature"
+                    />
+                    <CiCircleMinus
+                      onClick={() => {
+                        const newfeatures = descriptionFeatures.filter(
+                          (filterItem) => filterItem?.id !== item?.id
+                        );
+                        setDescriptionFeatures(newfeatures);
+                      }}
+                      className="absolute right-3 top-[50%] translate-y-[-50%] text-2xl cursor-pointer text-[#E2BCC1]"
+                    />
+                    {
+                      error.includes(item.id) && <p className="text-red-500">feature can not be empty</p>
+                    }
+                  </span>
+                ))}
 
-              <div className="w-full relative py-3">
-                <button
-                  onClick={() => {
-                    setDescriptionFeatures([
-                      ...descriptionFeatures,
-                      { feature: false, id: generateRandomNumber() },
-                    ]);
-                  }}
-                  className="p-1 bg-[#B47000] rounded-full absolute right-[8.5px]"
-                >
-                  <FaPlus className="text-xl text-white" />
-                </button>
+                <div className="w-full relative py-3">
+                  <button type="button"
+                    onClick={() => {
+                      setDescriptionFeatures([
+                        ...descriptionFeatures,
+                        { title: false, id: generateRandomNumber() },
+                      ]);
+                    }}
+                    className="p-1 bg-[#B47000] rounded-full absolute right-[8.5px]"
+                  >
+                    <FaPlus className="text-xl text-white" />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="text-center mt-6">
-            <button className="bg-[#B47000] px-6 py-3 text-[#FEFEFE]">
-              Save & Change
-            </button>
-          </div>
+            <div className="text-center mt-6">
+              <button type="submit" className="bg-[#B47000] px-6 py-3 text-[#FEFEFE]">
+                Save & Change
+              </button>
+            </div>
+          </form>
         </div>
       </Modal>
     </div>

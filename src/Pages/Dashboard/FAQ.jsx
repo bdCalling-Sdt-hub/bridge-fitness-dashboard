@@ -1,10 +1,16 @@
 import { Form, Input, Modal, Table, Button, Row, Col } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CiEdit } from 'react-icons/ci';
 import { FaPlus } from 'react-icons/fa6';
 import { RxCross2 } from "react-icons/rx";
 import { useForm } from "react-hook-form"
+import { useDispatch, useSelector } from 'react-redux';
+import { GetFAQ } from '../../ReduxSlices/FAQ/GetFAQSlice';
+import { AddFAQ } from '../../ReduxSlices/FAQ/AddFAQSlice';
+import Swal from 'sweetalert2';
+import { UpdateFAQ } from '../../ReduxSlices/FAQ/UpdateFAQSlice';
+import { DeleteFAQ } from '../../ReduxSlices/FAQ/DeleteFAQSlice';
 const data = [
     {
         key: '1',
@@ -39,23 +45,73 @@ const data = [
 ]
 const FAQ = () => {
     const [openAddModel, setOpenAddModel] = useState(false);
-    const [reFresh, setReFresh] = useState("");
     const [openEditModal, setOpenEditModal] = useState(false)
     const [showDelete, setShowDelete] = useState(false)
     const [deleteId, setDeleteId] = useState('')
-    const [editData, seteditData] = useState('')
+    const [editID, seteditID] = useState('')
     const [question, setQuestion] = useState('')
     const [ans, setans] = useState('')
-    if (reFresh) {
-        setTimeout(() => {
-            setReFresh("")
-        }, 1500)
-    }
+    const dispatch = useDispatch()
+    const { FAQData } = useSelector(state => state.GetFAQ)
+    useEffect(() => {
+        dispatch(GetFAQ())
+    }, [])
     const handeldelete = () => {
-        setShowDelete(false)
+        dispatch(DeleteFAQ({ id: deleteId })).then((res) => {
+            if (res.type == 'DeleteFAQ/fulfilled') {
+                dispatch(GetFAQ())
+                Swal.fire({
+                    title: "Deleted",
+                    text: "FAQ has been Deleted.",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                setShowDelete(false)
+            }
+        })
     }
     const handelsubmit = (e) => {
-
+        e.preventDefault()
+        const question = e.target.question.value;
+        const ans = e.target.ans.value;
+        if (!question || !ans) {
+            return false
+        }
+        // add faq
+        dispatch(AddFAQ({ question: question, answer: ans })).then((res) => {
+            if (res.type == 'AddFAQ/fulfilled') {
+                dispatch(GetFAQ())
+                Swal.fire({
+                    title: "Added",
+                    text: "FAQ has been Added.",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                setOpenAddModel(false)
+                e.target.reset()
+            }
+        })
+    }
+    //update faq
+    const handleUpdate = (e) => {
+        e.preventDefault()
+        dispatch(UpdateFAQ({ id: editID, question: question, answer: ans })).then((res) => {
+            console.log(res)
+            if (res.type == 'UpdateFAQ/fulfilled') {
+                dispatch(GetFAQ())
+                Swal.fire({
+                    title: "Updated",
+                    text: "FAQ has been Updated.",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                setOpenEditModal(false)
+                e.target.reset()
+            }
+        })
     }
     return (
         <div>
@@ -88,28 +144,27 @@ const FAQ = () => {
             </div>
             <div className='bg-white py-6 px-4 rounded-md'>
                 {
-                    data.map(item => <div key={item?.key} className='flex justify-between items-start gap-4 '>
+                    FAQData.map(item => <div key={item?._id} className='flex justify-between items-start gap-4 '>
                         <div className='w-full '>
                             <p className='text-base font-medium bg-[#E8D3B0] rounded-xl py-2 px-4'><span className='mr-4'>Q:</span>{item?.question}</p>
                             <div className='flex justify-start items-start gap-2  py-2 px-4 bg-[#F8F1E6] rounded-xl my-4'>
                                 <p className='text-[#6D6D6D] font-medium'>Ans:</p>
-                                <p className='text-[#919191] leading-[24px] mb-6'>{item?.ans}</p>
+                                <p className='text-[#919191] leading-[24px] mb-6'>{item?.answer}</p>
                             </div>
                         </div>
                         <div className='w-[4%] flex justify-start items-center pt-3 gap-2'>
                             <CiEdit onClick={() => {
                                 setOpenEditModal(true)
-                                const filterdData = data.filter(filterId => filterId?.key === item?.key)
+                                const filterdData = FAQData.filter(filterId => filterId?._id === item?._id)
                                 setQuestion(filterdData[0]?.question)
-                                setans(filterdData[0]?.ans)
-
+                                setans(filterdData[0]?.answer)
+                                seteditID(item?._id)
                             }} className='text-2xl cursor-pointer' />
                             <RxCross2 onClick={() => {
-                                setDeleteId(item?.key)
+                                setDeleteId(item?._id)
                                 setShowDelete(true)
                             }} className='text-2xl cursor-pointer' />
                         </div>
-
                     </div>)
                 }
             </div>
@@ -188,8 +243,8 @@ const FAQ = () => {
                 footer={false}
             >
                 <div className='p-6'>
-                    <h1 style={{ marginBottom: "12px" }}>Add FAQ</h1>
-                    <form onSubmit={handelsubmit}>
+                    <h1 style={{ marginBottom: "12px" }}>Update FAQ</h1>
+                    <form onSubmit={handleUpdate}>
                         <div style={{ marginBottom: "16px" }}>
                             <label style={{ display: "block", marginBottom: "5px" }} >Question</label>
                             <input

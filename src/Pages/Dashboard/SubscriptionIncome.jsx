@@ -6,23 +6,8 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { LuRefreshCw } from "react-icons/lu";
-import avater from "../../assets/avater.png";
 import { useDispatch, useSelector } from "react-redux";
 import { Subscribers } from "../../ReduxSlices/SubscribersSlice";
-// const data = [
-//   {
-//     key: "1",
-//     name: "Tushar",
-//     email: "tushar@gmail.com",
-//     date: "18 Jul, 2023  4:30pm",
-//     photo: avater,
-//     package: "Premium Membership",
-//     status: "General",
-//     price: "40 CAD",
-//     balance: "600",
-//   },
-// ];
-
 const SubscriptionIncome = () => {
   const [value, setValue] = useState(
     new URLSearchParams(window.location.search).get("date") ||

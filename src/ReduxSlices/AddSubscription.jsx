@@ -38,14 +38,7 @@ export const subscriptionSlice = createSlice({
   initialState,
 
   reducers: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isSuccess = false;
-      state.isError = false;
-      state.message = "";
-      state.userData = [];
-      state.accessToken = "";
-    },
+  
   },
 
   extraReducers: (builder) => {

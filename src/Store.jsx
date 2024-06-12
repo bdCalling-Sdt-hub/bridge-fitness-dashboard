@@ -24,6 +24,14 @@ import DeleteBlogSlice from "./ReduxSlices/Blog/DeleteBlogSlice";
 import AddTermsSlice from "./ReduxSlices/Terms/AddTermsSlice";
 import AddPrivecySlice from "./ReduxSlices/Privecy/AddPrivecySlice";
 import AddAboutSlice from "./ReduxSlices/About/AddAboutSlice";
+import GetAboutContentSlice from "./ReduxSlices/About/GetAboutContentSlice";
+import PrivecyPolicySlice from "./ReduxSlices/Privecy/PrivecyPolicySlice";
+import TermsConditionsSlice from "./ReduxSlices/Terms/TermsConditionsSlice";
+import AddSubscriptionSlice from "./ReduxSlices/Subscription/AddSubscriptionSlice";
+import GetFAQSlice from "./ReduxSlices/FAQ/GetFAQSlice";
+import AddFAQSlice from "./ReduxSlices/FAQ/AddFAQSlice";
+import UpdateFAQSlice from "./ReduxSlices/FAQ/UpdateFAQSlice";
+import DeleteFAQSlice from "./ReduxSlices/FAQ/DeleteFAQSlice";
 export const Store = configureStore({
   reducer: {
     UserData: SigninReducer,
@@ -44,12 +52,20 @@ export const Store = configureStore({
     UserGrowth: UserGrowthReducer,
     DeleteAdmin: DeleteAdminReducer,
     AllAdmin: AllAdminsReducer,
-    GetAllBlog :GetAllBlogSlice,
-    AddBlog :AddBlogSlice,
-    UpdateBlog : UpdateBlogSlice,
-    DeleteBlog:DeleteBlogSlice,
-    AddTerms :AddTermsSlice,
-    AddPrivecy:AddPrivecySlice,
-    AddAbout :AddAboutSlice,
+    GetAllBlog: GetAllBlogSlice,
+    AddBlog: AddBlogSlice,
+    UpdateBlog: UpdateBlogSlice,
+    DeleteBlog: DeleteBlogSlice,
+    AddTerms: AddTermsSlice,
+    AddPrivecy: AddPrivecySlice,
+    AddAbout: AddAboutSlice,
+    GetAboutContent: GetAboutContentSlice,
+    PrivecyPolicy: PrivecyPolicySlice,
+    TermsConditions: TermsConditionsSlice,
+    AddSubscriptions: AddSubscriptionSlice,
+    GetFAQ: GetFAQSlice,
+    AddFAQ:AddFAQSlice,
+    UpdateFAQ:UpdateFAQSlice,
+    DeleteFAQ:DeleteFAQSlice,
   },
 });
