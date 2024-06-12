@@ -1,14 +1,22 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddTerms } from '../../ReduxSlices/Terms/AddTermsSlice';
 import Swal from 'sweetalert2';
+import { TermsConditions } from '../../ReduxSlices/Terms/TermsConditionsSlice';
 
 const Terms = () => {
     const editor = useRef(null);
     const [content, setContent] = useState('');
     const [isLoading, seLoading] = useState(false)
     const dispatch = useDispatch()
+    const { TermsConditionsData } = useSelector(state => state.TermsConditions)
+    useEffect(() => {
+        setContent(TermsConditionsData[0]?.description)
+    }, [TermsConditionsData])
+    useEffect(() => {
+        dispatch(TermsConditions())
+    }, [])
     const handleTerms = () => {
         seLoading(true)
         dispatch(AddTerms({ description: content })).then((res) => {

@@ -1,14 +1,22 @@
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AddPrivecy } from '../../ReduxSlices/Privecy/AddPrivecySlice';
 import Swal from 'sweetalert2';
+import { PrivecyPolicy } from '../../ReduxSlices/Privecy/PrivecyPolicySlice';
 const PrivacyPolicy = () => {
     const editor = useRef(null);
     const [content, setContent] = useState('');
     const [isLoading, seLoading] = useState(false)
     const dispatch = useDispatch()
+    const { PrivecyPolicyData } = useSelector(state => state.PrivecyPolicy)
+    useEffect(() => {
+        setContent(PrivecyPolicyData[0]?.description)
+    }, [PrivecyPolicyData])
+    useEffect(() => {
+        dispatch(PrivecyPolicy())
+    }, [])
     const handleTerms = () => {
         seLoading(true)
         dispatch(AddPrivecy({ description: content })).then((res) => {
