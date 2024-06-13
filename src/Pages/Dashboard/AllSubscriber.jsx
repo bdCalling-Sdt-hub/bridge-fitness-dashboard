@@ -6,20 +6,6 @@ import { LuRefreshCw } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import { Subscribers } from "../../ReduxSlices/SubscribersSlice";
 import moment from "moment";
-// const data = [
-//   {
-//     key: "1",
-//     name: "Tushar",
-//     photo: avater,
-//     email: "tushar@gmail.com",
-//     date: "1 Feb, 2020",
-//     contact: "(201) 555-0124",
-//     location: "Banasree",
-//     status: "1 monthh",
-//     selling: "500",
-//     balance: "600",
-//   },
-// ];
 const AllSubscriber = () => {
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
@@ -35,8 +21,6 @@ const AllSubscriber = () => {
   }, [dispatch]);
 
   const subscibers = useSelector((state) => state.SubscriberUser.userData.data);
-  console.log(subscibers);
-
   const data = subscibers?.map((users, index) => ({
     key: index + 1,
     name: users?.user_id?.name,
@@ -234,7 +218,8 @@ const AllSubscriber = () => {
           columns={columns}
           dataSource={data}
           pagination={{
-            pageSize: 4,
+            pageSize: 10,
+            showSizeChanger:false,
             defaultCurrent: parseInt(page),
             onChange: handlePageChange,
           }}

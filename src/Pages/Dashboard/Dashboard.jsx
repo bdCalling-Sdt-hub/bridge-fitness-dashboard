@@ -6,7 +6,6 @@ import { HiLogout } from "react-icons/hi";
 import { LuDatabase, LuUser } from "react-icons/lu";
 import { TbUserPlus } from "react-icons/tb";
 import { MdDashboard, MdDashboardCustomize, MdOutlineManageHistory, MdOutlineSignalCellularAlt } from "react-icons/md";
-import { IoSpeedometerOutline } from "react-icons/io5";
 import { RiNotification2Line } from "react-icons/ri";
 const { Header, Sider, Content } = Layout;
 import { IoSettingsOutline } from "react-icons/io5";
@@ -14,8 +13,8 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { LiaProductHunt } from "react-icons/lia";
 import { useForm } from "react-hook-form";
-import { IoIosDocument } from "react-icons/io";
-import { FaVideo } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { ServerUrl } from "../../../Config";
 const Dashboard = () => {
   const [dropdown, setDropdown] = useState(false)
   const [dropdown2, setDropdown2] = useState(false)
@@ -23,6 +22,7 @@ const Dashboard = () => {
   const [openAddModal, setOpenAddModal] = useState(false)
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { user } = useSelector(state => state.Profile)
   const handleLogOut = () => {
     navigate('/login');
     window.location.reload();
@@ -412,8 +412,8 @@ const Dashboard = () => {
                 padding: "10px"
               }}
             >
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLotvhr2isTRMEzzT30Cj0ly77jFThGXr0ng&usqp=CAU" style={{ width: "30px", height: "30px", borderRadius: "100%" }} alt="" />
-              <h2 style={{ color: "black", fontSize: "10px" }}>DR. Jim ahhmed</h2>
+              <img src={`${user?.profile_image?.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}${user.profile_image}`}`} style={{ width: "30px", height: "30px", borderRadius: "100%" }} alt="" />
+              <h2 style={{ color: "black", fontSize: "10px" }}>{user?.name}</h2>
             </Link>
           </div>
         </Header>

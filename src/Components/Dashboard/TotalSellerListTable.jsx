@@ -139,7 +139,8 @@ const TotalSellerListTable = ({ Subscribers }) => {
         columns={columns}
         dataSource={data}
         pagination={{
-          pageSize: 4,
+          pageSize: 5,
+          showSizeChanger:false,
           defaultCurrent: parseInt(page),
           onChange: handlePageChange,
         }}

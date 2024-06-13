@@ -46,6 +46,9 @@ import AddClassSlice from "./ReduxSlices/Classes/AddClassSlice";
 import UpdateSerieReducer from "./ReduxSlices/CreateSeries/UpdateSerieSlice";
 import UpdateClassSlice from "./ReduxSlices/Classes/UpdateClassSlice";
 import DeleteClassSlice from "./ReduxSlices/Classes/DeleteClassSlice";
+import ProfileSlice from "./ReduxSlices/Profile/ProfileSlice";
+import ChangePassSlice from "./ReduxSlices/Profile/ChangePassSlice";
+import EditProfileSlice from "./ReduxSlices/Profile/EditProfileSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -88,13 +91,15 @@ export const Store = configureStore({
     GetContact: GetContactSlice,
     UpdateContact: UpdateContactSlice,
     AddContact: AddContactSlice,
-    GetAllClass : GetAllClassSlice,
+    GetAllClass: GetAllClassSlice,
     AllSeries: AllSeriesReducer,
     AddSeries: AddSeriesReducer,
-    AddClass:AddClassSlice,
+    AddClass: AddClassSlice,
     UpdateSerie: UpdateSerieReducer,
-    UpdateClass:UpdateClassSlice,
-    DeleteClass:DeleteClassSlice,
-
+    UpdateClass: UpdateClassSlice,
+    DeleteClass: DeleteClassSlice,
+    Profile: ProfileSlice,
+    ChangePass:ChangePassSlice,
+    EditProfile:EditProfileSlice
   },
 });
