@@ -45,6 +45,7 @@ import AddSeriesReducer from "./ReduxSlices/CreateSeries/AddSeriesSlice";
 import AddClassSlice from "./ReduxSlices/Classes/AddClassSlice";
 import UpdateSerieReducer from "./ReduxSlices/CreateSeries/UpdateSerieSlice";
 import UpdateClassSlice from "./ReduxSlices/Classes/UpdateClassSlice";
+import DeleteClassSlice from "./ReduxSlices/Classes/DeleteClassSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -93,6 +94,7 @@ export const Store = configureStore({
     AddClass:AddClassSlice,
     UpdateSerie: UpdateSerieReducer,
     UpdateClass:UpdateClassSlice,
+    DeleteClass:DeleteClassSlice,
 
   },
 });
