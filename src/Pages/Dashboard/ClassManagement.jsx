@@ -13,6 +13,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetAllClass } from "../../ReduxSlices/Classes/GetAllClassSlice";
 import { ServerUrl } from "../../../Config";
 import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
+import { AllSeries } from "../../ReduxSlices/CreateSeries/GetCreateSeriesSlice";
+import { AddClass } from "../../ReduxSlices/Classes/AddClassSlice";
+import Swal from "sweetalert2";
 
 const ClassManagement = () => {
   const [form] = Form.useForm()
@@ -26,7 +29,7 @@ const ClassManagement = () => {
   const pages = [...Array(5).keys()];
   const [limit, setlimit] = useState(10)
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [openUpdateModel, setOpenUpdateModel] = useState(false);
+  const [editItem, seteditItem] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [formFor, setFormFor] = useState('Add New Class')
   const [uploadFiles, setuploadFiles] = useState({
@@ -40,21 +43,11 @@ const ClassManagement = () => {
   const [submitError, setSubmitError] = useState(false)
   const dispatch = useDispatch()
   const { Classes, meta } = useSelector(state => state.GetAllClass)
-  useEffect(() => {
-    dispatch(GetAllClass({ page: pageNumber, limit: limit }))
-  }, [limit, pageNumber])
-
-  useEffect(() => {
-    dispatch(AllProgram());
-  }, [dispatch]);
-  const programs = useSelector((state) => state.AllProgram?.userData?.data);
-  console.log(programs)
   const handeldelete = () => {
     setShowDelete(false);
   };
   const onFinish = (values) => {
     const formData = new FormData();
-    console.log(values)
     const { date, ...otherValues } = values;
     if (formFor == 'Add New Class') {
       if (uploadFiles?.video || uploadFiles?.doc || uploadFiles?.pdf) {
@@ -67,10 +60,66 @@ const ClassManagement = () => {
         formData.append(key, values[key]);
       });
       formData.append('video', uploadFiles.videoName)
-      formData.append('docFile', uploadFiles.docName)
-      formData.append('pdfFile', uploadFiles.pdfName)
+      formData.append('docs', uploadFiles.docName)
+      formData.append('pdf', uploadFiles.pdfName)
+      dispatch(AddClass(formData)).then((res) => {
+        if (res.type == 'AddClass/fulfilled') {
+          Swal.fire({
+            title: "Added!",
+            text: "Your Class has been Added.",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          dispatch(GetAllClass({ page: pageNumber, limit: limit }))
+          form.resetFields()
+          setOpenAddModel(false)
+          setuploadFiles({
+            video: false,
+            doc: false,
+            pdf: false,
+            videoName: false,
+            pdfName: false,
+            docName: false,
+          })
+        }
+      })
+    } else {
+      formData.append("date", date?.toString().split('T')[0]);
+      Object.keys(otherValues).forEach((key) => {
+        formData.append(key, values[key]);
+      });
+      if (uploadFiles.videoName) {
+        formData.append('video', uploadFiles.videoName)
+      }
+      if (uploadFiles.docName) {
+        formData.append('docs', uploadFiles.docName)
+      }
+      if (uploadFiles.docName) {
+        formData.append('pdf', uploadFiles.pdfName)
+      }
     }
   };
+
+  // fetch data
+  useEffect(() => {
+    dispatch(GetAllClass({ page: pageNumber, limit: limit }))
+  }, [limit, pageNumber])
+
+  useEffect(() => {
+    dispatch(AllProgram());
+  }, []);
+  const programs = useSelector((state) => state.AllProgram?.userData?.data);
+  const series = useSelector((state) => state.AllSeries.userData);
+  useEffect(() => {
+    dispatch(AllSeries());
+  }, []);
+  useEffect(() => {
+    if (!editItem) {
+      return
+    }
+    form.setFieldsValue(editItem)
+  }, [editItem])
   return (
     <div>
       <div style={{ marginTop: "24px" }}>
@@ -215,7 +264,7 @@ const ClassManagement = () => {
                     }}
                   >
                     {
-                      programs?.map(item=><option key={item?._id} value={item?._id}>{item?.title}</option>)
+                      programs?.map(item => <option key={item?._id} value={item?._id}>{item?.title}</option>)
                     }
 
                   </select>
@@ -244,9 +293,9 @@ const ClassManagement = () => {
                       outline: "none",
                     }}
                   >
-                    <option value="seriesID">series Name</option>
-                    <option value="seriesID">series Name</option>
-                    <option value="seriesID">series Name</option>
+                    {
+                      series?.data?.map(item => <option key={item?._id} value={item?._id}>{item?.title}</option>)
+                    }
                   </select>
                 </Form.Item>
               </div>
@@ -286,7 +335,7 @@ const ClassManagement = () => {
                   <div className="border p-2 rounded-lg">
                     <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
                       {
-                        uploadFiles?.videoName ? <p>{uploadFiles?.videoName?.name?.slice(0, 34)}....</p> : <><FaVideo /> browse video</>
+                        uploadFiles?.videoName ? <p>{uploadFiles?.videoName?.name?.slice(0, 34)}....</p> : editItem?.video ? <p>{editItem?.video?.split('/')[2].slice(0, 34)}....</p> : <><FaVideo /> browse video</>
                       }
                     </span>
                   </div>
@@ -327,7 +376,7 @@ const ClassManagement = () => {
                   <div className="border p-2 rounded-lg">
                     <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
                       {
-                        uploadFiles?.pdfName ? <p>{uploadFiles?.pdfName?.name?.slice(0, 34)}....</p> : <> <FaFilePdf /> browse pdf</>
+                        uploadFiles?.pdfName ? <p>{uploadFiles?.pdfName?.name?.slice(0, 34)}....</p> : editItem?.pdfFile ? <p>{editItem?.pdfFile?.split('/')[2].slice(0, 34)}....</p> : <> <FaFilePdf /> browse pdf</>
                       }
                     </span>
                   </div>
@@ -368,7 +417,7 @@ const ClassManagement = () => {
                   <div className="border p-2 rounded-lg">
                     <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
                       {
-                        uploadFiles?.docName ? <p>{uploadFiles?.docName?.name?.slice(0, 34)}....</p> : <> <IoDocumentSharp /> browse doc</>
+                        uploadFiles?.docName ? <p>{uploadFiles?.docName?.name?.slice(0, 34)}....</p> : editItem?.docFile ? <p>{editItem?.docFile?.split('/')[2].slice(0, 34)}....</p> : <> <IoDocumentSharp /> browse doc</>
                       }
                     </span>
                   </div>
@@ -462,7 +511,6 @@ const ClassManagement = () => {
       >
         <Row gutter={30}>
           {Classes.map((item, index) => {
-            console.log(item)
             const key = item?._id;
             return (
               <Col
@@ -546,7 +594,7 @@ const ClassManagement = () => {
                       Delete
                     </button>
                     <button
-                      onClick={() => setOpenUpdateModel(true)}
+                      onClick={() => { setFormFor('Update Class'); setOpenAddModel(true); seteditItem(item) }}
                       style={{
                         background: "transparent",
                         border: "none",
