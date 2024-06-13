@@ -20,8 +20,6 @@ export const AllProgram = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
-
       return response.data;
     } catch (error) {
       const message =

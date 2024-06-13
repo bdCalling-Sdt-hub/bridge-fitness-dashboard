@@ -28,8 +28,6 @@ const CreateProgram = () => {
     img: program?.image,
     id:program?._id
   }));
-
-
   const columns = [
     {
       title: "S.No",
