@@ -44,6 +44,7 @@ import AddSeriesReducer from "./ReduxSlices/CreateSeries/AddSeriesSlice";
 import UpdateSerieReducer from "./ReduxSlices/CreateSeries/UpdateSerieSlice";
 import GetAllSubscriptionReducer from "./ReduxSlices/Subscription/GetAllSubscriptionSlice";
 import GetEcommerceIncomeReducer from "./ReduxSlices/GetEcommerceIncomeSlice";
+import GetAllNotificationReducer from "./ReduxSlices/Notification/GetAllNotificationSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -91,5 +92,6 @@ export const Store = configureStore({
     UpdateSerie: UpdateSerieReducer,
     AllSubscription: GetAllSubscriptionReducer,
     AllEcommerces: GetEcommerceIncomeReducer,
+    AllNotification: GetAllNotificationReducer,
   },
 });
