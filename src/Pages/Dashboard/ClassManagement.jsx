@@ -1,10 +1,8 @@
-import { Form, Input, Modal, Button } from "antd";
+import { Form, Input, Modal, Button, Pagination } from "antd";
 import React, { useEffect, useState } from "react";
 import { FaFilePdf, FaImage, FaPlus, FaVideo } from "react-icons/fa6";
-import course from "../../assets/course.png";
 import { Col, Row } from "antd";
 import { CiCalendar } from "react-icons/ci";
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import TextArea from "antd/es/input/TextArea";
 
 import { useParams } from "react-router-dom";
@@ -17,6 +15,8 @@ import { AddClass } from "../../ReduxSlices/Classes/AddClassSlice";
 import Swal from "sweetalert2";
 import { AllSeries } from "../../ReduxSlices/CreateSeries/GetAllSeriesSlice";
 import { UpdateClass } from "../../ReduxSlices/Classes/UpdateClassSlice";
+import { DeleteClass } from "../../ReduxSlices/Classes/DeleteClassSlice";
+import { FiSearch } from "react-icons/fi";
 
 const ClassManagement = () => {
   const [form] = Form.useForm()
@@ -27,12 +27,13 @@ const ClassManagement = () => {
     new URLSearchParams(window.location.search).get("program") || "all"
   );
   const { name } = useParams();
-  const pages = [...Array(5).keys()];
-  const [limit, setlimit] = useState(10)
+  const [limit, setlimit] = useState(20)
   const [openAddModel, setOpenAddModel] = useState(false);
   const [editItem, seteditItem] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [formFor, setFormFor] = useState('Add New Class')
+  const [deleteId, setDeleteId] = useState('')
+  const [search, setSearch] = useState("");
   const [uploadFiles, setuploadFiles] = useState({
     video: false,
     doc: false,
@@ -45,7 +46,24 @@ const ClassManagement = () => {
   const dispatch = useDispatch()
   const { Classes, meta } = useSelector(state => state.GetAllClass)
   const handeldelete = () => {
-    setShowDelete(false);
+    if (!deleteId) {
+      return
+    }
+    dispatch(DeleteClass({ id: deleteId })).then((res) => {
+      if (res.type == 'DeleteClass/fulfilled') {
+        setOpenAddModel(false)
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your Class has been Deleted.",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setShowDelete(false);
+        setDeleteId('')
+      }
+    })
+    // deleteId
   };
   const onFinish = (values) => {
     const formData = new FormData();
@@ -126,8 +144,8 @@ const ClassManagement = () => {
 
   // fetch data
   useEffect(() => {
-    dispatch(GetAllClass({ page: pageNumber, limit: limit }))
-  }, [limit, pageNumber])
+    dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search }))
+  }, [limit, pageNumber, search])
 
   useEffect(() => {
     dispatch(AllProgram());
@@ -143,6 +161,12 @@ const ClassManagement = () => {
     }
     form.setFieldsValue(editItem)
   }, [editItem])
+  const onChangePage = (pageNumber) => {
+    setPageNumber(pageNumber)
+  };
+  const onShowSizeChange = (current, size) => {
+    setlimit(size);
+  }
   return (
     <div>
       <div style={{ marginTop: "24px" }}>
@@ -157,30 +181,49 @@ const ClassManagement = () => {
           <h3 style={{ fontSize: "24px", fontWeight: 600, color: "#2F2F2F" }}>
             All Classes
           </h3>
-          <button
-            onClick={() => { setFormFor('Add New Class'); setOpenAddModel(true) }}
-            style={{
-              borderRadius: "4px",
-              color: "#F2F2F2",
-              backgroundColor: "#B47000",
-              border: "none",
-              outline: "none",
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "4px",
-              padding: "10px 20px",
-              fontWeight: "500",
-            }}
-          >
-            <FaPlus
-              style={{
-                marginTop: "-2px",
+          <div className="flex justify-end items-center gap-3">
+            <Input
+              onChange={(e) => {
+                setSearch(e.target.value)
+                setPageNumber(1)
               }}
+              placeholder="Search..."
+              prefix={<FiSearch size={14} color="#868FA0" />}
+              style={{
+                width: "250px",
+                height: "43px",
+                fontSize: "14px",
+                border: 'none',
+                outline: 'none',
+              }}
+              size="middle"
+              value={search}
             />
-            Add new class
-          </button>
+            <button
+              onClick={() => { setFormFor('Add New Class'); setOpenAddModel(true) }}
+              style={{
+                borderRadius: "4px",
+                color: "#F2F2F2",
+                backgroundColor: "#B47000",
+                border: "none",
+                outline: "none",
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "4px",
+                padding: "10px 20px",
+                fontWeight: "500",
+              }}
+            >
+              <FaPlus
+                style={{
+                  marginTop: "-2px",
+                }}
+              />
+              Add new class
+            </button>
+          </div>
         </div>
       </div>
       <div className="flex justify-start items-center gap-2 mb-6">
@@ -289,7 +332,6 @@ const ClassManagement = () => {
                     {
                       programs?.map(item => <option key={item?._id} value={item?._id}>{item?.title}</option>)
                     }
-
                   </select>
                 </Form.Item>
               </div>
@@ -550,7 +592,7 @@ const ClassManagement = () => {
                   }}
                 >
                   <div className="w-full">
-                    <video autoPlay muted loop>
+                    <video autoPlay={false} muted loop>
                       {
                         item?.video && <source src={`${ServerUrl}${item?.video}`} />
                       }
@@ -580,7 +622,7 @@ const ClassManagement = () => {
                           fontSize: "18px",
                         }}
                       />{" "}
-                      {item?.date}
+                      {item?.date?.split('T')[0]}
                     </p>
                     <p>Topic: {item?.topic}</p>
                   </div>
@@ -657,36 +699,8 @@ const ClassManagement = () => {
             </button>
           </div>
         </Modal>
-        <div className={`flex justify-center items-center gap-4 mx-4`}>
-          <button
-            disabled={pageNumber === 0}
-            className={`flex justify-start items-center gap-4 mx-4 ${pageNumber !== 0 ? "text-[#555555]" : "text-[#C2C2C2]"
-              }`}
-          >
-            <SlArrowLeft className="-mt-1" />
-            Previous
-          </button>
-          {pages.map((item, index) => (
-            <button
-              className={`${pageNumber === item
-                ? "text-[#555555] border rounded-full"
-                : "text-[#C2C2C2]"
-                } py-1 px-3 `}
-              key={index}
-            >
-              {item + 1}
-            </button>
-          ))}
-          <button
-            disabled={pageNumber !== pageNumber.length - 1}
-            className={`flex justify-start items-center gap-4 mx-4 ${pageNumber !== pageNumber.length - 1
-              ? "text-[#C2C2C2]"
-              : " text-[#555555]"
-              }`}
-          >
-            Next
-            <SlArrowRight className="-mt-1" />
-          </button>
+        <div className='text-center mt-8'>
+          <Pagination defaultCurrent={pageNumber} total={meta?.total} pageSize={limit} onShowSizeChange={onShowSizeChange} onChange={onChangePage} />
         </div>
       </div>
     </div>
