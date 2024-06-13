@@ -31,13 +31,13 @@ const Series = () => {
   console.log(programs);
 
   const items = useSelector((state) => state.AllSeries.userData);
-  console.log(items);
-
+console.log(items)
   const data = items?.data?.map((item, index) => ({
     key: index + 1,
     program: item?.program?.title,
     name: item?.title,
     id: item?.id,
+    _id:item?.program?._id
   }));
 
   const columns = [
@@ -68,7 +68,6 @@ const Series = () => {
               setFormTitle("Edit Series");
               setSeries(record);
               setItemForEdit(record);
-              console.log(record);
             }}
             style={{
               display: "flex",
@@ -85,7 +84,7 @@ const Series = () => {
               }}
             />
           </button>
-          <Link to={`/series/${record?.name}?program=${record?.program}`}>
+          <Link to={`/series/${record?.name}?program=${record?.program}&id=${record?._id}&series=${record?.id}`}>
             <MdReadMore
               style={{
                 fontSize: "25px",
