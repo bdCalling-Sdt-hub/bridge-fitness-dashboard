@@ -1,10 +1,8 @@
 import { Form, Input, Modal, Button, Pagination } from "antd";
 import React, { useEffect, useState } from "react";
 import { FaFilePdf, FaImage, FaPlus, FaVideo } from "react-icons/fa6";
-import course from "../../assets/course.png";
 import { Col, Row } from "antd";
 import { CiCalendar } from "react-icons/ci";
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import TextArea from "antd/es/input/TextArea";
 
 import { useParams } from "react-router-dom";
@@ -18,6 +16,7 @@ import Swal from "sweetalert2";
 import { AllSeries } from "../../ReduxSlices/CreateSeries/GetAllSeriesSlice";
 import { UpdateClass } from "../../ReduxSlices/Classes/UpdateClassSlice";
 import { DeleteClass } from "../../ReduxSlices/Classes/DeleteClassSlice";
+import { FiSearch } from "react-icons/fi";
 
 const ClassManagement = () => {
   const [form] = Form.useForm()
@@ -34,6 +33,7 @@ const ClassManagement = () => {
   const [showDelete, setShowDelete] = useState(false);
   const [formFor, setFormFor] = useState('Add New Class')
   const [deleteId, setDeleteId] = useState('')
+  const [search, setSearch] = useState("");
   const [uploadFiles, setuploadFiles] = useState({
     video: false,
     doc: false,
@@ -144,8 +144,8 @@ const ClassManagement = () => {
 
   // fetch data
   useEffect(() => {
-    dispatch(GetAllClass({ page: pageNumber, limit: limit }))
-  }, [limit, pageNumber])
+    dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search }))
+  }, [limit, pageNumber, search])
 
   useEffect(() => {
     dispatch(AllProgram());
@@ -181,30 +181,49 @@ const ClassManagement = () => {
           <h3 style={{ fontSize: "24px", fontWeight: 600, color: "#2F2F2F" }}>
             All Classes
           </h3>
-          <button
-            onClick={() => { setFormFor('Add New Class'); setOpenAddModel(true) }}
-            style={{
-              borderRadius: "4px",
-              color: "#F2F2F2",
-              backgroundColor: "#B47000",
-              border: "none",
-              outline: "none",
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "4px",
-              padding: "10px 20px",
-              fontWeight: "500",
-            }}
-          >
-            <FaPlus
-              style={{
-                marginTop: "-2px",
+          <div className="flex justify-end items-center gap-3">
+            <Input
+              onChange={(e) => {
+                setSearch(e.target.value)
+                setPageNumber(1)
               }}
+              placeholder="Search..."
+              prefix={<FiSearch size={14} color="#868FA0" />}
+              style={{
+                width: "250px",
+                height: "43px",
+                fontSize: "14px",
+                border: 'none',
+                outline: 'none',
+              }}
+              size="middle"
+              value={search}
             />
-            Add new class
-          </button>
+            <button
+              onClick={() => { setFormFor('Add New Class'); setOpenAddModel(true) }}
+              style={{
+                borderRadius: "4px",
+                color: "#F2F2F2",
+                backgroundColor: "#B47000",
+                border: "none",
+                outline: "none",
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "4px",
+                padding: "10px 20px",
+                fontWeight: "500",
+              }}
+            >
+              <FaPlus
+                style={{
+                  marginTop: "-2px",
+                }}
+              />
+              Add new class
+            </button>
+          </div>
         </div>
       </div>
       <div className="flex justify-start items-center gap-2 mb-6">

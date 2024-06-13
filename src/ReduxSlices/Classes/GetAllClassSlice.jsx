@@ -12,15 +12,15 @@ const initialState = {
 
 export const GetAllClass = createAsyncThunk(
     "GetAllClass",
-    async (value, thunkAPI) => {
+    async (value, thunkAPI) => {//${value?.searchTerm && `${value.date?'&':'?'}searchTerm=${value?.searchTerm}
         try {
-            let response = await baseAxios.get(`/class/all?page=${value.page}&limit=${value.limit}`, {
+            let response = await baseAxios.get(`/class/all?page=${value.page}&limit=${value.limit}${value?.searchTerm && `&searchTerm=${value?.searchTerm}`}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
                 }
             });
-            console.log(response)
+            // console.log(response)
             return response.data.data;
         } catch (error) {
             const message = error?.response?.data?.message
