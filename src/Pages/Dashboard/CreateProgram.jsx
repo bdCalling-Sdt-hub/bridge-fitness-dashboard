@@ -14,9 +14,9 @@ const CreateProgram = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
   const [formTitle, setFormTitle] = useState("Add New Program");
   const [imgFile, setImgFile] = useState(null);
-  const [itemForEdit, setItemForEdit] = useState(null)
+  const [itemForEdit, setItemForEdit] = useState(null);
   const dispatch = useDispatch();
-  const [form] = Form.useForm()
+  const [form] = Form.useForm();
   useEffect(() => {
     dispatch(AllProgram());
   }, [dispatch]);
@@ -26,9 +26,8 @@ const CreateProgram = () => {
     name: program?.title,
     date: moment(program?.createdAt).format("l"),
     img: program?.image,
-    id:program?._id
+    id: program?._id,
   }));
-
 
   const columns = [
     {
@@ -56,7 +55,7 @@ const CreateProgram = () => {
             onClick={() => {
               setOpenAddModel(true);
               setFormTitle("Edit Program");
-              setItemForEdit(record)
+              setItemForEdit(record);
             }}
             style={{
               display: "flex",
@@ -80,7 +79,7 @@ const CreateProgram = () => {
 
   const onFinish = (values) => {
     const formData = new FormData();
-    if (formTitle == 'Add New Program') {
+    if (formTitle == "Add New Program") {
       if (imgFile) {
         formData.append("image", imgFile);
       }
@@ -89,20 +88,20 @@ const CreateProgram = () => {
       }
       formData.append("title", values.title);
       dispatch(AddProgram(formData)).then((res) => {
-        if (res.type == 'AddProgram/fulfilled') {
+        if (res.type == "AddProgram/fulfilled") {
           Swal.fire({
             title: "Added!",
             text: "New Program has been added.",
             icon: "success",
             showConfirmButton: false,
             timer: 1500,
-          }).then(()=>{
-            form.resetFields()
+          }).then(() => {
+            form.resetFields();
             dispatch(AllProgram());
-            setImgFile(null)
-            setOpenAddModel(false)
-            setItemForEdit(null)
-          });;
+            setImgFile(null);
+            setOpenAddModel(false);
+            setItemForEdit(null);
+          });
         }
       });
     } else {
@@ -112,26 +111,27 @@ const CreateProgram = () => {
         formData.append("image", itemForEdit.img);
       }
       formData.append("title", values.title);
-      dispatch(UpdateProgram({id:itemForEdit?.id,data:formData})).then((res) => {
-        if (res.type == 'UpdateProgram/fulfilled') {
-          dispatch(AllProgram());
-          Swal.fire({
-            title: "Updated!",
-            text: "Program has been Updated.",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(()=>{
-            form.resetFields()
+      dispatch(UpdateProgram({ id: itemForEdit?.id, data: formData })).then(
+        (res) => {
+          if (res.type == "UpdateProgram/fulfilled") {
             dispatch(AllProgram());
-            setImgFile(null)
-            setOpenAddModel(false)
-            setItemForEdit(null)
-          });
+            Swal.fire({
+              title: "Updated!",
+              text: "Program has been Updated.",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              form.resetFields();
+              dispatch(AllProgram());
+              setImgFile(null);
+              setOpenAddModel(false);
+              setItemForEdit(null);
+            });
+          }
         }
-      });
+      );
     }
-
   };
   // images
   const handleChange = (e) => {
@@ -139,10 +139,10 @@ const CreateProgram = () => {
   };
   useEffect(() => {
     if (!itemForEdit) {
-      return
+      return;
     }
-    form.setFieldsValue({ title: itemForEdit.name })
-  }, [itemForEdit])
+    form.setFieldsValue({ title: itemForEdit.name });
+  }, [itemForEdit]);
   return (
     <div>
       <div style={{ margin: "24px 0" }}>
@@ -159,7 +159,7 @@ const CreateProgram = () => {
           </h3>
           <button
             onClick={() => {
-              setItemForEdit(null)
+              setItemForEdit(null);
               setFormTitle("Add New Program");
               setOpenAddModel(true);
             }}
@@ -193,7 +193,11 @@ const CreateProgram = () => {
       <Modal
         centered
         open={openAddModel}
-        onCancel={() => { setItemForEdit(null); setImgFile(null); setOpenAddModel(false) }}
+        onCancel={() => {
+          null;
+          setImgFile(null);
+          setOpenAddModel(false);
+        }}
         width={500}
         footer={false}
       >
@@ -232,12 +236,14 @@ const CreateProgram = () => {
                 className="p-3 border"
               >
                 <Form.Item name="image">
-
                   <div className="flex justify-center items-center w-full h-full border-dashed border border-black py-10">
                     {imgFile ? (
                       <img src={URL.createObjectURL(imgFile)} alt="" />
-                    ) : itemForEdit?.img ? <img src={`${ServerUrl}${itemForEdit.img}`} alt="" /> : (
-                      <FaRegImage className="text-2xl" />)}
+                    ) : itemForEdit?.img ? (
+                      <img src={`${ServerUrl}${itemForEdit.img}`} alt="" />
+                    ) : (
+                      <FaRegImage className="text-2xl" />
+                    )}
                   </div>
 
                   <div className="hidden">

@@ -39,8 +39,9 @@ import UpdateProgramSlice from "./ReduxSlices/CreateProgram/UpdateProgramSlice";
 import GetContactSlice from "./ReduxSlices/Contact/GetContactSlice";
 import UpdateContactSlice from "./ReduxSlices/Contact/UpdateContactSlice";
 import AddContactSlice from "./ReduxSlices/Contact/AddContactSlice";
-import AllSeriesReducer from "./ReduxSlices/CreateSeries/GetCreateSeriesSlice";
+import AllSeriesReducer from "./ReduxSlices/CreateSeries/GetAllSeriesSlice";
 import AddSeriesReducer from "./ReduxSlices/CreateSeries/AddSeriesSlice";
+import UpdateSerieReducer from "./ReduxSlices/CreateSeries/UpdateSerieSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -85,5 +86,6 @@ export const Store = configureStore({
     AddContact: AddContactSlice,
     AllSeries: AllSeriesReducer,
     AddSeries: AddSeriesReducer,
+    UpdateSerie: UpdateSerieReducer,
   },
 });
