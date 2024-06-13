@@ -42,6 +42,8 @@ import AddContactSlice from "./ReduxSlices/Contact/AddContactSlice";
 import AllSeriesReducer from "./ReduxSlices/CreateSeries/GetAllSeriesSlice";
 import AddSeriesReducer from "./ReduxSlices/CreateSeries/AddSeriesSlice";
 import UpdateSerieReducer from "./ReduxSlices/CreateSeries/UpdateSerieSlice";
+import GetAllSubscriptionReducer from "./ReduxSlices/Subscription/GetAllSubscriptionSlice";
+import GetEcommerceIncomeReducer from "./ReduxSlices/GetEcommerceIncomeSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -87,5 +89,7 @@ export const Store = configureStore({
     AllSeries: AllSeriesReducer,
     AddSeries: AddSeriesReducer,
     UpdateSerie: UpdateSerieReducer,
+    AllSubscription: GetAllSubscriptionReducer,
+    AllEcommerces: GetEcommerceIncomeReducer,
   },
 });

@@ -22,7 +22,7 @@ const ManageOrder = () => {
   const products = useSelector((state) => state.AllProducts.userData.data);
   console.log(products);
 
-  const data = products.map((product, index) => ({
+  const data = products?.map((product, index) => ({
     key: index + 1,
     name: product?.user?.name,
     email: product?.user?.email,
