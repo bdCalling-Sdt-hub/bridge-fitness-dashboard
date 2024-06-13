@@ -1,55 +1,21 @@
-import { Form, Input, Modal, Table, Button } from "antd";
-import React, { useState } from "react";
-import { MdOutlineDelete } from "react-icons/md";
-import BackButton from "./BackButton";
-import { FaFilePdf, FaImage, FaPlus } from "react-icons/fa6";
+import { Form, Input, Modal, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { FaFilePdf, FaImage, FaPlus, FaVideo } from "react-icons/fa6";
 import course from "../../assets/course.png";
 import { Col, Row } from "antd";
-import { CiCalendar, CiVideoOn } from "react-icons/ci";
+import { CiCalendar } from "react-icons/ci";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import TextArea from "antd/es/input/TextArea";
-import { IoIosDocument } from "react-icons/io";
-import Swal from "sweetalert2";
+
 import { useParams } from "react-router-dom";
-const data = [
-  {
-    title: "45-min advance vinyasa yoga",
-    img: course,
-    topic: "Yoga",
-    date: "Mon 11/ 06/ 2024",
-  },
-  {
-    title: "45-min advance vinyasa yoga",
-    img: course,
-    topic: "Yoga",
-    date: "Mon 11/ 06/ 2024",
-  },
-  {
-    title: "45-min advance vinyasa yoga",
-    img: course,
-    topic: "Yoga",
-    date: "Mon 11/ 06/ 2024",
-  },
-  {
-    title: "45-min advance vinyasa yoga",
-    img: course,
-    topic: "Yoga",
-    date: "Mon 11/ 06/ 2024",
-  },
-  {
-    title: "45-min advance vinyasa yoga",
-    img: course,
-    topic: "Yoga",
-    date: "Mon 11/ 06/ 2024",
-  },
-  {
-    title: "45-min advance vinyasa yoga",
-    img: course,
-    topic: "Yoga",
-    date: "Mon 11/ 06/ 2024",
-  },
-];
+import { IoDocumentSharp } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { GetAllClass } from "../../ReduxSlices/Classes/GetAllClassSlice";
+import { ServerUrl } from "../../../Config";
+import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
+
 const ClassManagement = () => {
+  const [form] = Form.useForm()
   const [pageNumber, setPageNumber] = useState(
     new URLSearchParams(window.location.search).get("page") || 0
   );
@@ -57,19 +23,53 @@ const ClassManagement = () => {
     new URLSearchParams(window.location.search).get("program") || "all"
   );
   const { name } = useParams();
-  const totalPages = Math.ceil(data.length / 6);
-  const pages = [...Array(totalPages).keys()];
+  const pages = [...Array(5).keys()];
+  const [limit, setlimit] = useState(10)
   const [openAddModel, setOpenAddModel] = useState(false);
   const [openUpdateModel, setOpenUpdateModel] = useState(false);
-  const [reFresh, setReFresh] = useState("");
   const [showDelete, setShowDelete] = useState(false);
-  if (reFresh) {
-    setTimeout(() => {
-      setReFresh("");
-    }, 1500);
-  }
+  const [formFor, setFormFor] = useState('Add New Class')
+  const [uploadFiles, setuploadFiles] = useState({
+    video: false,
+    doc: false,
+    pdf: false,
+    videoName: false,
+    pdfName: false,
+    docName: false,
+  })
+  const [submitError, setSubmitError] = useState(false)
+  const dispatch = useDispatch()
+  const { Classes, meta } = useSelector(state => state.GetAllClass)
+  useEffect(() => {
+    dispatch(GetAllClass({ page: pageNumber, limit: limit }))
+  }, [limit, pageNumber])
+
+  useEffect(() => {
+    dispatch(AllProgram());
+  }, [dispatch]);
+  const programs = useSelector((state) => state.AllProgram?.userData?.data);
+  console.log(programs)
   const handeldelete = () => {
     setShowDelete(false);
+  };
+  const onFinish = (values) => {
+    const formData = new FormData();
+    console.log(values)
+    const { date, ...otherValues } = values;
+    if (formFor == 'Add New Class') {
+      if (uploadFiles?.video || uploadFiles?.doc || uploadFiles?.pdf) {
+        return setSubmitError('please select video , doc file and a pdf file')
+      } else {
+        setSubmitError(false)
+      }
+      formData.append("date", date?.toString().split('T')[0]);
+      Object.keys(otherValues).forEach((key) => {
+        formData.append(key, values[key]);
+      });
+      formData.append('video', uploadFiles.videoName)
+      formData.append('docFile', uploadFiles.docName)
+      formData.append('pdfFile', uploadFiles.pdfName)
+    }
   };
   return (
     <div>
@@ -86,7 +86,7 @@ const ClassManagement = () => {
             All Classes
           </h3>
           <button
-            onClick={() => setOpenAddModel(true)}
+            onClick={() => { setFormFor('Add New Class'); setOpenAddModel(true) }}
             style={{
               borderRadius: "4px",
               color: "#F2F2F2",
@@ -126,10 +126,12 @@ const ClassManagement = () => {
             className="text-2xl font-semibold"
             style={{ marginBottom: "12px" }}
           >
-            Add new class
+            {formFor}
           </h1>
           <Form
+            onFinish={onFinish}
             name="normal_login"
+            form={form}
             initialValues={{
               remember: true,
             }}
@@ -191,21 +193,19 @@ const ClassManagement = () => {
               </div>
               <div>
                 <label style={{ display: "block", marginBottom: "5px" }}>
-                  Date
+                  Select Program
                 </label>
                 <Form.Item
                   style={{ marginBottom: 0 }}
-                  name="date"
+                  name="program"
                   rules={[
                     {
                       required: true,
-                      message: "Please input date ",
+                      message: "Please input program ",
                     },
                   ]}
                 >
-                  <Input
-                    placeholder="tittle here..."
-                    type="date"
+                  <select className="w-full"
                     style={{
                       border: "1px solid #E0E4EC",
                       height: "52px",
@@ -213,165 +213,29 @@ const ClassManagement = () => {
                       borderRadius: "8px",
                       outline: "none",
                     }}
-                  />
-                </Form.Item>
-              </div>
-              <div>
-                <label
-                  htmlFor="video"
-                  style={{ display: "block", marginBottom: "5px" }}
-                >
-                  Add image
-                  <Form.Item
-                    style={{ marginBottom: 0 }}
-                    name="video"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please Add pdf ",
-                      },
-                    ]}
                   >
-                    <label htmlFor="video" className="btn">
-                      <div className="border p-2 rounded-lg">
-                        <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
-                          <FaImage /> browse Image
-                        </span>
-                      </div>
-                    </label>
-                    <div className="hidden">
-                      <Input
-                        id="video"
-                        placeholder="tittle here..."
-                        type="file"
-                        value={``}
-                        style={{
-                          border: "1px solid #E0E4EC",
-                          height: "52px",
-                          paddingTop: "10px",
-                          background: "white",
-                          borderRadius: "8px",
-                          outline: "none",
-                        }}
-                      />
-                    </div>
-                  </Form.Item>
-                </label>
-              </div>
-              <div className="row-span-2 col-span-2">
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Description{" "}
-                </label>
-                <Form.Item
-                  style={{ marginBottom: 0 }}
-                  name="description"
-                  rules={[
                     {
-                      required: true,
-                      message: "Please Description ",
-                    },
-                  ]}
-                >
-                  <TextArea
-                    placeholder="tittle here..."
-                    style={{
-                      border: "1px solid #E0E4EC",
-                      height: "140px",
-                      paddingTop: "10px",
-                      background: "white",
-                      borderRadius: "8px",
-                      outline: "none",
-                    }}
-                  />
-                </Form.Item>
-              </div>
-            </div>
+                      programs?.map(item=><option key={item?._id} value={item?._id}>{item?.title}</option>)
+                    }
 
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                block
-                style={{
-                  border: "none",
-                  height: "52px",
-                  background: "#B47000",
-                  color: "white",
-                  borderRadius: "8px",
-                  outline: "none",
-                }}
-              >
-                Publish
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-      </Modal>
-      <Modal
-        centered
-        open={openUpdateModel}
-        onCancel={() => setOpenUpdateModel(false)}
-        width={700}
-        footer={false}
-      >
-        <div className="p-6">
-          <h1
-            className="text-2xl font-semibold"
-            style={{ marginBottom: "12px" }}
-          >
-            Update class
-          </h1>
-          <Form
-            name="normal_login"
-            initialValues={{
-              remember: true,
-            }}
-          >
-            <div className="grid grid-cols-2 gap-3 py-6">
-              <div>
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Topic
-                </label>
-                <Form.Item
-                  style={{ marginBottom: 0 }}
-                  name="topic"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Topic",
-                    },
-                  ]}
-                >
-                  <Input
-                    placeholder="Topic here ..."
-                    type="text"
-                    style={{
-                      border: "1px solid #E0E4EC",
-                      height: "52px",
-                      background: "white",
-                      borderRadius: "8px",
-                      outline: "none",
-                    }}
-                  />
+                  </select>
                 </Form.Item>
               </div>
               <div>
                 <label style={{ display: "block", marginBottom: "5px" }}>
-                  Tittle
+                  Select Series
                 </label>
                 <Form.Item
                   style={{ marginBottom: 0 }}
-                  name="title"
+                  name="series"
                   rules={[
                     {
                       required: true,
-                      message: "Please input tittle ",
+                      message: "Please input series ",
                     },
                   ]}
                 >
-                  <Input
-                    placeholder="tittle here..."
-                    type="text"
+                  <select className="w-full"
                     style={{
                       border: "1px solid #E0E4EC",
                       height: "52px",
@@ -379,7 +243,11 @@ const ClassManagement = () => {
                       borderRadius: "8px",
                       outline: "none",
                     }}
-                  />
+                  >
+                    <option value="seriesID">series Name</option>
+                    <option value="seriesID">series Name</option>
+                    <option value="seriesID">series Name</option>
+                  </select>
                 </Form.Item>
               </div>
               <div>
@@ -414,43 +282,128 @@ const ClassManagement = () => {
                   htmlFor="video"
                   style={{ display: "block", marginBottom: "5px" }}
                 >
-                  Add image
-                  <Form.Item
-                    style={{ marginBottom: 0 }}
-                    name="video"
-                    rules={[
+                  Add video
+                  <div className="border p-2 rounded-lg">
+                    <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
                       {
-                        required: true,
-                        message: "Please Add pdf ",
-                      },
-                    ]}
-                  >
-                    <label htmlFor="video" className="btn">
-                      <div className="border p-2 rounded-lg">
-                        <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
-                          <FaImage /> browse Image
-                        </span>
-                      </div>
-                    </label>
-                    <div className="hidden">
-                      <Input
-                        id="video"
-                        placeholder="tittle here..."
-                        type="file"
-                        value={``}
-                        style={{
-                          border: "1px solid #E0E4EC",
-                          height: "52px",
-                          paddingTop: "10px",
-                          background: "white",
-                          borderRadius: "8px",
-                          outline: "none",
-                        }}
-                      />
-                    </div>
-                  </Form.Item>
+                        uploadFiles?.videoName ? <p>{uploadFiles?.videoName?.name?.slice(0, 34)}....</p> : <><FaVideo /> browse video</>
+                      }
+                    </span>
+                  </div>
+                  <div className="hidden">
+                    <Input
+                      onChange={(e) => {
+                        if (!e.target.files[0].type.startsWith('video')) {
+                          setuploadFiles({ ...uploadFiles, video: 'not a valid video', videoName: false })
+                        } else {
+                          setuploadFiles({ ...uploadFiles, video: false, videoName: e.target.files[0] })
+                        }
+                      }}
+                      id="video"
+                      placeholder="tittle here..."
+                      type="file"
+
+                      style={{
+                        border: "1px solid #E0E4EC",
+                        height: "52px",
+                        paddingTop: "10px",
+                        background: "white",
+                        borderRadius: "8px",
+                        outline: "none",
+                      }}
+                    />
+                  </div>
+                  {
+                    uploadFiles?.video && <p className="text-red-500">{uploadFiles.video}</p>
+                  }
                 </label>
               </div>
+              <div>
+                <label
+                  htmlFor="pdf"
+                  style={{ display: "block", marginBottom: "5px" }}
+                >
+                  Add pdf
+                  <div className="border p-2 rounded-lg">
+                    <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
+                      {
+                        uploadFiles?.pdfName ? <p>{uploadFiles?.pdfName?.name?.slice(0, 34)}....</p> : <> <FaFilePdf /> browse pdf</>
+                      }
+                    </span>
+                  </div>
+                  {/* </label> */}
+                  <div className="hidden">
+                    <Input
+                      onChange={(e) => {
+                        if (!e.target.files[0].type.startsWith('application/pdf')) {
+                          setuploadFiles({ ...uploadFiles, pdf: 'not a valid pdf', pdfName: false })
+                        } else {
+                          setuploadFiles({ ...uploadFiles, pdf: false, pdfName: e.target.files[0] })
+                        }
+                      }}
+                      id="pdf"
+                      placeholder="tittle here..."
+                      type="file"
+                      style={{
+                        border: "1px solid #E0E4EC",
+                        height: "52px",
+                        paddingTop: "10px",
+                        background: "white",
+                        borderRadius: "8px",
+                        outline: "none",
+                      }}
+                    />
+                  </div>
+                  {
+                    uploadFiles?.pdf && <p className="text-red-500">{uploadFiles.pdf}</p>
+                  }
+                </label>
+              </div>
+              <div>
+                <label
+                  htmlFor="doc"
+                  style={{ display: "block", marginBottom: "5px" }}
+                >
+                  Add Doc File
+                  <div className="border p-2 rounded-lg">
+                    <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
+                      {
+                        uploadFiles?.docName ? <p>{uploadFiles?.docName?.name?.slice(0, 34)}....</p> : <> <IoDocumentSharp /> browse doc</>
+                      }
+                    </span>
+                  </div>
+                  {/* </label> */}
+                  <div className="hidden">
+                    <Input
+                      onChange={(e) => {
+                        if (!e.target.files[0].type.startsWith('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+                          setuploadFiles({ ...uploadFiles, doc: 'not a valid doc  ', docName: false })
+                        } else {
+                          setuploadFiles({ ...uploadFiles, doc: false, docName: e.target.files[0] })
+                        }
+                      }}
+                      id="doc"
+                      placeholder="tittle here..."
+                      type="file"
+
+                      style={{
+                        border: "1px solid #E0E4EC",
+                        height: "52px",
+                        paddingTop: "10px",
+                        background: "white",
+                        borderRadius: "8px",
+                        outline: "none",
+                      }}
+                    />
+                  </div>
+                  {
+                    uploadFiles?.doc && <p className="text-red-500">{uploadFiles.doc}</p>
+                  }
+                </label>
+              </div>
+              {
+                submitError && <p className="text-red-500 col-span-2">{submitError}</p>
+              }
               <div className="row-span-2 col-span-2">
                 <label style={{ display: "block", marginBottom: "5px" }}>
                   Description{" "}
@@ -508,8 +461,9 @@ const ClassManagement = () => {
         }}
       >
         <Row gutter={30}>
-          {data.map((item, index) => {
-            const key = `col-${index}`;
+          {Classes.map((item, index) => {
+            console.log(item)
+            const key = item?._id;
             return (
               <Col
                 key={key}
@@ -524,13 +478,13 @@ const ClassManagement = () => {
                     marginBottom: "30px",
                   }}
                 >
-                  <img
-                    style={{
-                      width: "100%",
-                    }}
-                    src={item?.img}
-                    alt=""
-                  />
+                  <div className="w-full">
+                    <video autoPlay muted loop>
+                      {
+                        item?.video && <source src={`${ServerUrl}${item?.video}`} />
+                      }
+                    </video>
+                  </div>
                   <div
                     style={{
                       display: "flex",
@@ -562,11 +516,11 @@ const ClassManagement = () => {
                   <p
                     style={{
                       color: "#2F2F2F",
-                      marginTop: "4px",
+                      marginTop: "8px",
                       marginBottom: "22px",
                     }}
                   >
-                    45-min advance vinyasa yoga
+                    {item?.title}
                   </p>
                   <div
                     style={{
@@ -635,20 +589,18 @@ const ClassManagement = () => {
         <div className={`flex justify-center items-center gap-4 mx-4`}>
           <button
             disabled={pageNumber === 0}
-            className={`flex justify-start items-center gap-4 mx-4 ${
-              pageNumber !== 0 ? "text-[#555555]" : "text-[#C2C2C2]"
-            }`}
+            className={`flex justify-start items-center gap-4 mx-4 ${pageNumber !== 0 ? "text-[#555555]" : "text-[#C2C2C2]"
+              }`}
           >
             <SlArrowLeft className="-mt-1" />
             Previous
           </button>
           {pages.map((item, index) => (
             <button
-              className={`${
-                pageNumber === item
-                  ? "text-[#555555] border rounded-full"
-                  : "text-[#C2C2C2]"
-              } py-1 px-3 `}
+              className={`${pageNumber === item
+                ? "text-[#555555] border rounded-full"
+                : "text-[#C2C2C2]"
+                } py-1 px-3 `}
               key={index}
             >
               {item + 1}
@@ -656,11 +608,10 @@ const ClassManagement = () => {
           ))}
           <button
             disabled={pageNumber !== pageNumber.length - 1}
-            className={`flex justify-start items-center gap-4 mx-4 ${
-              pageNumber !== pageNumber.length - 1
-                ? "text-[#C2C2C2]"
-                : " text-[#555555]"
-            }`}
+            className={`flex justify-start items-center gap-4 mx-4 ${pageNumber !== pageNumber.length - 1
+              ? "text-[#C2C2C2]"
+              : " text-[#555555]"
+              }`}
           >
             Next
             <SlArrowRight className="-mt-1" />
