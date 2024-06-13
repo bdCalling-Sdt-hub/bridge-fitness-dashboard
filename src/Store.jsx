@@ -39,6 +39,9 @@ import UpdateProgramSlice from "./ReduxSlices/CreateProgram/UpdateProgramSlice";
 import GetContactSlice from "./ReduxSlices/Contact/GetContactSlice";
 import UpdateContactSlice from "./ReduxSlices/Contact/UpdateContactSlice";
 import AddContactSlice from "./ReduxSlices/Contact/AddContactSlice";
+import AllSeriesReducer from "./ReduxSlices/CreateSeries/GetCreateSeriesSlice";
+import AddSeriesReducer from "./ReduxSlices/CreateSeries/AddSeriesSlice";
+
 export const Store = configureStore({
   reducer: {
     UserData: SigninReducer,
@@ -79,6 +82,8 @@ export const Store = configureStore({
     UpdateProgram: UpdateProgramSlice,
     GetContact: GetContactSlice,
     UpdateContact: UpdateContactSlice,
-    AddContact :AddContactSlice,
+    AddContact: AddContactSlice,
+    AllSeries: AllSeriesReducer,
+    AddSeries: AddSeriesReducer,
   },
 });
