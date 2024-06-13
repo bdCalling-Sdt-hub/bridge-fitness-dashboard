@@ -8,17 +8,14 @@ import Login from "./Pages/Auth/Login";
 import UpdatePassword from "./Pages/Auth/UpdatePassword";
 import NotFound from "./404";
 import PrivateRoute from "./routes/PrivateRoute";
-import Package from "./Pages/Dashboard/Package";
 import EditPackage from "./Pages/Dashboard/EditPackage";
 import MakeAdmin from "./Pages/Dashboard/MakeAdmin";
 import ChangePassword from "./Pages/Dashboard/ChangePassword";
 import Profile from "./Pages/Dashboard/Profile";
 import ForgotPassword from "./Pages/Auth/ForgotPassword";
 import SellerDetails from "./Pages/Dashboard/SellerDetails";
-import Emails from "./Pages/Dashboard/Emails";
 import SellerProductList from "./Pages/Dashboard/SellerProductList";
 import TotalSellerList from "./Pages/Dashboard/TotalSellerList";
-import TopSellerList from "./Pages/Dashboard/TopSellerList";
 import ManageOrder from "./Pages/Dashboard/ManageOrder";
 import AddSubscription from "./Pages/Dashboard/AddSubscription";
 import Income from "./Pages/Dashboard/Income";
@@ -42,40 +39,39 @@ function App() {
       <div className="maincontainer noto">
         <Router>
           <Routes>
-            <Route exact path="/" element={ <PrivateRoute> <Dashboard /> </PrivateRoute> }>
-              <Route path="/" element={<DashboardHome />} />
-              <Route path="/notification" element={<Notification />} />
-              <Route path="/edit-package" element={<EditPackage />} />
-              <Route path="/make-admin" element={<MakeAdmin />} />
-              <Route path="/setting-change-password" element={<ChangePassword />} />
-              <Route path="/settings-profile" element={<Profile />} />
-              <Route path="/user-list" element={<TotalSellerList  />} />
-              <Route path="/manage-order" element={<ManageOrder/>} />
-              <Route path="/add-subscription" element={<AddSubscription/>} />
-              <Route path="/income" element={<Income/>} />
-              {/* <Route path="/class-management" element={<ClassManagement/>} /> */}
-              <Route path="/manage-products" element={<ManageProducts/>} />
-              <Route path="/about" element={<About/>} />
-              <Route path="/contact" element={<Contact/>} />
-              <Route path="/faq" element={<FAQ/>} />
-              <Route path="/privacy" element={<PrivacyPolicy/>} />
-              <Route path="/terms-condition" element={<Terms/>} />
-              <Route path="/blog" element={<Blog/>} />
-              <Route path="/series" element={<Series/>} />
-              <Route path="/series/:name" element={<ClassManagement/>} />
-              <Route path="/create-program" element={<CreateProgram/>} />
-              <Route path="/ecommerce-income" element={<EcommerceIncome/>} />
-              <Route path="/admin-profile" element={<AdminProfile/>} />
-              <Route path="/all-subscriber" element={<AllSubscriber/>} />
-              <Route path="/subscription-income" element={<SubscriptionIncome/>} />
-              <Route path="/seller-details/:id" element={<SellerDetails />} />
-              <Route path="/seller-product-list" element={<SellerProductList />} />
+            <Route exact path="/" element={<PrivateRoute> <Dashboard /> </PrivateRoute>}>
+              <Route path="/" element={<PrivateRoute><DashboardHome /></PrivateRoute>} />
+              <Route path="/notification" element={<PrivateRoute><Notification /></PrivateRoute>} />
+              <Route path="/edit-package" element={<PrivateRoute><EditPackage /></PrivateRoute>} />
+              <Route path="/make-admin" element={<PrivateRoute><MakeAdmin /></PrivateRoute>} />
+              <Route path="/setting-change-password" element={<PrivateRoute><ChangePassword /></PrivateRoute>} />
+              <Route path="/settings-profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+              <Route path="/user-list" element={<PrivateRoute><TotalSellerList /></PrivateRoute>} />
+              <Route path="/manage-order" element={<PrivateRoute><ManageOrder /></PrivateRoute>} />
+              <Route path="/add-subscription" element={<PrivateRoute><AddSubscription /></PrivateRoute>} />
+              <Route path="/income" element={<PrivateRoute><Income /></PrivateRoute>} />
+              <Route path="/manage-products" element={<PrivateRoute><ManageProducts /></PrivateRoute>} />
+              <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />
+              <Route path="/contact" element={<PrivateRoute><Contact /></PrivateRoute>} />
+              <Route path="/faq" element={<PrivateRoute><FAQ /></PrivateRoute>} />
+              <Route path="/privacy" element={<PrivateRoute><PrivacyPolicy /></PrivateRoute>} />
+              <Route path="/terms-condition" element={<PrivateRoute><Terms /></PrivateRoute>} />
+              <Route path="/blog" element={<PrivateRoute><Blog /></PrivateRoute>} />
+              <Route path="/series" element={<PrivateRoute><Series /></PrivateRoute>} />
+              <Route path="/series/:name" element={<PrivateRoute><ClassManagement /></PrivateRoute>} />
+              <Route path="/create-program" element={<PrivateRoute><CreateProgram /></PrivateRoute>} />
+              <Route path="/ecommerce-income" element={<PrivateRoute><EcommerceIncome /></PrivateRoute>} />
+              <Route path="/admin-profile" element={<PrivateRoute><AdminProfile /></PrivateRoute>} />
+              <Route path="/all-subscriber" element={<PrivateRoute><AllSubscriber /></PrivateRoute>} />
+              <Route path="/subscription-income" element={<PrivateRoute><SubscriptionIncome /></PrivateRoute>} />
+              <Route path="/seller-details/:id" element={<PrivateRoute><SellerDetails /></PrivateRoute>} />
+              <Route path="/seller-product-list" element={<PrivateRoute><SellerProductList /></PrivateRoute>} />
             </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/otp" element={<Otp />} />
-            <Route path="/update-password" element={<UpdatePassword />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="/login" element={<PrivateRoute><Login /></PrivateRoute>} />
+            <Route path="/forgot-password" element={<PrivateRoute><ForgotPassword /></PrivateRoute>} />
+            <Route path="/otp" element={<PrivateRoute><Otp /></PrivateRoute>} />
+            <Route path="/update-password" element={<PrivateRoute><UpdatePassword /></PrivateRoute>} />
+            <Route path="*" element={<PrivateRoute><NotFound /></PrivateRoute>} />
           </Routes>
         </Router>
       </div>

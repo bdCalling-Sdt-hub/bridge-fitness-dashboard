@@ -31,24 +31,13 @@ export default function DailyRentChart() {
     mt: 10,
   }));
 
-  const items = [
-    {
-      label: 2023,
-      key: "2023",
-    },
-    {
-      label: 2024,
-      key: "2024",
-    },
-    {
-      label: 2025,
-      key: "2025",
-    },
-    {
-      label: 2026,
-      key: "2026",
-    },
-  ];
+  const items = subsGrowth
+    .filter((growth) => growth.year >= 2000)
+    .map((year) => ({
+      label: year?.year,
+      key: year?.year,
+    }));
+
   const onClick = ({ key }) => {
     setYear(key);
   };

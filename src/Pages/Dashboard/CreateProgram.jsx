@@ -143,6 +143,7 @@ const CreateProgram = () => {
     }
     form.setFieldsValue({ title: itemForEdit.name });
   }, [itemForEdit]);
+
   return (
     <div>
       <div style={{ margin: "24px 0" }}>
