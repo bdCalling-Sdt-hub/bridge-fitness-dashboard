@@ -21,10 +21,16 @@ import { FiSearch } from "react-icons/fi";
 const ClassManagement = () => {
   const [form] = Form.useForm()
   const [pageNumber, setPageNumber] = useState(
-    new URLSearchParams(window.location.search).get("page") || 0
+    new URLSearchParams(window.location.search).get("page") || 1
   );
   const [Program, setProgram] = useState(
     new URLSearchParams(window.location.search).get("program") || "all"
+  );
+  const [ProgramID, setProgramID] = useState(
+    new URLSearchParams(window.location.search).get("id") || ''
+  );
+  const [SeriesID, setSeriesID] = useState(
+    new URLSearchParams(window.location.search).get("series") || ''
   );
   const { name } = useParams();
   const [limit, setlimit] = useState(20)
@@ -100,7 +106,7 @@ const ClassManagement = () => {
             pdfName: false,
             docName: false,
           })
-          dispatch(GetAllClass({ page: pageNumber, limit: limit }))
+          dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search , program: ProgramID, series: SeriesID }))
         }
       })
     } else {
@@ -136,7 +142,7 @@ const ClassManagement = () => {
             pdfName: false,
             docName: false,
           })
-          dispatch(GetAllClass({ page: pageNumber, limit: limit }))
+          dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search , program: ProgramID, series: SeriesID }))
         }
       })
     }
@@ -144,7 +150,7 @@ const ClassManagement = () => {
 
   // fetch data
   useEffect(() => {
-    dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search }))
+    dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search , program: ProgramID, series: SeriesID }))
   }, [limit, pageNumber, search])
 
   useEffect(() => {
@@ -155,6 +161,7 @@ const ClassManagement = () => {
   useEffect(() => {
     dispatch(AllSeries());
   }, []);
+
   useEffect(() => {
     if (!editItem) {
       return
