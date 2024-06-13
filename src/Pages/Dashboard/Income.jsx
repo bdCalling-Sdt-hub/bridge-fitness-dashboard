@@ -35,6 +35,7 @@ const Income = () => {
 
   const data = [
     {
+      id: 1,
       name: "All Income",
       count: kFormatter(`${totalIncomes.totalIncome}`),
       icon: <FaArrowUp size={16} />,
@@ -43,6 +44,7 @@ const Income = () => {
       Color: "#10B981",
     },
     {
+      id: 2,
       name: "Subscription Income",
       count: kFormatter(`${totalIncomes.totalSubscriptionIncome}`),
       icon: <FaArrowUp size={16} />,
@@ -59,6 +61,7 @@ const Income = () => {
       Color: "#10B981",
     },
     {
+      id: 3,
       name: "Ecommerce Income ",
       count: kFormatter(`${totalIncomes.totalEcommerceIncome}`),
       icon: <FaArrowDown size={16} />,
@@ -100,11 +103,12 @@ const Income = () => {
           alignItems: "center",
           background: "white",
           padding: "0 30px",
-          flexWrap: "wrap",
+          // flexWrap: "wrap",
         }}
       >
         {data.map((item, index) => (
           <div
+            key={item.id}
             className={`${
               index === data.length - 1 ? "" : "borderLeft"
             } income-card`}

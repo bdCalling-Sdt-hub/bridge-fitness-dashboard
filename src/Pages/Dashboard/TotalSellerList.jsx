@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FiEye, FiSearch } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
-import { Calendar, Dropdown, Input, Modal, Slider, Table } from "antd";
+import { Calendar, Dropdown, Input, Modal, Table } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Link } from "react-router-dom";

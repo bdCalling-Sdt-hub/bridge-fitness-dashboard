@@ -1,4 +1,4 @@
-import { Table } from "antd";
+import { Table, Modal } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -9,28 +9,9 @@ const TotalSellerListTable = ({ Subscribers }) => {
     new URLSearchParams(window.location.search).get("page") || 1
   );
   const [open, setOpen] = useState();
+  const [valueData, setValueData] = useState(null);
+  console.log(valueData);
   const dropdownRef = useRef();
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    });
-  };
 
   const newSubscriber = Subscribers.newSubscribers;
   const data = newSubscriber?.map((subs, index) => ({
@@ -89,83 +70,15 @@ const TotalSellerListTable = ({ Subscribers }) => {
       render: (_, record) => (
         <div style={{ position: "relative", width: "100%" }}>
           <FiEye
-            onClick={(e) => (e.stopPropagation(), setOpen(record.key))}
+            onClick={(e) => (
+              e.stopPropagation(), setOpen(record.key), setValueData(record)
+            )}
             size={20}
             color="black"
             style={{ cursor: "pointer" }}
           />
 
-          <div
-            onClick={(e) => e.stopPropagation()}
-            ref={dropdownRef}
-            style={{
-              display: record?.key === open ? "block" : "none",
-              width: "113px",
-              height: "132px",
-              borderRadius: "8px",
-              zIndex: "2",
-              position: "absolute",
-              top: "12px",
-              left: "-130px",
-              background: "white",
-              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-              padding: "10px 0",
-              cursor: "pointer",
-            }}
-          >
-            <p
-              style={{
-                width: "88px",
-                height: "31px",
-                borderRadius: "100px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "#E0F9F7",
-                color: "#2FD5C7",
-                margin: "0 auto 0 auto",
-                cursor: "pointer",
-                marginBottom: "8px",
-              }}
-            >
-              Approve
-            </p>
-            <p
-              onClick={handleDelete}
-              style={{
-                width: "88px",
-                height: "31px",
-                borderRadius: "100px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "#FFC3C3",
-                color: "#9C0101",
-                margin: "0 auto 0 auto",
-                marginBottom: "8px",
-              }}
-            >
-              Block
-            </p>
-            <Link to={`/seller-details/${record?.key}`}>
-              <p
-                style={{
-                  width: "88px",
-                  height: "31px",
-                  borderRadius: "100px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "white",
-                  color: "black",
-                  margin: "0 auto 0 auto",
-                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-                }}
-              >
-                View
-              </p>
-            </Link>
-          </div>
+          <div onClick={(e) => e.stopPropagation()} ref={dropdownRef}></div>
         </div>
       ),
     },
@@ -231,6 +144,45 @@ const TotalSellerListTable = ({ Subscribers }) => {
           onChange: handlePageChange,
         }}
       />
+
+      <Modal
+        centered
+        open={valueData}
+        onCancel={() => setValueData(null)}
+        width={500}
+        footer={false}
+        padding={0}
+      >
+        <div className="p-2 ">
+          <div className="flex flex-col justify-center items-center bg-[#F4EAD9] p-6">
+            <div className="w-32 h-32 rounded-full overflow-hidden">
+              <img
+                className="h-full w-full object-cover"
+                src={valueData?.photo}
+                alt=""
+              />
+            </div>
+            <h1 className="text-2xl font-semibold mt-5">{valueData?.name}</h1>
+          </div>
+
+          <div className="p-5">
+            <div className="mt-3">
+              <p className="text-sm font-semibold text-[#555555] mb-1">Name</p>
+              <p className="text-[#555555]">{valueData?.name}</p>
+            </div>
+            <div className="mt-3">
+              <p className="text-sm font-semibold text-[#555555] mb-1">Email</p>
+              <p className="text-[#555555]">{valueData?.email}</p>
+            </div>
+            <div className="mt-3">
+              <p className="text-sm font-semibold text-[#555555] mb-1">
+                Contact Number
+              </p>
+              <p className="text-[#555555]">{valueData?.contact}</p>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

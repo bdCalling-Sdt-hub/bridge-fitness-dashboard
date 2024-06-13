@@ -28,7 +28,7 @@ function DashboardHome() {
   const data = [
     {
       name: "Total User",
-      count: `${user.users}`,
+      count: user.users,
       icon: <FaArrowUp size={16} />,
       Percent: "18%",
       Color: "#10B981",
@@ -79,8 +79,9 @@ function DashboardHome() {
               lg={{ span: 6 }}
             >
               <div
-                className={`${index === data.length - 1 ? "" : "borderLeft"
-                  } income-card`}
+                className={`${
+                  index === data.length - 1 ? "" : "borderLeft"
+                } income-card`}
                 style={{
                   background: "transparent",
                   borderRadius: "0px",
