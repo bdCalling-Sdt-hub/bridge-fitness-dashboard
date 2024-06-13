@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../Config";
-
 const initialState = {
   isError: false,
   isSuccess: false,
@@ -8,7 +7,6 @@ const initialState = {
   message: "",
   userData: [],
 };
-
 export const AllProducts = createAsyncThunk(
   "AllProducts",
   async (value, thunkAPI) => {
