@@ -21,25 +21,11 @@ const ManageOrder = () => {
 
   const products = useSelector((state) => state.AllProducts.userData.data);
   console.log(products);
-  const loading = useSelector((state) => state.AllProducts.loading);
-  const error = useSelector((state) => state.AllProducts.error);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  if (!products) {
-    return <div>No products available.</div>;
-  }
 
   const data = products.map((product, index) => ({
     key: index + 1,
-    name: product?.name,
-    email: product?.email,
+    name: product?.user?.name,
+    email: product?.user?.email,
     deliveryTime: moment(product?.updatedAt).format("MM/DD/YYYY"),
     photo: product?.images,
     product: product?.productName,
