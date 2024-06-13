@@ -49,6 +49,8 @@ import DeleteClassSlice from "./ReduxSlices/Classes/DeleteClassSlice";
 import ProfileSlice from "./ReduxSlices/Profile/ProfileSlice";
 import ChangePassSlice from "./ReduxSlices/Profile/ChangePassSlice";
 import EditProfileSlice from "./ReduxSlices/Profile/EditProfileSlice";
+import GetAllSubscriptionReducer from "./ReduxSlices/Subscription/GetAllSubscriptionSlice";
+import GetEcommerceIncomeReducer from "./ReduxSlices/GetEcommerceIncomeSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -100,6 +102,8 @@ export const Store = configureStore({
     DeleteClass: DeleteClassSlice,
     Profile: ProfileSlice,
     ChangePass:ChangePassSlice,
-    EditProfile:EditProfileSlice
+    EditProfile:EditProfileSlice,
+    AllSubscription: GetAllSubscriptionReducer,
+    AllEcommerces: GetEcommerceIncomeReducer,
   },
 });

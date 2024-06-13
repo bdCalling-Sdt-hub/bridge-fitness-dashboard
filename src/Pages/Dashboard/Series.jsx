@@ -138,6 +138,15 @@ console.log(items)
       );
     }
   };
+
+  useEffect(() => {
+    if (!itemForEdit) {
+      return;
+    }
+    console.log(itemForEdit);
+    form.setFieldsValue({ title: itemForEdit.name });
+  }, [itemForEdit]);
+
   return (
     <div>
       <div style={{ margin: "24px 0" }}>

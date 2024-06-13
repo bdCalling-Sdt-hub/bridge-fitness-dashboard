@@ -4,10 +4,9 @@ import { Dropdown, Input, Table } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 import { LuRefreshCw } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
-import { Subscribers } from "../../ReduxSlices/SubscribersSlice";
+import { AllSubscription } from "../../ReduxSlices/Subscription/GetAllSubscriptionSlice";
 const SubscriptionIncome = () => {
   const [value, setValue] = useState(
     new URLSearchParams(window.location.search).get("date") ||
@@ -24,28 +23,28 @@ const SubscriptionIncome = () => {
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
   );
-  const [open, setOpen] = useState();
-  const [filter, setFilter] = useState(false);
-  const [date, setDate] = useState(false);
+
   const dropdownRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(Subscribers());
+    dispatch(AllSubscription());
   }, []);
 
-  const subscribers = useSelector((state) => state?.SubscriberUser?.userData);
+  const subscribers = useSelector(
+    (state) => state?.AllSubscription?.allSubscription?.allEcommerce
+  );
   console.log(subscribers);
 
-  const data = subscribers?.data?.map((subs, index) => ({
+  const data = subscribers?.map((subs, index) => ({
     key: index + 1,
     name: subs?.user_id?.name,
     email: subs?.user_id?.email,
     // date: subs?.user_id?.name,
     photo: subs?.user_id?.profile_image,
-    package: subs?.user_id?.package,
+    package: subs?.plan_id?.title,
     status: subs?.user_id?.name,
-    price: subs?.user_id?.price,
+    price: subs?.plan_id?.price,
     // balance: subs?.user_id?.name,
   }));
 
@@ -67,28 +66,6 @@ const SubscriptionIncome = () => {
       key: "Cycle",
     },
   ];
-
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    });
-  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -122,7 +99,7 @@ const SubscriptionIncome = () => {
             gap: "6px",
           }}
         >
-          <img src={record.photo} alt="" className=" w-10 h-8" />
+          <img src={record.photo} alt="" />
           <span>{record.name}</span>
         </span>
       ),
