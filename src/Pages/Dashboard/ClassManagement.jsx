@@ -13,9 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetAllClass } from "../../ReduxSlices/Classes/GetAllClassSlice";
 import { ServerUrl } from "../../../Config";
 import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
-import { AllSeries } from "../../ReduxSlices/CreateSeries/GetCreateSeriesSlice";
 import { AddClass } from "../../ReduxSlices/Classes/AddClassSlice";
 import Swal from "sweetalert2";
+import { AllSeries } from "../../ReduxSlices/CreateSeries/GetAllSeriesSlice";
+import { UpdateClass } from "../../ReduxSlices/Classes/UpdateClassSlice";
 
 const ClassManagement = () => {
   const [form] = Form.useForm()
@@ -64,6 +65,7 @@ const ClassManagement = () => {
       formData.append('pdf', uploadFiles.pdfName)
       dispatch(AddClass(formData)).then((res) => {
         if (res.type == 'AddClass/fulfilled') {
+          setOpenAddModel(false)
           Swal.fire({
             title: "Added!",
             text: "Your Class has been Added.",
@@ -71,9 +73,7 @@ const ClassManagement = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          dispatch(GetAllClass({ page: pageNumber, limit: limit }))
           form.resetFields()
-          setOpenAddModel(false)
           setuploadFiles({
             video: false,
             doc: false,
@@ -82,6 +82,7 @@ const ClassManagement = () => {
             pdfName: false,
             docName: false,
           })
+          dispatch(GetAllClass({ page: pageNumber, limit: limit }))
         }
       })
     } else {
@@ -98,6 +99,28 @@ const ClassManagement = () => {
       if (uploadFiles.docName) {
         formData.append('pdf', uploadFiles.pdfName)
       }
+      dispatch(UpdateClass({ id: editItem?._id, data: formData })).then((res) => {
+        if (res.type == 'UpdateClass/fulfilled') {
+          setOpenAddModel(false)
+          Swal.fire({
+            title: "Updated!",
+            text: "Your Class has been Updated.",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          form.resetFields()
+          setuploadFiles({
+            video: false,
+            doc: false,
+            pdf: false,
+            videoName: false,
+            pdfName: false,
+            docName: false,
+          })
+          dispatch(GetAllClass({ page: pageNumber, limit: limit }))
+        }
+      })
     }
   };
 

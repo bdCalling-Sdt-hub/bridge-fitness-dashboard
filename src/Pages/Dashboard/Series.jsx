@@ -5,16 +5,19 @@ import { FaPlus } from "react-icons/fa6";
 import { MdReadMore } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { AllSeries } from "../../ReduxSlices/CreateSeries/GetCreateSeriesSlice";
+import { AllSeries } from "../../ReduxSlices/CreateSeries/GetAllSeriesSlice";
 import { AddSeries } from "../../ReduxSlices/CreateSeries/AddSeriesSlice";
 import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
 import Swal from "sweetalert2";
+import { UpdateSeries } from "../../ReduxSlices/CreateSeries/UpdateSerieSlice";
 
 const Series = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
   const [formTitle, setFormTitle] = useState("Add New Series");
   const [series, setSeries] = useState("");
+  const [itemForEdit, setItemForEdit] = useState(null);
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
   useEffect(() => {
     dispatch(AllSeries());
@@ -34,6 +37,7 @@ const Series = () => {
     key: index + 1,
     program: item?.program?.title,
     name: item?.title,
+    id: item?.id,
   }));
 
   const columns = [
@@ -62,7 +66,9 @@ const Series = () => {
             onClick={() => {
               setOpenAddModel(true);
               setFormTitle("Edit Series");
-              setSeries(record.name);
+              setSeries(record);
+              setItemForEdit(record);
+              console.log(record);
             }}
             style={{
               display: "flex",
@@ -91,35 +97,47 @@ const Series = () => {
     },
   ];
   const onFinish = (values) => {
-    // const formData = new FormData();
     console.log(values);
 
-    //   formData.append("program", program);
-
-    //   formData.append("title", title);
-
-    dispatch(AddSeries(values)).then((res) => {
-      if (res.type == "AddSeries/fulfilled") {
-        Swal.fire({
-          title: "Added!",
-          text: "New Program has been added.",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          Form.resetFields();
-          dispatch(AllSeries());
-
-          setOpenAddModel(false);
-        });
-      }
-    });
-
-    // if (formTitle == "Add New Series") {
-    //   // for add product
-    // } else {
-    //   // for update product
-    // }
+    if (formTitle == "Add New Series") {
+      dispatch(AddSeries(values)).then((res) => {
+        if (res.type == "AddSeries/fulfilled") {
+          Swal.fire({
+            title: "Added!",
+            text: "New Program has been added.",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            form.resetFields();
+            dispatch(AllSeries());
+            setOpenAddModel(false);
+            setItemForEdit(null);
+          });
+        }
+      });
+    } else {
+      console.log(values);
+      dispatch(UpdateSeries({ id: itemForEdit.id, data: values })).then(
+        (res) => {
+          if (res.type == "UpdateSeries/fulfilled") {
+            dispatch(AllSeries());
+            Swal.fire({
+              title: "Updated!",
+              text: "Series has been Updated.",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              form.resetFields();
+              dispatch(AllSeries());
+              setOpenAddModel(false);
+              setItemForEdit(null);
+            });
+          }
+        }
+      );
+    }
   };
   return (
     <div>
@@ -138,6 +156,7 @@ const Series = () => {
           <button
             onClick={() => {
               setFormTitle("Add New Series");
+              setItemForEdit(null);
               setOpenAddModel(true);
             }}
             style={{
@@ -180,7 +199,7 @@ const Series = () => {
           >
             {formTitle}
           </h1>
-          <Form onFinish={onFinish}>
+          <Form onFinish={onFinish} form={form}>
             <p className="text-[#6D6D6D] py-1">Package Name</p>
             <Form.Item
               name="program"
