@@ -67,7 +67,7 @@ function App() {
               <Route path="/seller-details/:id" element={<PrivateRoute><SellerDetails /></PrivateRoute>} />
               <Route path="/seller-product-list" element={<PrivateRoute><SellerProductList /></PrivateRoute>} />
             </Route>
-            <Route path="/login" element={<PrivateRoute><Login /></PrivateRoute>} />
+            <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<PrivateRoute><ForgotPassword /></PrivateRoute>} />
             <Route path="/otp" element={<PrivateRoute><Otp /></PrivateRoute>} />
             <Route path="/update-password" element={<PrivateRoute><UpdatePassword /></PrivateRoute>} />

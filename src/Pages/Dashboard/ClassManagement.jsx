@@ -69,7 +69,6 @@ const ClassManagement = () => {
         setDeleteId('')
       }
     })
-    // deleteId
   };
   const onFinish = (values) => {
     const formData = new FormData();
