@@ -189,30 +189,6 @@ const AllSubscriber = () => {
               value={search}
             />
           </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "start",
-              alignItems: "center",
-              gap: "4px",
-              height: "40px",
-              background: "#fefefe",
-              padding: "0 10px",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            <button
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              Data Refresh{" "}
-            </button>
-            <LuRefreshCw />
-          </div>
         </div>
       </div>
       {subscibers?.length === 0 ? (
