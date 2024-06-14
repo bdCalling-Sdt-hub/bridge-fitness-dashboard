@@ -44,7 +44,6 @@ const ManageOrder = () => {
   };
   const handleChange = (id, value) => {
     setLoading(true)
-    console.log(`${id} selected ${value}`);
     dispatch(UpdateOrder({ data: { orderStatus: value }, id: id })).then(
       (res) => {
         console.log(res)
