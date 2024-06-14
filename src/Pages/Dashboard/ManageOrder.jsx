@@ -8,6 +8,7 @@ import { AllProducts } from "../../ReduxSlices/AllProductSlice";
 import moment from "moment";
 import { UpdateOrder } from "../../ReduxSlices/Order/UpdateOrderSlice";
 import toast, { Toaster } from "react-hot-toast";
+import { RxCross2 } from "react-icons/rx";
 
 const ManageOrder = () => {
   const [search, setSearch] = useState("");
@@ -22,7 +23,7 @@ const ManageOrder = () => {
   }, [dispatch]);
 
   const products = useSelector((state) => state.AllProducts.userData.data);
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false)
   const data = products?.map((product, index) => ({
     key: index + 1,
     name: product?.user?.name,
@@ -51,7 +52,7 @@ const ManageOrder = () => {
           toast.success(`product ${value} Successfully`);
           setLoading(false)
           dispatch(AllProducts());
-        }else{
+        } else {
           toast.error(`something went wrong`);
           setLoading(false)
         }
@@ -174,9 +175,13 @@ const ManageOrder = () => {
             }}
           >
             <Input
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value)
+                setPage(1)
+              }}
               placeholder="Search..."
               prefix={<FiSearch size={14} color="#868FA0" />}
+              suffix={<RxCross2 className="cursor-pointer" onClick={() => setSearch('')} size={14} color="#868FA0" />}
               style={{
                 width: "100%",
                 height: "100%",
