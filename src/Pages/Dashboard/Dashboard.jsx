@@ -391,7 +391,7 @@ const Dashboard = () => {
               width: "280px",
               display: "flex",
               alignItems: "center",
-              gap: "16px",
+              gap: "25px",
               justifyContent: "end"
             }}
           >
@@ -400,20 +400,18 @@ const Dashboard = () => {
                 <RiNotification2Line color="#6A6A6A" size={24} />
               </Link>
             </Badge>
-            <Link to={'/admin-profile'}
+            <Link className="border w-fit" to={'/admin-profile'}
               style={{
-                width: "170px",
                 height: "42px",
-
                 borderRadius: "5px",
                 display: "flex",
                 alignItems: "center",
-                gap: "20px",
+                gap: "8px",
                 padding: "10px"
               }}
             >
-              <img src={`${user?.profile_image?.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}${user.profile_image}`}`} style={{ width: "30px", height: "30px", borderRadius: "100%" }} alt="" />
-              <h2 style={{ color: "black", fontSize: "10px" }}>{user?.name}</h2>
+              <img src={`${user?.profile_image?.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}${user.profile_image}`}`} style={{ width: "40px", height: "40px", borderRadius: "100%" }} alt="" />
+              <h2 style={{ color: "black", fontSize: "16px" }}>{user?.name}</h2>
             </Link>
           </div>
         </Header>

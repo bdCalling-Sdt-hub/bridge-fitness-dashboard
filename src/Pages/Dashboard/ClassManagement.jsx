@@ -17,6 +17,7 @@ import { AllSeries } from "../../ReduxSlices/CreateSeries/GetAllSeriesSlice";
 import { UpdateClass } from "../../ReduxSlices/Classes/UpdateClassSlice";
 import { DeleteClass } from "../../ReduxSlices/Classes/DeleteClassSlice";
 import { FiSearch } from "react-icons/fi";
+import { RxCross2 } from "react-icons/rx";
 
 const ClassManagement = () => {
   const [form] = Form.useForm()
@@ -190,6 +191,7 @@ const ClassManagement = () => {
               }}
               placeholder="Search..."
               prefix={<FiSearch size={14} color="#868FA0" />}
+              suffix={<RxCross2 className="cursor-pointer" onClick={()=>setSearch('')} size={14} color="#868FA0" />}
               style={{
                 width: "250px",
                 height: "43px",

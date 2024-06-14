@@ -30,7 +30,6 @@ const AllSubscriber = () => {
   }, [ItemPerPage, page, search, plan]);
 
   const subscibers = useSelector((state) => state.SubscriberUser.userData.data);
-  console.log(subscibers);
   const data = subscibers?.map((users, index) => ({
     key: index + 1,
     name: users?.user_id?.name,

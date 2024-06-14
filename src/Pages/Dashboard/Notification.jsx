@@ -3,25 +3,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AllNotification } from "../../ReduxSlices/Notification/GetAllNotificationSlice";
 import moment from "moment";
-
-const data = [
-  {
-    key: "1",
-    title: "A new order has arrived",
-    date: "8:00am today",
-    item: "Dumbbell 5kg",
-    price: "price 80CND",
-    status: "read",
-  },
-  {
-    key: "1",
-    title: "A new order has arrived",
-    date: "8:00am today",
-    item: "Dumbbell 5kg",
-    price: "price 80CND",
-    status: "unread",
-  },
-];
+import { UpdataeAllNotification } from "../../ReduxSlices/Notification/UpdataeAllNotificationSlice";
+import { UpdataeNotification } from "../../ReduxSlices/Notification/UpdataeNotificationSlice";
 const Notification = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
   const dispatch = useDispatch();
@@ -31,31 +14,33 @@ const Notification = () => {
   const notifications = useSelector(
     (state) => state.AllNotification.allNotification
   );
-  console.log(notifications);
-
   const data = notifications?.map((notification, index) => ({
     key: index + 1,
     title: notification.title,
     date: moment(notification.createdAt).format("h:mm a , dddd"),
     item: notification.message,
-    // price: "price 80CND",
-    // status: "unread",
+    status: notification?.status,
+    id: notification?._id
   }));
-
+  const handleReadAll = () => {
+    dispatch(UpdataeAllNotification())
+  }
+  const handleRead = (id) => {
+    dispatch(UpdataeNotification({ id: id }))
+  }
   return (
     <div>
       <div className="flex justify-between items-center gap-4">
         <h3 className="text-[#242424] text-2xl font-bold">Notifications</h3>
-        <button className="text-[#B47000] font-semibold border-2 border-[#B47000] px-6 py-2">
+        <button onClick={handleReadAll} className="text-[#B47000] font-semibold border-2 border-[#B47000] px-6 py-2">
           Read all
         </button>
       </div>
       <div className="flex justify-start items-start flex-col gap-2 py-8 px-3">
         {data.map((item) => (
           <div
-            className={`flex justify-between items-center w-full ${
-              item?.status === "read" ? "bg-[#F8F1E6]" : "bg-[#FBFBFB]"
-            } p-3 py-5 rounded-lg`}
+            className={`flex justify-between items-center w-full ${item?.status ? "bg-[#FBFBFB]" : " bg-[#F8F1E6]"
+              } p-3 py-5 rounded-lg`}
             key={item?.key}
           >
             <div>
@@ -71,6 +56,7 @@ const Notification = () => {
             <button
               onClick={() => {
                 setOpenAddModel(true);
+                handleRead(item?.id)
               }}
               className="text-[#B47000] font-medium text-lg"
             >

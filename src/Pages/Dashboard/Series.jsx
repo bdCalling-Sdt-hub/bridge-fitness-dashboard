@@ -200,7 +200,7 @@ const Series = () => {
             {formTitle}
           </h1>
           <Form onFinish={onFinish} form={form}>
-            <p className="text-[#6D6D6D] py-1">Package Name</p>
+            <p className="text-[#6D6D6D] py-1">program</p>
             <Form.Item
               name="program"
               rules={[
@@ -225,7 +225,7 @@ const Series = () => {
                 ))}
               </select>
             </Form.Item>
-            <p className="text-[#6D6D6D] py-1">Title</p>
+            <p className="text-[#6D6D6D] py-1">Series Title</p>
             <Form.Item
               name="title"
               rules={[

@@ -17,6 +17,7 @@ import { GetProducts } from "../../ReduxSlices/Products/GetProductsSlice";
 import { ServerUrl } from "../../../Config";
 import { DeleteProducts } from "../../ReduxSlices/Products/DeleteProductSlice";
 import { UpdateProduct } from "../../ReduxSlices/Products/UpdateProductSlice";
+import { RxCross2 } from "react-icons/rx";
 const ManageProducts = () => {
   const [form] = Form.useForm();
   const [search, setSearch] = useState("");
@@ -277,6 +278,7 @@ const ManageProducts = () => {
               }}
               placeholder="Search..."
               prefix={<FiSearch size={14} color="#868FA0" />}
+              suffix={<RxCross2 className="cursor-pointer" onClick={()=>setSearch('')} size={14} color="#868FA0" />}
               style={{
                 width: "100%",
                 height: "100%",
