@@ -53,6 +53,8 @@ import GetAllSubscriptionReducer from "./ReduxSlices/Subscription/GetAllSubscrip
 import GetEcommerceIncomeReducer from "./ReduxSlices/GetEcommerceIncomeSlice";
 import GetAllNotificationReducer from "./ReduxSlices/Notification/GetAllNotificationSlice";
 import UpdateOrderSlice from "./ReduxSlices/Order/UpdateOrderSlice";
+import UpdataeAllNotificationSlice from "./ReduxSlices/Notification/UpdataeAllNotificationSlice";
+import UpdataeNotificationSlice from "./ReduxSlices/Notification/UpdataeNotificationSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -103,11 +105,13 @@ export const Store = configureStore({
     UpdateClass: UpdateClassSlice,
     DeleteClass: DeleteClassSlice,
     Profile: ProfileSlice,
-    ChangePass:ChangePassSlice,
-    EditProfile:EditProfileSlice,
+    ChangePass: ChangePassSlice,
+    EditProfile: EditProfileSlice,
     AllSubscription: GetAllSubscriptionReducer,
     AllEcommerces: GetEcommerceIncomeReducer,
     AllNotification: GetAllNotificationReducer,
-    UpdateOrder:UpdateOrderSlice,
+    UpdateOrder: UpdateOrderSlice,
+    UpdataeAllNotification: UpdataeAllNotificationSlice,
+    UpdataeNotification:UpdataeNotificationSlice,
   },
 });
