@@ -51,6 +51,7 @@ import ChangePassSlice from "./ReduxSlices/Profile/ChangePassSlice";
 import EditProfileSlice from "./ReduxSlices/Profile/EditProfileSlice";
 import GetAllSubscriptionReducer from "./ReduxSlices/Subscription/GetAllSubscriptionSlice";
 import GetEcommerceIncomeReducer from "./ReduxSlices/GetEcommerceIncomeSlice";
+import GetAllNotificationReducer from "./ReduxSlices/Notification/GetAllNotificationSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -105,5 +106,6 @@ export const Store = configureStore({
     EditProfile:EditProfileSlice,
     AllSubscription: GetAllSubscriptionReducer,
     AllEcommerces: GetEcommerceIncomeReducer,
+    AllNotification: GetAllNotificationReducer,
   },
 });
