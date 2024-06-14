@@ -63,11 +63,13 @@ const TotalSellerListTable = ({ Subscribers }) => {
       key: "location",
       render: (_, record) => (
         <>
-          {
-            record?.location ? <p>{record?.location}</p> : <p className="text-red-500">not added</p>
-          }
+          {record?.location ? (
+            <p>{record?.location}</p>
+          ) : (
+            <p className="text-red-500">not added</p>
+          )}
         </>
-      )
+      ),
     },
     {
       title: "ACTION",
@@ -141,11 +143,7 @@ const TotalSellerListTable = ({ Subscribers }) => {
           </p>
         </Link>
       </div>
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={false}
-      />
+      <Table columns={columns} dataSource={data} pagination={false} />
 
       <Modal
         centered
