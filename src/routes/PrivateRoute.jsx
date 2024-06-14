@@ -8,7 +8,7 @@ const PrivateRoute = ({ children }) => {
   if (userloading) {
     return
   }
-  if (user?.role == "ADMIN") {
+  if (user?.role == "ADMIN" || user?.role == "SUPER_ADMIN") {
     return children;
   } else {
     return <Navigate to="/login" />;
