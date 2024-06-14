@@ -28,10 +28,10 @@ const ManageOrder = () => {
     email: product?.user?.email,
     deliveryTime: moment(product?.updatedAt).format("MM/DD/YYYY"),
     photo: product?.images,
-    product: product?.productName,
+    product: product?.product?.productName,
     status: product?.orderStatus,
     totalItems: product?.quantity,
-    Price: product?.totalAmount,
+    Price: `$${product?.totalAmount}`,
   }));
 
   const handlePageChange = (page) => {
@@ -153,31 +153,6 @@ const ManageOrder = () => {
               size="middle"
               value={search}
             />
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "start",
-              alignItems: "center",
-              gap: "4px",
-              height: "40px",
-              background: "#fefefe",
-              padding: "0 10px",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            <button
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              Data Refresh{" "}
-            </button>
-            <LuRefreshCw />
           </div>
         </div>
       </div>
