@@ -9,27 +9,34 @@ const initialState = {
   userData: {},
 };
 
-export const Subscribers = createAsyncThunk("Subscribers", async (thunkAPI) => {
-  try {
-    let token = localStorage.getItem("token");
-    let response = await axios.get("subscriptions/subscribers", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(response.data);
-    // console.log(response.data);
+export const Subscribers = createAsyncThunk(
+  "Subscribers",
+  async (value, thunkAPI) => {
+    console.log(value.searchTerm);
+    try {
+      let token = localStorage.getItem("token");
+      let response = await axios.get(
+        `subscriptions/subscribers?page=${value.page}&searchTerm=${value.searchTerm}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
+      // console.log(response.data);
 
-    return response.data;
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data) ||
-      error.message ||
-      error.toString();
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response && error.response.data && error.response.data) ||
+        error.message ||
+        error.toString();
 
-    return thunkAPI.rejectWithValue(message);
+      return thunkAPI.rejectWithValue(message);
+    }
   }
-});
+);
 
 export const subscribersSlice = createSlice({
   name: "subscribersUser",

@@ -1,8 +1,6 @@
 import { Input, Modal, Table } from "antd";
-import avater from "../../assets/avater.png";
 import { useEffect, useRef, useState } from "react";
 import { FiEye, FiSearch } from "react-icons/fi";
-import { LuRefreshCw } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import { Subscribers } from "../../ReduxSlices/SubscribersSlice";
 import moment from "moment";
@@ -14,13 +12,16 @@ const AllSubscriber = () => {
   const [open, setOpen] = useState();
   const dropdownRef = useRef();
   const [search, setSearch] = useState("");
+  const [ItemPerPage, setItemPerPage] = useState(10);
   const [openAddModel, setOpenAddModel] = useState(false);
+  const [valueData, setValueData] = useState(null);
 
   useEffect(() => {
-    dispatch(Subscribers());
-  }, [dispatch]);
+    dispatch(Subscribers({ page: page, searchTerm: search }));
+  }, [ItemPerPage, page, search]);
 
   const subscibers = useSelector((state) => state.SubscriberUser.userData.data);
+  console.log(subscibers);
   const data = subscibers?.map((users, index) => ({
     key: index + 1,
     name: users?.user_id?.name,
@@ -30,28 +31,6 @@ const AllSubscriber = () => {
     date: moment(users?.startDate).format("MM/DD/YYYY"),
     status: "General",
   }));
-
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    });
-  };
 
   const columns = [
     {
@@ -99,11 +78,13 @@ const AllSubscriber = () => {
       key: "location",
       render: (_, record) => (
         <>
-          {
-            record?.location ? <p>{record?.location}</p> : <p className="text-red-500">not added</p>
-          }
+          {record?.location ? (
+            <p>{record?.location}</p>
+          ) : (
+            <p className="text-red-500">not added</p>
+          )}
         </>
-      )
+      ),
     },
     {
       title: "Status",
@@ -123,7 +104,10 @@ const AllSubscriber = () => {
         <div style={{ position: "relative", width: "100%" }}>
           <FiEye
             onClick={(e) => (
-              e.stopPropagation(), setOpen(record.key), setOpenAddModel(true)
+              e.stopPropagation(),
+              setOpen(record.key),
+              setOpenAddModel(true),
+              setValueData(record)
             )}
             size={20}
             color="#0044B4"
@@ -175,7 +159,10 @@ const AllSubscriber = () => {
             }}
           >
             <Input
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
               placeholder="Search..."
               prefix={<FiSearch size={14} color="#868FA0" />}
               style={{
@@ -211,60 +198,60 @@ const AllSubscriber = () => {
 
       <Modal
         centered
-        open={openAddModel}
-        onCancel={() => setOpenAddModel(false)}
+        open={valueData}
+        onCancel={() => setValueData(null)}
         width={500}
         footer={false}
         padding={0}
       >
-        <div className="p-2">
-          <div className="flex flex-col justify-center items-center bg-[#F4EAD9] p-6">
-            <div className="w-32 h-32 rounded-full overflow-hidden">
-              <img className="h-full w-full object-cover" src={avater} alt="" />
+        {valueData ? (
+          <div className="p-2">
+            <div className="flex flex-col justify-center items-center bg-[#F4EAD9] p-6">
+              <div className="w-32 h-32 rounded-full overflow-hidden">
+                <img
+                  className="h-full w-full object-cover"
+                  src={valueData?.photo}
+                  alt=""
+                />
+              </div>
+              <h1 className="text-2xl font-semibold mt-5">{valueData?.name}</h1>
             </div>
-            <h1 className="text-2xl font-semibold mt-5">Patient Mahmud</h1>
-          </div>
-          <div className="p-5">
-            <div>
-              <p className="text-sm font-semibold text-[#555555] mb-1">
-                Status
-              </p>
-              <p className="text-[#B47000]">Subscriber</p>
-            </div>
-            <div className="mt-3">
-              <p className="text-sm font-semibold text-[#555555] mb-1">Name</p>
-              <p className="text-[#555555]">Patient Mahmud</p>
-            </div>
-            <div className="mt-3">
-              <p className="text-sm font-semibold text-[#555555] mb-1">Email</p>
-              <p className="text-[#555555]">mahmud@gmail.com</p>
-            </div>
-            <div className="mt-3">
-              <p className="text-sm font-semibold text-[#555555] mb-1">
-                Contact No
-              </p>
-              <p className="text-[#555555]">+919355574544</p>
-            </div>
-            <div className="mt-3">
-              <p className="text-sm font-semibold text-[#555555] mb-1">
-                Date of birth
-              </p>
-              <p className="text-[#555555]">17 dec, 2024</p>
-            </div>
-            <div className="mt-3">
-              <p className="text-sm font-semibold text-[#555555] mb-1">
-                Designation
-              </p>
-              <p className="text-[#555555]">Actor</p>
-            </div>
-            <div className="mt-3">
-              <p className="text-sm font-semibold text-[#555555] mb-1">
-                Address
-              </p>
-              <p className="text-[#555555]">68/ Joker Vila, Gotham City</p>
+            <div className="p-5">
+              <div>
+                <p className="text-sm font-semibold text-[#555555] mb-1">
+                  Status
+                </p>
+                <p className="text-[#B47000]">{valueData?.status}</p>
+              </div>
+              <div className="mt-3">
+                <p className="text-sm font-semibold text-[#555555] mb-1">
+                  Name
+                </p>
+                <p className="text-[#555555]">{valueData?.name}</p>
+              </div>
+              <div className="mt-3">
+                <p className="text-sm font-semibold text-[#555555] mb-1">
+                  Email
+                </p>
+                <p className="text-[#555555]">{valueData?.email}</p>
+              </div>
+              <div className="mt-3">
+                <p className="text-sm font-semibold text-[#555555] mb-1">
+                  Contact No
+                </p>
+                <p className="text-[#555555]">{valueData?.contact}</p>
+              </div>
+              <div className="mt-3">
+                <p className="text-sm font-semibold text-[#555555] mb-1">
+                  Date
+                </p>
+                <p className="text-[#555555]">{valueData?.date}</p>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          []
+        )}
       </Modal>
     </div>
   );
