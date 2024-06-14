@@ -13,7 +13,7 @@ export const UpdateOrder = createAsyncThunk(
         try {
             let response = await baseAxios.patch(`/order/update/${id}`, data, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
                 }
             });
