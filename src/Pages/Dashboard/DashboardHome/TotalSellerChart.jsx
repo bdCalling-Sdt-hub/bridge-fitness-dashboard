@@ -22,7 +22,7 @@ const TotalSellerChart = () => {
   }, []);
 
   const userGrowth = useSelector((state) => state?.UserGrowth?.userData);
-  console.log(userGrowth);
+  // console.log(userGrowth);
 
   const data = userGrowth?.map((user) => ({
     name: user.month,
@@ -34,10 +34,12 @@ const TotalSellerChart = () => {
 
   const items = userGrowth
     .filter((growth) => growth.year >= 2000)
-    .map((year) => ({
-      label: year?.year,
-      key: year?.year,
-    }));
+    .reduce((acc, year) => {
+      if (!acc.some((item) => item.key === year.year)) {
+        acc.push({ label: year.year, key: year.year });
+      }
+      return acc;
+    }, []);
 
   const onClick = ({ key }) => {
     setYear(key);
