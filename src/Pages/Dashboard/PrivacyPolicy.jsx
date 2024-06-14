@@ -21,7 +21,6 @@ const PrivacyPolicy = () => {
         seLoading(true)
         dispatch(AddPrivecy({ description: content })).then((res) => {
             seLoading(false)
-            setContent('')
             if (res.type == 'AddPrivecy/fulfilled') {
                 Swal.fire({
                     title: "Added",

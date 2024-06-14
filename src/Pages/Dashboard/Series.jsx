@@ -28,18 +28,14 @@ const Series = () => {
   }, [dispatch]);
 
   const programs = useSelector((state) => state.AllProgram?.userData?.data);
-  console.log(programs);
-
   const items = useSelector((state) => state.AllSeries.userData);
-console.log(items)
   const data = items?.data?.map((item, index) => ({
     key: index + 1,
     program: item?.program?.title,
     name: item?.title,
     id: item?.id,
-    _id:item?.program?._id
+    _id: item?.program?._id
   }));
-
   const columns = [
     {
       title: "S.No",
@@ -97,7 +93,6 @@ console.log(items)
   ];
   const onFinish = (values) => {
     console.log(values);
-
     if (formTitle == "Add New Series") {
       dispatch(AddSeries(values)).then((res) => {
         if (res.type == "AddSeries/fulfilled") {
@@ -116,7 +111,6 @@ console.log(items)
         }
       });
     } else {
-      console.log(values);
       dispatch(UpdateSeries({ id: itemForEdit.id, data: values })).then(
         (res) => {
           if (res.type == "UpdateSeries/fulfilled") {
@@ -138,15 +132,13 @@ console.log(items)
       );
     }
   };
-
   useEffect(() => {
     if (!itemForEdit) {
       return;
     }
-    console.log(itemForEdit);
-    form.setFieldsValue({ title: itemForEdit.name });
+    form.setFieldsValue({ title: itemForEdit.name ,program:itemForEdit._id});
   }, [itemForEdit]);
-
+  console.log(itemForEdit)
   return (
     <div>
       <div style={{ margin: "24px 0" }}>
@@ -196,7 +188,7 @@ console.log(items)
       </div>
       <Modal
         centered
-        onCancel={() => setOpenAddModel(false)}
+        onCancel={() => { setItemForEdit({}); setOpenAddModel(false) }}
         open={openAddModel}
         footer={false}
       >
@@ -218,12 +210,12 @@ console.log(items)
                 },
               ]}
             >
-              <select
+              <select disabled={formTitle !='Add New Series'}
                 className="w-full p-4 border py-3 outline-none rounded-md cursor-pointer"
                 id=""
               >
                 {programs?.map((program) => (
-                  <option
+                  <option selected={itemForEdit?._id == program?._id}
                     className="cursor-pointer "
                     key={program?.id}
                     value={program?.id}
@@ -234,7 +226,6 @@ console.log(items)
               </select>
             </Form.Item>
             <p className="text-[#6D6D6D] py-1">Title</p>
-
             <Form.Item
               name="title"
               rules={[
@@ -250,7 +241,6 @@ console.log(items)
                 className="w-full p-4 border py-3 outline-none rounded-md"
               />
             </Form.Item>
-
             <div className="flex justify-center items-center mt-7">
               <Input
                 className="px-6 py-2 bg-[#B47000] text-white cursor-pointer"

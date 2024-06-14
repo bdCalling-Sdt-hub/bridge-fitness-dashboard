@@ -1,4 +1,4 @@
-import { Form, Input, Modal, Button, Pagination } from "antd";
+import { Form, Input, Modal, Button, Pagination, Empty } from "antd";
 import React, { useEffect, useState } from "react";
 import { FaFilePdf, FaImage, FaPlus, FaVideo } from "react-icons/fa6";
 import { Col, Row } from "antd";
@@ -69,7 +69,6 @@ const ClassManagement = () => {
         setDeleteId('')
       }
     })
-    // deleteId
   };
   const onFinish = (values) => {
     const formData = new FormData();
@@ -84,6 +83,8 @@ const ClassManagement = () => {
       Object.keys(otherValues).forEach((key) => {
         formData.append(key, values[key]);
       });
+      formData.append('program', ProgramID)
+      formData.append('series', SeriesID)
       formData.append('video', uploadFiles.videoName)
       formData.append('docs', uploadFiles.docName)
       formData.append('pdf', uploadFiles.pdfName)
@@ -106,7 +107,7 @@ const ClassManagement = () => {
             pdfName: false,
             docName: false,
           })
-          dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search , program: ProgramID, series: SeriesID }))
+          dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search, program: ProgramID, series: SeriesID }))
         }
       })
     } else {
@@ -120,9 +121,11 @@ const ClassManagement = () => {
       if (uploadFiles.docName) {
         formData.append('docs', uploadFiles.docName)
       }
-      if (uploadFiles.docName) {
+      if (uploadFiles.pdfName) {
         formData.append('pdf', uploadFiles.pdfName)
       }
+      formData.append('program', ProgramID)
+      formData.append('series', SeriesID)
       dispatch(UpdateClass({ id: editItem?._id, data: formData })).then((res) => {
         if (res.type == 'UpdateClass/fulfilled') {
           setOpenAddModel(false)
@@ -142,7 +145,7 @@ const ClassManagement = () => {
             pdfName: false,
             docName: false,
           })
-          dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search , program: ProgramID, series: SeriesID }))
+          dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search, program: ProgramID, series: SeriesID }))
         }
       })
     }
@@ -150,17 +153,8 @@ const ClassManagement = () => {
 
   // fetch data
   useEffect(() => {
-    dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search , program: ProgramID, series: SeriesID }))
+    dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search, program: ProgramID, series: SeriesID }))
   }, [limit, pageNumber, search])
-
-  useEffect(() => {
-    dispatch(AllProgram());
-  }, []);
-  const programs = useSelector((state) => state.AllProgram?.userData?.data);
-  const series = useSelector((state) => state.AllSeries.userData);
-  useEffect(() => {
-    dispatch(AllSeries());
-  }, []);
 
   useEffect(() => {
     if (!editItem) {
@@ -315,19 +309,12 @@ const ClassManagement = () => {
               </div>
               <div>
                 <label style={{ display: "block", marginBottom: "5px" }}>
-                  Select Program
+                  Program
                 </label>
                 <Form.Item
                   style={{ marginBottom: 0 }}
-                  name="program"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input program ",
-                    },
-                  ]}
                 >
-                  <select className="w-full"
+                  <Input value={Program} disabled className="w-full disabled:text-black"
                     style={{
                       border: "1px solid #E0E4EC",
                       height: "52px",
@@ -335,28 +322,20 @@ const ClassManagement = () => {
                       borderRadius: "8px",
                       outline: "none",
                     }}
-                  >
-                    {
-                      programs?.map(item => <option key={item?._id} value={item?._id}>{item?.title}</option>)
-                    }
-                  </select>
+
+                  />
                 </Form.Item>
               </div>
               <div>
                 <label style={{ display: "block", marginBottom: "5px" }}>
-                  Select Series
+                   Series
                 </label>
                 <Form.Item
                   style={{ marginBottom: 0 }}
-                  name="series"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input series ",
-                    },
-                  ]}
+                  
                 >
-                  <select className="w-full"
+                  <Input disabled className="w-full disabled:text-black"
+                  value={name}
                     style={{
                       border: "1px solid #E0E4EC",
                       height: "52px",
@@ -364,11 +343,7 @@ const ClassManagement = () => {
                       borderRadius: "8px",
                       outline: "none",
                     }}
-                  >
-                    {
-                      series?.data?.map(item => <option key={item?._id} value={item?._id}>{item?.title}</option>)
-                    }
-                  </select>
+                  />
                 </Form.Item>
               </div>
               <div>
@@ -706,9 +681,12 @@ const ClassManagement = () => {
             </button>
           </div>
         </Modal>
-        <div className='text-center mt-8'>
-          <Pagination defaultCurrent={pageNumber} total={meta?.total} pageSize={limit} onShowSizeChange={onShowSizeChange} onChange={onChangePage} />
-        </div>
+        {
+          Classes.length <= 0 ? <Empty /> : <div className='text-center mt-8'>
+            <Pagination defaultCurrent={pageNumber} total={meta?.total} pageSize={limit} onShowSizeChange={onShowSizeChange} onChange={onChangePage} />
+          </div>
+        }
+
       </div>
     </div>
   );

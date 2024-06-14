@@ -22,7 +22,6 @@ const About = () => {
         seLoading(true)
         dispatch(AddAbout({ description: content })).then((res) => {
             seLoading(false)
-            setContent('')
             if (res.type == 'AddAbout/fulfilled') {
                 Swal.fire({
                     title: "Added",
