@@ -21,7 +21,6 @@ const Terms = () => {
         seLoading(true)
         dispatch(AddTerms({ description: content })).then((res) => {
             seLoading(false)
-            setContent('')
             if (res.type == 'AddTerms/fulfilled') {
                 Swal.fire({
                     title: "Added",
