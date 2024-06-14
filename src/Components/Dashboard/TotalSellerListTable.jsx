@@ -10,11 +10,10 @@ const TotalSellerListTable = ({ Subscribers }) => {
   );
   const [open, setOpen] = useState();
   const [valueData, setValueData] = useState(null);
-  console.log(valueData);
   const dropdownRef = useRef();
 
   const newSubscriber = Subscribers.newSubscribers;
-  const data = newSubscriber?.map((subs, index) => ({
+  const data = newSubscriber?.slice(0, 6)?.map((subs, index) => ({
     key: index + 1,
     name: subs.user_id?.name,
     photo: subs.user_id?.profile_image,
@@ -62,6 +61,15 @@ const TotalSellerListTable = ({ Subscribers }) => {
       title: "Location",
       dataIndex: "location",
       key: "location",
+      render: (_, record) => (
+        <>
+          {record?.location ? (
+            <p>{record?.location}</p>
+          ) : (
+            <p className="text-red-500">not added</p>
+          )}
+        </>
+      ),
     },
     {
       title: "ACTION",
@@ -135,16 +143,7 @@ const TotalSellerListTable = ({ Subscribers }) => {
           </p>
         </Link>
       </div>
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{
-          pageSize: 5,
-          showSizeChanger:false,
-          defaultCurrent: parseInt(page),
-          onChange: handlePageChange,
-        }}
-      />
+      <Table columns={columns} dataSource={data} pagination={false} />
 
       <Modal
         centered

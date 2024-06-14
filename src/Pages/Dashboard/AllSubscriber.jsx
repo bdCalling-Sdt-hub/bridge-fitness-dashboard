@@ -97,6 +97,13 @@ const AllSubscriber = () => {
       title: "Location",
       dataIndex: "location",
       key: "location",
+      render: (_, record) => (
+        <>
+          {
+            record?.location ? <p>{record?.location}</p> : <p className="text-red-500">not added</p>
+          }
+        </>
+      )
     },
     {
       title: "Status",
