@@ -1,4 +1,4 @@
-import { Form, Input, Modal, Button, Pagination, Select } from "antd";
+import { Form, Input, Modal, Button, Pagination, Select, Empty } from "antd";
 import React, { useEffect, useState } from "react";
 import { FaImage, FaPlus, FaRegImage } from "react-icons/fa6";
 import { Col, Row } from "antd";
@@ -10,7 +10,7 @@ import { GetAllBlog } from "../../ReduxSlices/Blog/GetAllBlogSlice";
 import { ServerUrl } from "../../../Config";
 import { AddBlog } from "../../ReduxSlices/Blog/AddBlogSlice";
 import { IoClose } from "react-icons/io5";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { UpdateBlog } from "../../ReduxSlices/Blog/UpdateBlogSlice";
 import Swal from "sweetalert2";
 import { DeleteBlog } from "../../ReduxSlices/Blog/DeleteBlogSlice";
@@ -473,9 +473,12 @@ const Blog = () => {
             );
           })}
         </Row>
-        <div className='text-center mt-8'>
-          <Pagination defaultCurrent={page} total={meta?.total} pageSize={itemPerPage} onShowSizeChange={onShowSizeChange} onChange={onChange} />
-        </div>
+        {
+          AllBlog.length <= 0 ? <Empty /> : <div className='text-center mt-8'>
+            <Pagination defaultCurrent={page} total={meta?.total} pageSize={itemPerPage} onShowSizeChange={onShowSizeChange} onChange={onChange} />
+          </div>
+        }
+
       </div>
       <Modal
         centered
@@ -499,6 +502,10 @@ const Blog = () => {
           </button>
         </div>
       </Modal>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </div>
   );
 };

@@ -52,7 +52,6 @@ export const GetProductsSlice = createSlice({
             state.message = payload.message;
             state.products = payload.data
             state.meta = payload.meta
-            // console.log(payload)
         })
         builder.addCase(GetProducts.rejected, (state, { payload }) => {
 
