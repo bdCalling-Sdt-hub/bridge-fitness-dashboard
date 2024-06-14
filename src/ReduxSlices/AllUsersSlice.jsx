@@ -12,13 +12,17 @@ const initialState = {
 export const AllUsers = createAsyncThunk(
   "AllUsers",
   async (value, thunkAPI) => {
+    console.log(value.searchTerm);
     try {
       let token = localStorage.getItem("token");
-      let response = await axios.get("/auth/admin/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      let response = await axios.get(
+        `/auth/admin/users?page=${value.page}&searchTerm=${value.searchTerm}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response);
 
       return response.data;

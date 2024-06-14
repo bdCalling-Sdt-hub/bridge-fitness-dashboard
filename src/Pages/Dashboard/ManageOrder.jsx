@@ -19,8 +19,8 @@ const ManageOrder = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(AllProducts());
-  }, [dispatch]);
+    dispatch(AllProducts({ page: page, searchTerm: search }));
+  }, [page, search]);
 
   const products = useSelector((state) => state.AllProducts.userData.data);
   const [loading, setLoading] = useState(false)

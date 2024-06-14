@@ -1,9 +1,12 @@
-import { Input, Modal, Table } from "antd";
+import { Dropdown, Input, Modal, Table } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { FiEye, FiSearch } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { Subscribers } from "../../ReduxSlices/SubscribersSlice";
+import { DownOutlined } from "@ant-design/icons";
+import avatar from "../../../src/assets/icon/user.png";
 import moment from "moment";
+import { ServerUrl } from "../../../Config";
 const AllSubscriber = () => {
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
@@ -15,16 +18,26 @@ const AllSubscriber = () => {
   const [ItemPerPage, setItemPerPage] = useState(10);
   const [openAddModel, setOpenAddModel] = useState(false);
   const [valueData, setValueData] = useState(null);
+  const [category, setCategory] = useState(
+    new URLSearchParams(window.location.search).get("category") || "All"
+  );
+  const [plan, setPlan] = useState("");
+
+  console.log(plan);
 
   useEffect(() => {
-    dispatch(Subscribers({ page: page, searchTerm: search }));
-  }, [ItemPerPage, page, search]);
+    dispatch(Subscribers({ page: page, searchTerm: search, plan_type: plan }));
+  }, [ItemPerPage, page, search, plan]);
 
   const subscibers = useSelector((state) => state.SubscriberUser.userData.data);
   const data = subscibers?.map((users, index) => ({
     key: index + 1,
     name: users?.user_id?.name,
-    photo: users?.user_id?.profile_image,
+    photo: `${
+      `users?.user_id?.profile_image.includes("http")`
+        ? `${ServerUrl}${users?.user_id?.profile_image}`
+        : `users?.user_id?.profile_image`
+    }`,
     email: users?.user_id?.email,
     contact: users?.user_id?.phone_number,
     date: moment(users?.startDate).format("MM/DD/YYYY"),
@@ -124,6 +137,30 @@ const AllSubscriber = () => {
     window.history.pushState(null, "", `?${params.toString()}`);
   };
 
+  const items = subscibers?.reduce((acc, user) => {
+    if (!acc.some((item) => item.key === user?.user_id?.plan_type)) {
+      acc.push({
+        label: user?.user_id?.plan_type,
+        key: user?.user_id?.plan_type,
+      });
+    }
+    return acc;
+  }, []);
+
+  //   {
+  //     label: "mithila",
+  //     key: "mithila",
+  //   },
+  //   {
+  //     label: "mithi",
+  //     key: "mithi",
+  //   },
+  //   {
+  //     label: "mithil",
+  //     key: "mithil",
+  //   },
+  // ];
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -135,6 +172,15 @@ const AllSubscriber = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  const onClick = ({ key }) => {
+    setPlan(key);
+    setCategory(key);
+    const params = new URLSearchParams(window.location.search);
+    params.set("category", key);
+    window.history.pushState(null, "", `?${params.toString()}`);
+  };
+
   return (
     <div>
       <div
@@ -174,6 +220,32 @@ const AllSubscriber = () => {
               size="middle"
               value={search}
             />
+          </div>
+          <div
+            style={{
+              height: "40px",
+              borderRadius: "4px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "10px 10px",
+              color: "#8B8B8B",
+              background: "#fefefe",
+            }}
+          >
+            <Dropdown menu={{ items, onClick }}>
+              <p
+                style={{
+                  cursor: "pointer",
+                  color: "#717171",
+                  borderRadius: "4px",
+                }}
+                onClick={(e) => e.preventDefault()}
+              >
+                {category}
+                <DownOutlined style={{ paddingLeft: "18px" }} color="#717171" />
+              </p>
+            </Dropdown>
           </div>
         </div>
       </div>

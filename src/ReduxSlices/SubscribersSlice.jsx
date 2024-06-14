@@ -12,7 +12,9 @@ const initialState = {
 export const Subscribers = createAsyncThunk(
   "Subscribers",
   async (value, thunkAPI) => {
-    console.log(`subscriptions/subscribers?page=${value.page}&searchTerm=${value.searchTerm}`);
+    console.log(
+      `subscriptions/subscribers?page=${value.page}&searchTerm=${value.searchTerm}`
+    );
     try {
       const response = await axios.get(
         `subscriptions/subscribers?page=${value.page}&searchTerm=${value.searchTerm}`,

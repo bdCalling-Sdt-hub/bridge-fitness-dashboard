@@ -2,12 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { FiEye, FiSearch } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
 import { Calendar, Dropdown, Input, Modal, Table } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import { FaRegTrashCan } from "react-icons/fa6";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import { CiMenuKebab } from "react-icons/ci";
-import { LuRefreshCw } from "react-icons/lu";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -17,13 +11,17 @@ const TotalSellerList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const dropdownRef = useRef();
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(
+    new URLSearchParams(window.location.search).get("page") || 1
+  );
   const [valueData, setValueData] = useState(null);
   console.log(valueData);
 
   // all user
   useEffect(() => {
-    dispatch(AllUsers());
-  }, [dispatch, navigate]);
+    dispatch(AllUsers({ page: page, searchTerm: search }));
+  }, [page, search]);
 
   const userdata = useSelector((state) => state.AllUsers.userData);
 
@@ -35,44 +33,6 @@ const TotalSellerList = () => {
     phoneNumber: users.phone_number,
     status: "General",
   }));
-
-  const [value, setValue] = useState(
-    new URLSearchParams(window.location.search).get("date") ||
-      new Date().toLocaleDateString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
-      })
-  );
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState(
-    new URLSearchParams(window.location.search).get("category") || "All"
-  );
-  const [page, setPage] = useState(
-    new URLSearchParams(window.location.search).get("page") || 1
-  );
-  const [open, setOpen] = useState();
-  const [filter, setFilter] = useState(false);
-  const [date, setDate] = useState(false);
-
-  const items = [
-    {
-      label: "Package name",
-      key: "All",
-    },
-    {
-      label: "Car",
-      key: "Car",
-    },
-    {
-      label: "Bike",
-      key: "Bike",
-    },
-    {
-      label: "Cycle",
-      key: "Cycle",
-    },
-  ];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -168,13 +128,6 @@ const TotalSellerList = () => {
     window.history.pushState(null, "", `?${params.toString()}`);
   };
 
-  const onClick = ({ key }) => {
-    setCategory(key);
-    const params = new URLSearchParams(window.location.search);
-    params.set("category", key);
-    window.history.pushState(null, "", `?${params.toString()}`);
-  };
-
   return (
     <div>
       <div
@@ -211,56 +164,6 @@ const TotalSellerList = () => {
               size="middle"
               value={search}
             />
-          </div>
-          <div
-            style={{
-              height: "40px",
-              borderRadius: "4px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "0px 18px",
-              color: "#8B8B8B",
-              background: "#fefefe",
-            }}
-          >
-            <Dropdown menu={{ items, onClick }}>
-              <p
-                style={{
-                  cursor: "pointer",
-                  color: "#717171",
-                  borderRadius: "4px",
-                }}
-                onClick={(e) => e.preventDefault()}
-              >
-                {category}
-                <DownOutlined style={{ paddingLeft: "18px" }} color="#717171" />
-              </p>
-            </Dropdown>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "start",
-              alignItems: "center",
-              gap: "4px",
-              height: "40px",
-              background: "#fefefe",
-              padding: "0 10px",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            <button
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              Data Refresh{" "}
-            </button>
-            <LuRefreshCw />
           </div>
         </div>
       </div>

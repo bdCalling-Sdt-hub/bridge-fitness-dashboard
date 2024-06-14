@@ -8,15 +8,8 @@ import { LuRefreshCw } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import { AllSubscription } from "../../ReduxSlices/Subscription/GetAllSubscriptionSlice";
 const SubscriptionIncome = () => {
-  const [value, setValue] = useState(
-    new URLSearchParams(window.location.search).get("date") ||
-      new Date().toLocaleDateString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
-      })
-  );
   const [search, setSearch] = useState("");
+
   const [category, setCategory] = useState(
     new URLSearchParams(window.location.search).get("category") || "All"
   );
@@ -28,8 +21,8 @@ const SubscriptionIncome = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(AllSubscription());
-  }, []);
+    dispatch(AllSubscription({ page: page, searchTerm: search }));
+  }, [page, search]);
 
   const subscribers = useSelector(
     (state) => state?.AllSubscription?.allSubscription?.allEcommerce
@@ -136,13 +129,6 @@ const SubscriptionIncome = () => {
     window.history.pushState(null, "", `?${params.toString()}`);
   };
 
-  const onSelect = (newValue) => {
-    const date = newValue.format("MMM-DD-YYYY");
-    setValue(date);
-    const params = new URLSearchParams(window.location.search);
-    params.set("date", date);
-    window.history.pushState(null, "", `?${params.toString()}`);
-  };
   return (
     <div>
       <div
@@ -187,56 +173,6 @@ const SubscriptionIncome = () => {
               size="middle"
               value={search}
             />
-          </div>
-          <div
-            style={{
-              height: "40px",
-              borderRadius: "4px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "0px 18px",
-              color: "#8B8B8B",
-              background: "#fefefe",
-            }}
-          >
-            <Dropdown menu={{ items, onClick }}>
-              <p
-                style={{
-                  cursor: "pointer",
-                  color: "#717171",
-                  borderRadius: "4px",
-                }}
-                onClick={(e) => e.preventDefault()}
-              >
-                {category}
-                <DownOutlined style={{ paddingLeft: "18px" }} color="#717171" />
-              </p>
-            </Dropdown>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "start",
-              alignItems: "center",
-              gap: "4px",
-              height: "40px",
-              background: "#fefefe",
-              padding: "0 10px",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            <button
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              Data Refresh{" "}
-            </button>
-            <LuRefreshCw />
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ export const AllSubscription = createAsyncThunk(
     try {
       let token = localStorage.getItem("token");
       let response = await baseAxios.get(
-        "/dashboard/subscription-income-details",
+        `/dashboard/subscription-income-details?page=${value.page}&searchTerm=${value.searchTerm}`,
         {
           headers: {
             "Content-Type": "application/json",
