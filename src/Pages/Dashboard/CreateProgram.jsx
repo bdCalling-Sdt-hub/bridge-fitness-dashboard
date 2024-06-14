@@ -195,9 +195,10 @@ const CreateProgram = () => {
         centered
         open={openAddModel}
         onCancel={() => {
-          null;
+          // null;
           setImgFile(null);
           setOpenAddModel(false);
+         form.resetFields()
         }}
         width={500}
         footer={false}
@@ -211,7 +212,7 @@ const CreateProgram = () => {
           </h1>
           <Form onFinish={onFinish} form={form}>
             <div>
-              <p className="text-[#6D6D6D] py-1">Package Name</p>
+              <p className="text-[#6D6D6D] py-1">Program Name</p>
               <Form.Item
                 name="title"
                 rules={[
@@ -229,7 +230,7 @@ const CreateProgram = () => {
             </div>
 
             <div>
-              <p className="text-[#6D6D6D] py-1">Package Image</p>
+              <p className="text-[#6D6D6D] py-1">Program Image</p>
 
               <label
                 htmlFor="image"

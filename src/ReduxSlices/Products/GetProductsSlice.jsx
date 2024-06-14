@@ -8,9 +8,7 @@ const initialState = {
     products :[],
     meta : {}
 };
-
-
-export const GetProducts = createAsyncThunk(
+export const GetProducts = createAsyncThunk( 
     "GetProducts",
     async (value, thunkAPI) => {
         try {
