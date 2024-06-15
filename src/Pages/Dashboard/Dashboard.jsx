@@ -52,6 +52,10 @@ const Dashboard = () => {
       title: "Blog",
       path: "/blog",
     },
+    {
+      title: "banner",
+      path: "/banner",
+    },
   ]
   const linkItems = [
     {
