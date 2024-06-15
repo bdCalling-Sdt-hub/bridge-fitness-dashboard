@@ -27,6 +27,7 @@ const data = [
 
 const EcommerceIncome = () => {
   const [search, setSearch] = useState("");
+  console.log(search);
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
   );
@@ -35,21 +36,21 @@ const EcommerceIncome = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(AllEcommerce());
-  }, []);
+    dispatch(AllEcommerce({ page: page, searchTerm: search }));
+  }, [page, search]);
 
   const ecommerce = useSelector((state) => state?.AllEcommerces?.allEcommerce);
   console.log(ecommerce);
 
   const data = ecommerce?.map((subs, index) => ({
     key: index + 1,
-    name: subs?.user_id?.name,
-    email: subs?.user_id?.email,
+    name: subs?.user?.name,
+    email: subs?.user?.email,
     // date: subs?.user_id?.name,
-    photo: subs?.user_id?.profile_image,
-    package: subs?.plan_id?.title,
+    photo: subs?.user?.profile_image,
+    package: subs?.product?.productName,
     status: subs?.user_id?.name,
-    price: subs?.plan_id?.price,
+    price: `$${subs?.product?.price}`,
     // balance: subs?.user_id?.name,
   }));
 

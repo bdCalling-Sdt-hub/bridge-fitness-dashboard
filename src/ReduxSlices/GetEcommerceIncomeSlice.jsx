@@ -15,7 +15,7 @@ export const AllEcommerce = createAsyncThunk(
     try {
       let token = localStorage.getItem("token");
       let response = await baseAxios.get(
-        "/dashboard/ecommerce-income-details",
+        `/dashboard/ecommerce-income-details?page=${value.page}&searchTerm=${value.searchTerm}`,
         {
           headers: {
             "Content-Type": "application/json",

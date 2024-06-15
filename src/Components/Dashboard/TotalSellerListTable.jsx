@@ -1,6 +1,7 @@
 import { Table, Modal } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import ServerUrl from "../../../Config";
 import Swal from "sweetalert2";
 import { FiEye } from "react-icons/fi";
 
@@ -13,10 +14,15 @@ const TotalSellerListTable = ({ Subscribers }) => {
   const dropdownRef = useRef();
 
   const newSubscriber = Subscribers.newSubscribers;
+  console.log(newSubscriber);
   const data = newSubscriber?.slice(0, 6)?.map((subs, index) => ({
     key: index + 1,
     name: subs.user_id?.name,
-    photo: subs.user_id?.profile_image,
+    photo: `${
+      `subs.user_id?.profile_image.includes("http")`
+        ? `${ServerUrl}${subs.user_id?.profile_image}`
+        : `subs.user_id?.profile_image`
+    }`,
     email: subs.user_id?.email,
     contact: subs.user_id?.phone_number,
     location: subs.user_id?.address,
@@ -91,13 +97,6 @@ const TotalSellerListTable = ({ Subscribers }) => {
       ),
     },
   ];
-
-  const handlePageChange = (page) => {
-    setPage(page);
-    const params = new URLSearchParams(window.location.search);
-    params.set("page", page);
-    window.history.pushState(null, "", `?${params.toString()}`);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {

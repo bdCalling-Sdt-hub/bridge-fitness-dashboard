@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AllSubscription } from "../../ReduxSlices/Subscription/GetAllSubscriptionSlice";
 const SubscriptionIncome = () => {
   const [search, setSearch] = useState("");
-
+  console.log(search);
   const [category, setCategory] = useState(
     new URLSearchParams(window.location.search).get("category") || "All"
   );
@@ -25,7 +25,7 @@ const SubscriptionIncome = () => {
   }, [page, search]);
 
   const subscribers = useSelector(
-    (state) => state?.AllSubscription?.allSubscription?.allEcommerce
+    (state) => state?.AllSubscription?.allSubscription
   );
   console.log(subscribers);
 
@@ -37,8 +37,7 @@ const SubscriptionIncome = () => {
     photo: subs?.user_id?.profile_image,
     package: subs?.plan_id?.title,
     status: subs?.user_id?.name,
-    price: subs?.plan_id?.price,
-    // balance: subs?.user_id?.name,
+    price: `$${subs?.plan_id?.price}`,
   }));
 
   const items = [
