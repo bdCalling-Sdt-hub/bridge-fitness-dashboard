@@ -4,7 +4,6 @@ import { FiEye, FiSearch } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { Subscribers } from "../../ReduxSlices/SubscribersSlice";
 import { DownOutlined } from "@ant-design/icons";
-import avatar from "../../../src/assets/icon/user.png";
 import moment from "moment";
 import { ServerUrl } from "../../../Config";
 const AllSubscriber = () => {
@@ -18,20 +17,17 @@ const AllSubscriber = () => {
   const [ItemPerPage, setItemPerPage] = useState(10);
   const [openAddModel, setOpenAddModel] = useState(false);
   const [valueData, setValueData] = useState(null);
+  const [items, setItem] = useState([{ label: 'All', key: 'All' }])
   const [category, setCategory] = useState(
     new URLSearchParams(window.location.search).get("category") || "All"
   );
   const [plan, setPlan] = useState("");
-
-  console.log(plan);
-
   useEffect(() => {
-    dispatch(Subscribers({ page: page, searchTerm: search, plan_type: plan }));
-  }, [ItemPerPage, page, search, plan]);
+    dispatch(Subscribers({ page: page, plan_type: plan }));
+  }, [ItemPerPage, page, plan]);
 
-  const subscibers = useSelector((state) => state.SubscriberUser.userData.data);
-  console.log(subscibers);
-  const data = subscibers?.map((users, index) => ({
+  const subscibers = useSelector((state) => state.SubscriberUser.userData);
+  const data = subscibers?.data?.map((users, index) => ({
     key: index + 1,
     name: users?.user_id?.name,
     photo: users?.user_id?.profile_image.includes("http")
@@ -136,30 +132,14 @@ const AllSubscriber = () => {
     params.set("page", page);
     window.history.pushState(null, "", `?${params.toString()}`);
   };
-
-  const items = subscibers?.reduce((acc, user) => {
-    if (!acc.some((item) => item.key === user?.user_id?.plan_type)) {
-      acc.push({
-        label: user?.user_id?.plan_type,
-        key: user?.user_id?.plan_type,
-      });
-    }
-    return acc;
-  }, []);
-
-  //   {
-  //     label: "mithila",
-  //     key: "mithila",
-  //   },
-  //   {
-  //     label: "mithi",
-  //     key: "mithi",
-  //   },
-  //   {
-  //     label: "mithil",
-  //     key: "mithil",
-  //   },
-  // ];
+  useEffect(() => {
+    // planTypes
+    const filterItem = subscibers?.planTypes?.map(item => (
+      { label: item, key: item }
+    ))
+    filterItem.push({ label: 'All', key: 'All' })
+    setItem(filterItem)
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -174,6 +154,7 @@ const AllSubscriber = () => {
   }, []);
 
   const onClick = ({ key }) => {
+    console.log(key)
     setPlan(key);
     setCategory(key);
     const params = new URLSearchParams(window.location.search);
@@ -195,32 +176,6 @@ const AllSubscriber = () => {
           All Subscriber
         </h1>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <div
-            style={{
-              width: "304px",
-              height: "40px",
-              borderRadius: "8px",
-              background: "#fefefe",
-            }}
-          >
-            <Input
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setPage(1);
-              }}
-              placeholder="Search..."
-              prefix={<FiSearch size={14} color="#868FA0" />}
-              style={{
-                width: "100%",
-                height: "100%",
-                fontSize: "14px",
-                border: "none",
-                outline: "none",
-              }}
-              size="middle"
-              value={search}
-            />
-          </div>
           <div
             style={{
               height: "40px",
