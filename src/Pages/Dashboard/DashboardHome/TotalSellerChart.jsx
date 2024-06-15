@@ -21,8 +21,8 @@ const TotalSellerChart = () => {
     dispatch(UserGrowth());
   }, []);
 
-  const userGrowth = useSelector((state) => state?.UserGrowth?.userData);
-  // console.log(userGrowth);
+  const userGrowth = useSelector((state) => state?.UserGrowth?.userData?.data);
+  console.log(userGrowth);
 
   const data = userGrowth?.map((user) => ({
     name: user.month,

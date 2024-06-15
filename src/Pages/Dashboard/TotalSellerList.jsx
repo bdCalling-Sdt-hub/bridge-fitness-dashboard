@@ -26,7 +26,9 @@ const TotalSellerList = () => {
   const data = userdata.map((users, index) => ({
     key: index + 1,
     name: users.name,
-    photo: users?.profile_image,
+    photo: users?.profile_image.includes("http")
+      ? users?.profile_image
+      : `${ServerUrl}${users?.profile_image}`,
     email: users.email,
     phoneNumber: users.phone_number,
     status: "General",

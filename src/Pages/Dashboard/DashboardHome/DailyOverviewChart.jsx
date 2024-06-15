@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space } from "antd";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { useDispatch, useSelector } from "react-redux";
 import { SubscriptionGrowth } from "../../../ReduxSlices/DashboardHomePage/SubscriptionGrowthSlice";
 
@@ -22,7 +14,7 @@ export default function DailyRentChart() {
   }, []);
 
   const subsGrowth = useSelector(
-    (state) => state?.SubscriptionGrowth?.userData
+    (state) => state?.SubscriptionGrowth?.userData?.data
   );
   console.log(subsGrowth);
   const data = subsGrowth?.map((subgrowth) => ({
@@ -33,10 +25,12 @@ export default function DailyRentChart() {
 
   const items = subsGrowth
     .filter((growth) => growth.year >= 2000)
-    .map((year) => ({
-      label: year?.year,
-      key: year?.year,
-    }));
+    .reduce((acc, year) => {
+      if (!acc.some((item) => item.key === year.year)) {
+        acc.push({ label: year.year, key: year.year });
+      }
+      return acc;
+    }, []);
 
   const onClick = ({ key }) => {
     setYear(key);
