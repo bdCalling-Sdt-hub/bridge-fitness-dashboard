@@ -16,8 +16,6 @@ const TotalSellerList = () => {
     new URLSearchParams(window.location.search).get("page") || 1
   );
   const [valueData, setValueData] = useState(null);
-  console.log(valueData);
-
   // all user
   useEffect(() => {
     dispatch(AllUsers({ page: page, searchTerm: search }));

@@ -68,6 +68,7 @@ const ClassManagement = () => {
         });
         setShowDelete(false);
         setDeleteId('')
+        dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search, program: ProgramID, series: SeriesID }))
       }
     })
   };
