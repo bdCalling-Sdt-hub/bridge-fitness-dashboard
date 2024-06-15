@@ -25,14 +25,13 @@ export default function DailyRentChart() {
     (state) => state?.SubscriptionGrowth?.userData
   );
   console.log(subsGrowth);
-  const data = subsGrowth?.map((subgrowth) => ({
+  const data = subsGrowth?.data?.map((subgrowth) => ({
     name: subgrowth.month,
     uv: subgrowth.count,
     mt: 10,
   }));
 
-  const items = subsGrowth
-    .filter((growth) => growth.year >= 2000)
+  const items = subsGrowth?.data?.filter((growth) => growth.year >= 2000)
     .map((year) => ({
       label: year?.year,
       key: year?.year,
