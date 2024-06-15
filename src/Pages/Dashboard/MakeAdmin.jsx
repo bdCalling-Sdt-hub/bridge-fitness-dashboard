@@ -9,25 +9,32 @@ import { AllAdmins } from "../../ReduxSlices/MakeAdminSlice/GetAdminSlice";
 import { DeleteAdmin } from "../../ReduxSlices/MakeAdminSlice/DeleteAdminSlice";
 
 const MakeAdmin = () => {
+  const [form] = Form.useForm()
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [reFresh, setReFresh] = useState("");
   const [showDelete, setShowDelete] = useState(false);
   const [deleteID, setdeleteID] = useState("");
   const dispatch = useDispatch();
-
   const onFinish = (values) => {
     dispatch(AddAdmin(values)).then((response) => {
       console.log(response);
       dispatch(AllAdmins());
       if (response.type === "AddAdmin/fulfilled") {
         setOpenAddModel(false);
-        // dispatch(AllAdmins());
+        form.resetFields()
         Swal.fire({
           title: "Admin Added",
           text: "new admin has been added.",
           icon: "success",
           showConfirmButton: false,
           timer: 1500,
+        });
+      } else {
+        Swal.fire({
+          title: "oops!!",
+          text: `${response?.payload}`,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2500,
         });
       }
     });
@@ -40,12 +47,12 @@ const MakeAdmin = () => {
   const getAdmin = useSelector((state) => state?.AllAdmin?.userData);
   const data = getAdmin
     ? getAdmin.map((admin, index) => ({
-        key: index + 1,
-        fullName: admin.name,
-        email: admin.email,
-        userType: admin.role,
-        id: admin._id,
-      }))
+      key: index + 1,
+      fullName: admin.name,
+      email: admin.email,
+      userType: admin.role,
+      id: admin._id,
+    }))
     : [];
 
   const handleDelete = async () => {
@@ -106,7 +113,9 @@ const MakeAdmin = () => {
       ),
     },
   ];
-
+  useEffect(() => {
+    form.setFieldsValue({})
+  }, [])
   return (
     <div id="makeAdmin">
       <div style={{ margin: "24px 0" }}>
@@ -160,7 +169,7 @@ const MakeAdmin = () => {
       >
         <div className="p-6">
           <h1 style={{ marginBottom: "12px" }}>Make Admin</h1>
-          <Form
+          <Form form={form}
             name="normal_login"
             initialValues={{
               remember: true,
@@ -282,6 +291,7 @@ const MakeAdmin = () => {
               >
                 <Input
                   placeholder="Enter Phone Number"
+                  type="number"
                   style={{
                     border: "1px solid #E0E4EC",
                     height: "52px",

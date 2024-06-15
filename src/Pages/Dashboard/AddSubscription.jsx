@@ -166,7 +166,7 @@ const AddSubscription = () => {
                   setsubPrice(e.target.value);
                 }}
                 className="w-[50%] border outline-none px-3 py-[10px]"
-                type="text"
+                type="number"
                 value={subPrice}
               />
             </div>

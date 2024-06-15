@@ -22,17 +22,9 @@ export const AddAdmin = createAsyncThunk(
           },
         }
       );
-
-      console.log(response.data);
-
       return response.data;
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data) ||
-        error.message ||
-        error.toString();
-
-      return thunkAPI.rejectWithValue(message);
+      return thunkAPI.rejectWithValue(error?.response?.data?.message);
     }
   }
 );

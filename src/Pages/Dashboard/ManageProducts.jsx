@@ -485,7 +485,7 @@ const ManageProducts = () => {
                 >
                   <Input
                     placeholder="150 CND"
-                    type="text"
+                    type="number"
                     style={{
                       border: "1px solid #E0E4EC",
                       height: "52px",
@@ -631,7 +631,7 @@ const ManageProducts = () => {
               >
                 <Input
                   placeholder="topic here..."
-                  type="text"
+                  type="number"
                   style={{
                     border: "1px solid #E0E4EC",
                     height: "52px",
