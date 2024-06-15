@@ -10,24 +10,9 @@ import avater from "../../assets/avater.png";
 import product from "../../assets/icon/product.png";
 import { useDispatch, useSelector } from "react-redux";
 import { AllEcommerce } from "../../ReduxSlices/GetEcommerceIncomeSlice";
-const data = [
-  {
-    key: "1",
-    name: "Tushar",
-    email: "tushar@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    photo: avater,
-    productPhoto: product,
-    productName: "The Dumbbell",
-    status: "General",
-    price: "400 CND",
-    balance: "600",
-  },
-];
 
 const EcommerceIncome = () => {
   const [search, setSearch] = useState("");
-  console.log(search);
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
   );
@@ -42,7 +27,9 @@ const EcommerceIncome = () => {
   const ecommerce = useSelector((state) => state?.AllEcommerces?.allEcommerce);
   console.log(ecommerce);
 
-  const data = ecommerce?.map((subs, index) => ({
+  const data = ecommerce?.map((subs, index) => {
+    console.log(subs?.product)
+    return ({
     key: index + 1,
     name: subs?.user?.name,
     email: subs?.user?.email,
@@ -52,7 +39,7 @@ const EcommerceIncome = () => {
     status: subs?.user_id?.name,
     price: `$${subs?.product?.price}`,
     // balance: subs?.user_id?.name,
-  }));
+  })});
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -109,8 +96,7 @@ const EcommerceIncome = () => {
             gap: "6px",
           }}
         >
-          <img src={record.productPhoto} alt="" />
-          <span>{record.productName}</span>
+          <span>{record.package}</span>
         </span>
       ),
       key: "package",
