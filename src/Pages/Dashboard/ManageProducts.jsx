@@ -56,7 +56,11 @@ const ManageProducts = () => {
         >
           <img
             className="w-10 h-10"
-            src={`${ServerUrl}/${record.images[0]}`}
+            src={
+              record.images[0].includes("http")
+                ? record.images[0]
+                : `${ServerUrl}${record.images[0]}`
+            }
             alt=""
           />
           <span>{record.productName}</span>
@@ -278,7 +282,14 @@ const ManageProducts = () => {
               }}
               placeholder="Search..."
               prefix={<FiSearch size={14} color="#868FA0" />}
-              suffix={<RxCross2 className="cursor-pointer" onClick={()=>setSearch('')} size={14} color="#868FA0" />}
+              suffix={
+                <RxCross2
+                  className="cursor-pointer"
+                  onClick={() => setSearch("")}
+                  size={14}
+                  color="#868FA0"
+                />
+              }
               style={{
                 width: "100%",
                 height: "100%",

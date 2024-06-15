@@ -18,11 +18,9 @@ const TotalSellerListTable = ({ Subscribers }) => {
   const data = newSubscriber?.slice(0, 6)?.map((subs, index) => ({
     key: index + 1,
     name: subs.user_id?.name,
-    photo: `${
-      `subs.user_id?.profile_image.includes("http")`
-        ? `${ServerUrl}${subs.user_id?.profile_image}`
-        : `subs.user_id?.profile_image`
-    }`,
+    photo: subs.user_id?.profile_image.includes("http")
+      ? subs.user_id?.profile_image
+      : `${ServerUrl}${subs.user_id?.profile_image}`,
     email: subs.user_id?.email,
     contact: subs.user_id?.phone_number,
     location: subs.user_id?.address,

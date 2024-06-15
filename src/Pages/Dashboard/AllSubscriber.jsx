@@ -28,14 +28,14 @@ const AllSubscriber = () => {
   }, [ItemPerPage, page, search, plan]);
 
   const subscibers = useSelector((state) => state.SubscriberUser.userData.data);
+  console.log(subscibers);
   const data = subscibers?.map((users, index) => ({
     key: index + 1,
     name: users?.user_id?.name,
-    photo: `${
-      `users?.user_id?.profile_image.includes("http")`
-        ? `${ServerUrl}${users?.user_id?.profile_image}`
-        : `users?.user_id?.profile_image`
-    }`,
+    photo: users?.user_id?.profile_image.includes("http")
+      ? users?.user_id?.profile_image
+      : `${ServerUrl}${users?.user_id?.profile_image}`,
+
     email: users?.user_id?.email,
     contact: users?.user_id?.phone_number,
     date: moment(users?.startDate).format("MM/DD/YYYY"),
