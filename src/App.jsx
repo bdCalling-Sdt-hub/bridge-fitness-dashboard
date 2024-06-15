@@ -33,6 +33,7 @@ import SubscriptionIncome from "./Pages/Dashboard/SubscriptionIncome";
 import EcommerceIncome from "./Pages/Dashboard/EcommerceIncome";
 import CreateProgram from "./Pages/Dashboard/CreateProgram";
 import Series from "./Pages/Dashboard/Series";
+import AddBaner from "./Pages/Dashboard/AddBaner";
 function App() {
   return (
     <>
@@ -66,12 +67,13 @@ function App() {
               <Route path="/subscription-income" element={<PrivateRoute><SubscriptionIncome /></PrivateRoute>} />
               <Route path="/seller-details/:id" element={<PrivateRoute><SellerDetails /></PrivateRoute>} />
               <Route path="/seller-product-list" element={<PrivateRoute><SellerProductList /></PrivateRoute>} />
+              <Route path="/banner" element={<PrivateRoute><AddBaner /></PrivateRoute>} />
             </Route>
             <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<PrivateRoute><ForgotPassword /></PrivateRoute>} />
-            <Route path="/otp" element={<PrivateRoute><Otp /></PrivateRoute>} />
-            <Route path="/update-password" element={<PrivateRoute><UpdatePassword /></PrivateRoute>} />
-            <Route path="*" element={<PrivateRoute><NotFound /></PrivateRoute>} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/otp" element={<Otp />} />
+            <Route path="/update-password" element={<UpdatePassword />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
       </div>
