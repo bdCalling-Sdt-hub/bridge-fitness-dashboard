@@ -24,6 +24,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useSelector(state => state.Profile)
   const handleLogOut = () => {
+    localStorage.removeItem('token')
     navigate('/login');
     window.location.reload();
   }

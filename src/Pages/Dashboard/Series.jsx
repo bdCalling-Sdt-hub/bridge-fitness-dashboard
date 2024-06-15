@@ -243,7 +243,7 @@ const Series = () => {
             </Form.Item>
             <div className="flex justify-center items-center mt-7">
               <Input
-                className="px-6 py-2 bg-[#B47000] text-white cursor-pointer"
+                className="px-6 py-2 bg-[#B47000] text-white cursor-pointer hover:text-[#B47000] hover:border-2 hover:border-[#B47000]"
                 value={`Save`}
                 type="submit"
               />

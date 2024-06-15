@@ -20,16 +20,15 @@ export const AllAdmins = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
+
 
       return response.data;
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data) ||
-        error.message ||
-        error.toString();
 
-      return thunkAPI.rejectWithValue(message);
+      console.log(error)
+      const message = error?.response?.data?.message
+      //  thunkAPI.rejectWithValue(message);
+      return message
     }
   }
 );

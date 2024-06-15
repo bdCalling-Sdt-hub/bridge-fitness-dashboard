@@ -204,7 +204,7 @@ const ClassManagement = () => {
               value={search}
             />
             <button
-              onClick={() => { setFormFor('Add New Class'); setOpenAddModel(true) }}
+              onClick={() => { setFormFor('Add New Class'); setOpenAddModel(true) ; seteditItem({}) ; form.resetFields()}}
               style={{
                 borderRadius: "4px",
                 color: "#F2F2F2",

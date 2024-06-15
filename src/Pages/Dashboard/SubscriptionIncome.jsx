@@ -149,7 +149,7 @@ const SubscriptionIncome = () => {
             Subscription Income Details
           </h1>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+        {/* <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <div
             style={{
               width: "304px",
@@ -173,7 +173,7 @@ const SubscriptionIncome = () => {
               value={search}
             />
           </div>
-        </div>
+        </div> */}
       </div>
       <div
         style={{

@@ -75,6 +75,7 @@ const AdminProfile = () => {
     }
     dispatch(EditProfile(data))
       .then((res) => {
+        console.log(res)
         if (res.type === 'EditProfile/fulfilled') {
           Swal.fire({
             position: "top-end",

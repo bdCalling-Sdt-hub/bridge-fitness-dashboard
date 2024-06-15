@@ -139,7 +139,7 @@ const Blog = () => {
             Blogs
           </h3>
           <button
-            onClick={() => { setsubmitType('add'); seteditItemData({}); setOpenAddModel(true) }}
+            onClick={() => { setsubmitType('add'); seteditItemData({}); form.resetFields();setOpenAddModel(true) }}
             style={{
               borderRadius: "4px",
               color: "#F2F2F2",
