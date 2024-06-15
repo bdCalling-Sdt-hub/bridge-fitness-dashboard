@@ -13,10 +13,11 @@ export const UpdateBanner = createAsyncThunk(
   "UpdateBanner",
   async (value, thunkAPI) => {
     const { id, data } = value;
-    console.log(`/program/${id}`);
+    console.log(`/banner/edit/${id}`);
     try {
-      let response = await baseAxios.patch(`/program/edit/${id}`, data, {
+      let response = await baseAxios.patch(`/banner/edit/${id}`, data, {
         headers: {
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
@@ -26,7 +27,6 @@ export const UpdateBanner = createAsyncThunk(
         (error.response && error.response.data && error.response.data) ||
         error.message ||
         error.toString();
-
       return thunkAPI.rejectWithValue(message);
     }
   }

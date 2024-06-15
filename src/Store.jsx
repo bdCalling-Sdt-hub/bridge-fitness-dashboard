@@ -56,8 +56,8 @@ import UpdateOrderSlice from "./ReduxSlices/Order/UpdateOrderSlice";
 import UpdataeAllNotificationSlice from "./ReduxSlices/Notification/UpdataeAllNotificationSlice";
 import UpdataeNotificationSlice from "./ReduxSlices/Notification/UpdataeNotificationSlice";
 import AddBannerSlice from "./ReduxSlices/Banner/AddBannerSlice";
-import { GetBannerSlice } from "./ReduxSlices/Banner/GetBannerSlice";
 import UpdateBannerSlice from "./ReduxSlices/Banner/UpdateBannerSlice";
+import GetBannerDataSlice from "./ReduxSlices/Banner/GetBannerDataSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -117,7 +117,7 @@ export const Store = configureStore({
     UpdataeAllNotification: UpdataeAllNotificationSlice,
     UpdataeNotification: UpdataeNotificationSlice,
     AddBanners: AddBannerSlice,
-    GetBanner: GetBannerSlice,
     UpdateBanner: UpdateBannerSlice,
+    GetBannerData :GetBannerDataSlice,
   },
 });
