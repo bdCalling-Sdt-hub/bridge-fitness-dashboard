@@ -23,8 +23,6 @@ const AllSubscriber = () => {
   );
   const [plan, setPlan] = useState("");
 
-  console.log(plan);
-
   useEffect(() => {
     dispatch(Subscribers({ page: page, searchTerm: search, plan_type: plan }));
   }, [ItemPerPage, page, search, plan]);
@@ -146,20 +144,6 @@ const AllSubscriber = () => {
     }
     return acc;
   }, []);
-
-  //   {
-  //     label: "mithila",
-  //     key: "mithila",
-  //   },
-  //   {
-  //     label: "mithi",
-  //     key: "mithi",
-  //   },
-  //   {
-  //     label: "mithil",
-  //     key: "mithil",
-  //   },
-  // ];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
