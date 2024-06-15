@@ -10,24 +10,22 @@ const initialState = {
 };
 
 export const AllBanner = createAsyncThunk(
-  "AllBanner",
-  async (value, thunkAPI) => {
+  "GetBannerData",
+  async (value, thunkApi) => {
     try {
-      let token = localStorage.getItem("token");
-      let response = await baseAxios.get("/program/all", {
+      const response = await baseAxios.get(`/banner`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      return response.data;
+      return response?.data.data;
     } catch (error) {
       const message =
         (error.response && error.response.data && error.response.data) ||
         error.message ||
         error.toString();
-
-      return thunkAPI.rejectWithValue(message);
+      return thunkApi.rejectWithValue(message);
     }
   }
 );
