@@ -6,6 +6,7 @@ import { Calendar, Dropdown, Input, Modal, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { AllUsers } from "../../ReduxSlices/AllUsersSlice";
+import ServerUrl from "../../../Config";
 
 const TotalSellerList = () => {
   const navigate = useNavigate();

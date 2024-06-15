@@ -14,17 +14,17 @@ export default function DailyRentChart() {
   }, []);
 
   const subsGrowth = useSelector(
-    (state) => state?.SubscriptionGrowth?.userData?.data
+    (state) => state?.SubscriptionGrowth?.userData
   );
   console.log(subsGrowth);
-  const data = subsGrowth?.map((subgrowth) => ({
+  const data = subsGrowth?.data?.map((subgrowth) => ({
     name: subgrowth.month,
     uv: subgrowth.count,
     mt: 10,
   }));
 
-  const items = subsGrowth
-    .filter((growth) => growth.year >= 2000)
+  const items = subsGrowth?.data
+    ?.filter((growth) => growth.year >= 2000)
     .reduce((acc, year) => {
       if (!acc.some((item) => item.key === year.year)) {
         acc.push({ label: year.year, key: year.year });
