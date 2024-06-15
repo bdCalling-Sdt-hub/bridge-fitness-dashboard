@@ -51,7 +51,7 @@ const ManageOrder = () => {
         if (res.type == "UpdateOrder/fulfilled") {
           toast.success(`product ${value} Successfully`);
           setLoading(false)
-          dispatch(AllProducts());
+          dispatch(AllProducts({ page: page, searchTerm: search }));
         } else {
           toast.error(`something went wrong`);
           setLoading(false)
@@ -113,7 +113,6 @@ const ManageOrder = () => {
       dataIndex: "status",
       key: "status",
       render: (_, record) => {
-        console.log(record.status)
         return (
           <p
             style={{

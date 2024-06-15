@@ -9,6 +9,7 @@ import { CiEdit } from "react-icons/ci";
 import Swal from "sweetalert2";
 import { ServerUrl } from "../../../Config";
 import { EditProfile } from "../../ReduxSlices/Profile/EditProfileSlice";
+import { Profile } from "../../ReduxSlices/Profile/ProfileSlice";
 const AdminProfile = () => {
   const [image, setImage] = useState();
   const [form] = Form.useForm()
@@ -52,6 +53,15 @@ const AdminProfile = () => {
           }).then((response) => {
             form.resetFields();
           })
+        } else {
+          Swal.fire({
+            title: "old password doesn't match",
+            icon: "error",
+            showCancelButton: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "okey"
+          });
         }
       })
   };
@@ -70,6 +80,15 @@ const AdminProfile = () => {
             position: "top-end",
             icon: "success",
             title: "Your profile has been updated",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          dispatch(Profile())
+        } else {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "something went wrong",
             showConfirmButton: false,
             timer: 1500
           });
@@ -95,13 +114,14 @@ const AdminProfile = () => {
           <div className='relative w-[140px] h-[124px] mx-auto'>
             <input type="file" onChange={handleChange} id='img' style={{ display: "none" }} />
             <img
-              style={{ width: 140, height: 124, borderRadius: "100%" }}
+              style={{ width: 140, height: 140, borderRadius: "100%" }}
               src={`${image ? URL.createObjectURL(image) : user?.profile_image?.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}${user.profile_image}`}`}
               alt=""
             />
-            <label
-              htmlFor="img"
-              className='
+            {
+              tab === "Profile" && <label
+                htmlFor="img"
+                className='
                             absolute top-1/2 -right-2 
                             bg-white 
                             rounded-full 
@@ -109,9 +129,11 @@ const AdminProfile = () => {
                             flex items-center justify-center 
                             cursor-pointer
                         '
-            >
-              <CiEdit color='#929394' />
-            </label>
+              >
+                <CiEdit color='#929394' />
+              </label>
+            }
+
           </div>
           <div className='w-fit'>
             <p className=' text-[#575757] text-[24px] leading-[32px] font-semibold  '>{user?.name}</p>
