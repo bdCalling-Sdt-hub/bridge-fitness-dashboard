@@ -46,7 +46,7 @@ const Income = () => {
     {
       id: 2,
       name: "Subscription Income",
-      count: kFormatter(`${totalIncomes.totalSubscriptionIncome}`),
+      count: Math.round(kFormatter(`${totalIncomes.totalSubscriptionIncome}`)),
       icon: <FaArrowUp size={16} />,
       btn: "View details",
       path: "/subscription-income",

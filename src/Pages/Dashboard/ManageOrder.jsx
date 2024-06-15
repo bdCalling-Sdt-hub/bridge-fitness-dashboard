@@ -15,13 +15,10 @@ const ManageOrder = () => {
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
   );
-
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(AllProducts({ page: page, searchTerm: search }));
   }, [page, search]);
-
   const products = useSelector((state) => state.AllProducts.userData.data);
   const [loading, setLoading] = useState(false)
   const data = products?.map((product, index) => ({

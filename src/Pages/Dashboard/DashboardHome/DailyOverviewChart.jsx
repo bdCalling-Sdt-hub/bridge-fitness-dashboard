@@ -14,7 +14,7 @@ export default function DailyRentChart() {
   }, []);
 
   const subsGrowth = useSelector(
-    (state) => state?.SubscriptionGrowth?.userData?.data
+    (state) => state?.SubscriptionGrowth?.userData
   );
   const data = subsGrowth?.map((subgrowth) => ({
     name: subgrowth.month,
