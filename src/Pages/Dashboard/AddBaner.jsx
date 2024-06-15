@@ -4,16 +4,15 @@ import { Form, Input, Modal, Table } from "antd";
 import { FaPlus, FaRegImage, FaVideo } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
-import moment from "moment";
-import { AddProgram } from "../../ReduxSlices/CreateProgram/AddCreateProgramSlice";
 import { ServerUrl } from "../../../Config";
 import Swal from "sweetalert2";
 import { UpdateProgram } from "../../ReduxSlices/CreateProgram/UpdateProgramSlice";
+import { GetBannerData } from "../../ReduxSlices/Banner/GetBannerDataSlice";
+import { UpdateBanner } from "../../ReduxSlices/Banner/UpdateBannerSlice";
 
 const AddBaner = () => {
     const [openAddModel, setOpenAddModel] = useState(false);
-    const [formTitle, setFormTitle] = useState("Add New Program");
-    const [imgFile, setImgFile] = useState(null);
+    const [formTitle, setFormTitle] = useState("Update Banner");
     const [itemForEdit, setItemForEdit] = useState(null);
     const dispatch = useDispatch();
     const [form] = Form.useForm();
@@ -26,32 +25,30 @@ const AddBaner = () => {
         docName: false,
     })
     useEffect(() => {
-        dispatch(AllProgram());
+        dispatch(GetBannerData());
     }, [dispatch]);
-    const programs = useSelector((state) => state.AllProgram?.userData?.data);
-    const data = programs?.map((program, index) => ({
-        key: index + 1,
-        name: program?.title,
-        date: moment(program?.createdAt).format("l"),
-        img: program?.image,
-        id: program?._id,
-    }));
+    const { BannerData } = useSelector((state) => state.GetBannerData);
+    const data = [{ ...BannerData }]
 
     const columns = [
         {
-            title: "S.No",
-            dataIndex: "key",
-            key: "key",
+            title: "title",
+            dataIndex: "title",
+            key: "title",
         },
         {
-            title: "Name",
-            dataIndex: "name",
-            key: "pakg",
-        },
-        {
-            title: "Date",
-            dataIndex: "date",
-            key: "date",
+            title: "video",
+            dataIndex: "video",
+            render: (_, record) => (
+                <>
+                    <video className="w-36" autoPlay={false} muted loop>
+                        {
+                            record?.video && <source src={`${ServerUrl}${record?.video}`} />
+                        }
+                    </video>
+                </>
+            ),
+            key: "video",
         },
         {
             title: "Action",
@@ -63,7 +60,6 @@ const AddBaner = () => {
                         onClick={() => {
                             setOpenAddModel(true);
                             setFormTitle("Edit Program");
-                            setItemForEdit(record);
                         }}
                         style={{
                             display: "flex",
@@ -88,37 +84,35 @@ const AddBaner = () => {
     const onFinish = (values) => {
         const formData = new FormData();
         formData.append("title", values.title);
-        dispatch(UpdateProgram({ id: itemForEdit?.id, data: formData })).then(
+        if (uploadFiles?.videoName) {
+            formData.append("video", uploadFiles?.videoName);
+        }
+        dispatch(UpdateBanner({ id: BannerData?._id, data: formData })).then(
             (res) => {
-                if (res.type == "UpdateProgram/fulfilled") {
-                    dispatch(AllProgram());
+                console.log(res)
+                if (res.type == "UpdateBanner/fulfilled") {
+                    dispatch(GetBannerData());
                     Swal.fire({
                         title: "Updated!",
-                        text: "Program has been Updated.",
+                        text: "Banner has been Updated.",
                         icon: "success",
                         showConfirmButton: false,
                         timer: 1500,
                     }).then(() => {
                         form.resetFields();
-                        dispatch(AllProgram());
-                        setImgFile(null);
+                        dispatch(GetBannerData());
                         setOpenAddModel(false);
-                        setItemForEdit(null);
                     });
                 }
             }
         );
     };
-    // images
-    const handleChange = (e) => {
-        setImgFile(e.target.files[0]);
-    };
     useEffect(() => {
-        if (!itemForEdit) {
+        if (!BannerData) {
             return;
         }
-        form.setFieldsValue({ title: itemForEdit.name });
-    }, [itemForEdit]);
+        form.setFieldsValue({ title: BannerData.title });
+    }, [BannerData]);
 
     return (
         <div>
@@ -144,7 +138,6 @@ const AddBaner = () => {
                 open={openAddModel}
                 onCancel={() => {
                     // null;
-                    setImgFile(null);
                     setOpenAddModel(false);
                     form.resetFields()
                 }}
@@ -185,7 +178,7 @@ const AddBaner = () => {
                                 <div className="border p-2 rounded-lg">
                                     <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
                                         {
-                                            uploadFiles?.videoName ? <p>{uploadFiles?.videoName?.name?.slice(0, 34)}....</p> : false ? <p>{editItem?.video?.split('/')[2].slice(0, 34)}....</p> : <><FaVideo /> browse video</>
+                                            uploadFiles?.videoName ? <p>{uploadFiles?.videoName?.name?.slice(0, 34)}....</p> : BannerData?.video ? <p>{BannerData?.video?.split('/')[2].slice(0, 34)}....</p> : <><FaVideo /> browse video</>
                                         }
                                     </span>
                                 </div>

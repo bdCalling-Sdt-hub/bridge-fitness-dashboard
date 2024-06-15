@@ -33,7 +33,6 @@ const AllSubscriber = () => {
     photo: users?.user_id?.profile_image.includes("http")
       ? users?.user_id?.profile_image
       : `${ServerUrl}${users?.user_id?.profile_image}`,
-
     email: users?.user_id?.email,
     contact: users?.user_id?.phone_number,
     date: moment(users?.startDate).format("MM/DD/YYYY"),
@@ -133,10 +132,12 @@ const AllSubscriber = () => {
     window.history.pushState(null, "", `?${params.toString()}`);
   };
   useEffect(() => {
-    // planTypes
     const filterItem = subscibers?.planTypes?.map(item => (
       { label: item, key: item }
     ))
+    if (!filterItem) {
+      return
+    }
     filterItem.push({ label: 'All', key: 'All' })
     setItem(filterItem)
   }, [])
