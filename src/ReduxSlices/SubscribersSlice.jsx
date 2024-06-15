@@ -13,11 +13,11 @@ export const Subscribers = createAsyncThunk(
   "Subscribers",
   async (value, thunkAPI) => {
     console.log(
-      `subscriptions/subscribers?page=${value.page}&searchTerm=${value.searchTerm}`
+      `subscriptions/subscribers?page=${value.page}${value?.plan_type && `&plan_type=${value?.plan_type}`}`
     );
     try {
       const response = await axios.get(
-        `subscriptions/subscribers?page=${value.page}&searchTerm=${value.searchTerm}`,
+        `subscriptions/subscribers?page=${value.page}${value?.plan_type && value?.plan_type !='All'  && `&plan_type=${value?.plan_type}`}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

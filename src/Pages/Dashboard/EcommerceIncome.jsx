@@ -25,8 +25,6 @@ const EcommerceIncome = () => {
   }, [page, search]);
 
   const ecommerce = useSelector((state) => state?.AllEcommerces?.allEcommerce);
-  console.log(ecommerce);
-
   const data = ecommerce?.map((subs, index) => {
     console.log(subs?.product)
     return ({
