@@ -27,6 +27,7 @@ const ClassManagement = () => {
   const [Program, setProgram] = useState(
     new URLSearchParams(window.location.search).get("program") || "all"
   );
+  // console.log(window.location.search).get("program")
   const [ProgramID, setProgramID] = useState(
     new URLSearchParams(window.location.search).get("id") || ''
   );

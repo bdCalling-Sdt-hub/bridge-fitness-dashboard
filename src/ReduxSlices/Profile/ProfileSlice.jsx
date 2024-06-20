@@ -19,7 +19,6 @@ export const Profile = createAsyncThunk(
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
                 }
             });
-            console.log(response)
             return response?.data.data;
         } catch (error) {
             const axiosError =  AxiosError;

@@ -12,7 +12,7 @@ export const UpdataeAllNotification = createAsyncThunk(
     "UpdataeAllNotification",
     async (value, thunkAPI) => {
         try {
-            let response = await baseAxios.patch(`/notification/update-notifications`, {
+            let response = await baseAxios.patch(`/notification/update-notification`, {},{
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`

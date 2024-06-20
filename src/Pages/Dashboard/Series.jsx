@@ -138,7 +138,6 @@ const Series = () => {
     }
     form.setFieldsValue({ title: itemForEdit.name ,program:itemForEdit._id});
   }, [itemForEdit]);
-  console.log(itemForEdit)
   return (
     <div>
       <div style={{ margin: "24px 0" }}>
@@ -206,7 +205,7 @@ const Series = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please input Package Name",
+                  message: "Please input program Name",
                 },
               ]}
             >
@@ -214,7 +213,7 @@ const Series = () => {
                 className="w-full p-4 border py-3 outline-none rounded-md cursor-pointer"
                 id=""
               >
-                {programs?.map((program) => (
+                {programs?.map((program ,index) => (
                   <option selected={itemForEdit?._id == program?._id}
                     className="cursor-pointer "
                     key={program?.id}
