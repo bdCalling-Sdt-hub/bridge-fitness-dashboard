@@ -97,7 +97,7 @@ const Contact = () => {
                                             }
                                         })
                                         setCallingNumbers(newArray)
-                                    }} className='w-[90%] bg-[#FEFEFE] border py-3 px-2' type="text" disabled={!isAdmin} name="" id="" placeholder='please insert a number' defaultValue={item?.number || ''} />
+                                    }} className='w-[90%] bg-[#FEFEFE] border py-3 px-2' type="number" disabled={!isAdmin} name="" id="" placeholder='please insert a number' defaultValue={item?.number || ''} />
                                     <FaXmark onClick={() => {
                                         const newNumbers = callingNumers.filter((filterItem) => filterItem?.id !== item?.id)
                                         setCallingNumbers(newNumbers)
@@ -138,7 +138,7 @@ const Contact = () => {
                                             }
                                         })
                                         setCemailIds(newArray)
-                                    }} className='w-[90%] bg-[#FEFEFE] border py-3 px-2' type="text" disabled={!isAdmin} name="" id="" defaultValue={item?.email || ''} placeholder='please insert a valid email' />
+                                    }} className='w-[90%] bg-[#FEFEFE] border py-3 px-2' type="email" disabled={!isAdmin} name="" id="" defaultValue={item?.email || ''} placeholder='please insert a valid email' />
                                     <FaXmark onClick={() => {
                                         const newEmailIds = emailIds.filter((filterItem) => filterItem?.id !== item?.id)
                                         setCemailIds(newEmailIds)

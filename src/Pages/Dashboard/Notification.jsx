@@ -7,6 +7,7 @@ import { UpdataeAllNotification } from "../../ReduxSlices/Notification/UpdataeAl
 import { UpdataeNotification } from "../../ReduxSlices/Notification/UpdataeNotificationSlice";
 const Notification = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
+  const [currentNotification, setCurrentNotification] = useState({})
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(AllNotification());
@@ -23,10 +24,18 @@ const Notification = () => {
     id: notification?._id
   }));
   const handleReadAll = () => {
-    dispatch(UpdataeAllNotification())
+    dispatch(UpdataeAllNotification()).then((res) => {
+      if (res.type == 'UpdataeAllNotification/fulfilled') {
+        dispatch(AllNotification());
+      }
+    })
   }
   const handleRead = (id) => {
-    dispatch(UpdataeNotification({ id: id }))
+    dispatch(UpdataeNotification({ id: id })).then((res) => {
+      if (res.type == 'UpdataeNotification/fulfilled') {
+        dispatch(AllNotification());
+      }
+    })
   }
   return (
     <div>
@@ -57,9 +66,11 @@ const Notification = () => {
               onClick={() => {
                 setOpenAddModel(true);
                 handleRead(item?.id)
+                setCurrentNotification(item)
               }}
               className="text-[#B47000] font-medium text-lg"
             >
+
               View
             </button>
           </div>
@@ -73,14 +84,19 @@ const Notification = () => {
         footer={false}
       >
         <div className="p-5 min-h-96 relative">
-          <h3 className="text-[#555555] font-bold">A new order has arrived</h3>
-          <p className="text-[#919191] mt-4">
-            Md.Asad, address 76/4 cantonment. ordered dumbbell 5kg, price 80CND.
-            pleas confirm this order
-          </p>
-          <button className="bg-[#B47000] p-3 px-6 text-[#FEFEFE] absolute bottom-6 right-6">
+          <div>
+            <div className="flex justify-start items-center gap-8 mb-1 text-[#919191]">
+              <h3 className="text-[#555555] font-bold">{currentNotification?.title}</h3>
+              <p>{currentNotification?.date}</p>
+            </div>
+            <div className="flex justify-start items-center gap-2 text-[#919191] mt-3">
+              <h3>{currentNotification?.item}</h3>
+              <p>{currentNotification?.price}</p>
+            </div>
+          </div>
+          {/* <button className="bg-[#B47000] p-3 px-6 text-[#FEFEFE] absolute bottom-6 right-6">
             Visit page
-          </button>
+          </button> */}
         </div>
       </Modal>
     </div>
