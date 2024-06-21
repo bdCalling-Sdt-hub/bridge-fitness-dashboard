@@ -42,6 +42,9 @@ const Login = () => {
           icon: "error",
           title: "Oops...",
           text: message,
+          showCloseButton:false,
+          showConfirmButton:false,
+          timer:1500
         });
       }
     });

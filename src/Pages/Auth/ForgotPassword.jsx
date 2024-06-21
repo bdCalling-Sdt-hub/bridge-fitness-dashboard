@@ -3,21 +3,40 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import forgatePass from "../../assets/forgatePass.png";
+import { useDispatch } from "react-redux";
+import { ForgetPass } from "../../ReduxSlices/Authentication/ForgetPassSlice";
 
 const ForgotPassword = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const onFinish = (values) => {
-    localStorage.setItem("email", JSON.stringify(values.email))
-    console.log("Received values of form: ", values.email);
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Send OTP ",
-      showConfirmButton: false,
-      timer: 1500
-    }).then(() => {
-      navigate("/otp")
-    });
+    dispatch(ForgetPass({ email: values.email }))
+    .then(response => {
+      console.log(response)
+        if (response?.payload?.success && values.email) {
+          localStorage.setItem('resetEmail', values.email)
+            Swal.fire({
+                title: "please check your email",
+                text: "a verification code has been sent to your email",
+                icon: "success",
+                showCancelButton: false,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "okey"
+            }).then(()=>{
+              navigate("/otp")
+            })
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+            timer:1500,
+            showConfirmButton:false,
+            showCloseButton:false
+          });
+        }
+    })
   };
   return (
     <div className="grid grid-cols-2 gap-0 "

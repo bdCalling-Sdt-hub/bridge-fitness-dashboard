@@ -139,7 +139,7 @@ const Blog = () => {
             Blogs
           </h3>
           <button
-            onClick={() => { setsubmitType('add'); seteditItemData({}); form.resetFields();setOpenAddModel(true) }}
+            onClick={() => { setsubmitType('add'); seteditItemData({}); form.resetFields(); setOpenAddModel(true) }}
             style={{
               borderRadius: "4px",
               color: "#F2F2F2",
@@ -297,7 +297,7 @@ const Blog = () => {
                       <Input id='product_img1'
                         type="file"
                         multiple
-                        onChange={handleImageUpload}
+                        onInput={handleImageUpload}
                         style={{
                           border: "1px solid #E0E4EC",
                           height: "52px",
@@ -382,13 +382,12 @@ const Blog = () => {
                     marginBottom: "30px",
                   }}
                 >
-                  <img
-                    style={{
-                      width: "100%",
-                    }}
-                    src={`${ServerUrl}${item?.images[0]}`}
-                    alt=""
-                  />
+                  <div className="w-full h-[300px] overflow-hidden">
+                    <img className="w-full h-full object-cover"
+                      src={`${ServerUrl}${item?.images[0]}`}
+                      alt=""
+                    />
+                  </div>
                   <div
                     style={{
                       display: "flex",

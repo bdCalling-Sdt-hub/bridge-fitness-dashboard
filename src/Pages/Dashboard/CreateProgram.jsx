@@ -253,7 +253,7 @@ const CreateProgram = () => {
                       id="image"
                       placeholder="150 CND"
                       type="file"
-                      onChange={handleChange}
+                      onInput={handleChange}
                       style={{
                         border: "1px solid #E0E4EC",
                         height: "52px",

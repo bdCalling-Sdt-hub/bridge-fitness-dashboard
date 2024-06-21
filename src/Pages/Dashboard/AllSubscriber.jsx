@@ -27,17 +27,19 @@ const AllSubscriber = () => {
   }, [ItemPerPage, page, plan]);
 
   const subscibers = useSelector((state) => state.SubscriberUser.userData);
-  const data = subscibers?.data?.map((users, index) => ({
-    key: index + 1,
-    name: users?.user_id?.name,
-    photo: users?.user_id?.profile_image.includes("http")
-      ? users?.user_id?.profile_image
-      : `${ServerUrl}${users?.user_id?.profile_image}`,
-    email: users?.user_id?.email,
-    contact: users?.user_id?.phone_number,
-    date: moment(users?.startDate).format("MM/DD/YYYY"),
-    status: "General",
-  }));
+  const data = subscibers?.data?.map((users, index) =>{
+   return ({
+      key: index + 1,
+      name: users?.user_id?.name,
+      photo: users?.user_id?.profile_image.includes("http")
+        ? users?.user_id?.profile_image
+        : `${ServerUrl}${users?.user_id?.profile_image}`,
+      email: users?.user_id?.email,
+      contact: users?.user_id?.phone_number,
+      date: moment(users?.startDate).format("MM/DD/YYYY"),
+      status: "General",
+    })
+  });
 
   const columns = [
     {
@@ -57,7 +59,7 @@ const AllSubscriber = () => {
             gap: "6px",
           }}
         >
-          <img src={record.photo} alt="" className=" w-10 h-8 " />
+          <img src={record.photo} alt={record.photo} className=" w-10 h-8 " />
           <span>{record.name}</span>
         </span>
       ),
@@ -140,7 +142,7 @@ const AllSubscriber = () => {
     }
     filterItem.push({ label: 'All', key: 'All' })
     setItem(filterItem)
-  }, [])
+  }, [subscibers])
 
   useEffect(() => {
     const handleClickOutside = (event) => {

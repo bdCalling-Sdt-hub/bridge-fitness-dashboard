@@ -167,7 +167,7 @@ const ManageOrder = () => {
         }}
       >
         <h1 style={{ fontSize: "20px", fontWeight: 600, color: "#2F2F2F" }}>
-          All Products
+          All Order
         </h1>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <div

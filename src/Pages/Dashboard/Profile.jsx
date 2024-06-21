@@ -88,7 +88,7 @@ const Profile = () => {
             </div>
 
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "38px" }}>
-                <input onChange={onChange} type="file" name="" id="img" style={{ display: "none" }} />
+                <input onInput={onChange} type="file" name="" id="img" style={{ display: "none" }} />
                 <label
                     htmlFor="img"
                     style={{
