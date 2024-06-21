@@ -58,6 +58,9 @@ import UpdataeNotificationSlice from "./ReduxSlices/Notification/UpdataeNotifica
 import AddBannerSlice from "./ReduxSlices/Banner/AddBannerSlice";
 import UpdateBannerSlice from "./ReduxSlices/Banner/UpdateBannerSlice";
 import GetBannerDataSlice from "./ReduxSlices/Banner/GetBannerDataSlice";
+import ForgetPassSlice from "./ReduxSlices/Authentication/ForgetPassSlice";
+import VerifyCodeSlice from "./ReduxSlices/Authentication/VerifyCodeSlice";
+import SetNewPassSlice from "./ReduxSlices/Authentication/SetNewPassSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -119,5 +122,8 @@ export const Store = configureStore({
     AddBanners: AddBannerSlice,
     UpdateBanner: UpdateBannerSlice,
     GetBannerData :GetBannerDataSlice,
+    ForgetPass :ForgetPassSlice,
+    VerifyCode :VerifyCodeSlice,
+    SetNewPass :SetNewPassSlice,
   },
 });

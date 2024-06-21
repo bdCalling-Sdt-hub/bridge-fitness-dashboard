@@ -42,6 +42,7 @@ const ClassManagement = () => {
   const [formFor, setFormFor] = useState('Add New Class')
   const [deleteId, setDeleteId] = useState('')
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false)
   const [uploadFiles, setuploadFiles] = useState({
     video: false,
     doc: false,
@@ -91,9 +92,11 @@ const ClassManagement = () => {
       formData.append('video', uploadFiles.videoName)
       formData.append('docs', uploadFiles.docName)
       formData.append('pdf', uploadFiles.pdfName)
+      setLoading(true)
       dispatch(AddClass(formData)).then((res) => {
         if (res.type == 'AddClass/fulfilled') {
           setOpenAddModel(false)
+          setLoading(false)
           Swal.fire({
             title: "Added!",
             text: "Your Class has been Added.",
@@ -129,9 +132,11 @@ const ClassManagement = () => {
       }
       formData.append('program', ProgramID)
       formData.append('series', SeriesID)
+      setLoading(true)
       dispatch(UpdateClass({ id: editItem?._id, data: formData })).then((res) => {
         if (res.type == 'UpdateClass/fulfilled') {
           setOpenAddModel(false)
+          setLoading(false)
           Swal.fire({
             title: "Updated!",
             text: "Your Class has been Updated.",
@@ -193,7 +198,7 @@ const ClassManagement = () => {
               }}
               placeholder="Search..."
               prefix={<FiSearch size={14} color="#868FA0" />}
-              suffix={<RxCross2 className="cursor-pointer" onClick={()=>setSearch('')} size={14} color="#868FA0" />}
+              suffix={<RxCross2 className="cursor-pointer" onClick={() => setSearch('')} size={14} color="#868FA0" />}
               style={{
                 width: "250px",
                 height: "43px",
@@ -205,7 +210,7 @@ const ClassManagement = () => {
               value={search}
             />
             <button
-              onClick={() => { setFormFor('Add New Class'); setOpenAddModel(true) ; seteditItem({}) ; form.resetFields()}}
+              onClick={() => { setFormFor('Add New Class'); setOpenAddModel(true); seteditItem({}); form.resetFields() }}
               style={{
                 borderRadius: "4px",
                 color: "#F2F2F2",
@@ -332,14 +337,14 @@ const ClassManagement = () => {
               </div>
               <div>
                 <label style={{ display: "block", marginBottom: "5px" }}>
-                   Series
+                  Series
                 </label>
                 <Form.Item
                   style={{ marginBottom: 0 }}
-                  
+
                 >
                   <Input disabled className="w-full disabled:text-black"
-                  value={name}
+                    value={name}
                     style={{
                       border: "1px solid #E0E4EC",
                       height: "52px",
@@ -392,7 +397,7 @@ const ClassManagement = () => {
                   </div>
                   <div className="hidden">
                     <Input
-                      onChange={(e) => {
+                      onInput={(e) => {
                         if (!e.target.files[0].type.startsWith('video')) {
                           setuploadFiles({ ...uploadFiles, video: 'not a valid video', videoName: false })
                         } else {
@@ -434,7 +439,7 @@ const ClassManagement = () => {
                   {/* </label> */}
                   <div className="hidden">
                     <Input
-                      onChange={(e) => {
+                      onInput={(e) => {
                         if (!e.target.files[0].type.startsWith('application/pdf')) {
                           setuploadFiles({ ...uploadFiles, pdf: 'not a valid pdf', pdfName: false })
                         } else {
@@ -475,7 +480,7 @@ const ClassManagement = () => {
                   {/* </label> */}
                   <div className="hidden">
                     <Input
-                      onChange={(e) => {
+                      onInput={(e) => {
                         if (!e.target.files[0].type.startsWith('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
                           setuploadFiles({ ...uploadFiles, doc: 'not a valid doc  ', docName: false })
                         } else {
@@ -532,9 +537,8 @@ const ClassManagement = () => {
                 </Form.Item>
               </div>
             </div>
-
             <Form.Item>
-              <Button
+              <Button disabled={loading}
                 type="primary"
                 htmlType="submit"
                 block
@@ -547,7 +551,9 @@ const ClassManagement = () => {
                   outline: "none",
                 }}
               >
-                Publish
+                {
+                  loading?'loading.....':'Publish'
+                }
               </Button>
             </Form.Item>
           </Form>
@@ -588,13 +594,13 @@ const ClassManagement = () => {
                     style={{
                       display: "flex",
                       justifyContent: "start",
-                      alignItems: "center",
+                      alignItems: "start",
                       gap: "35px",
                       fontSize: "14px",
                       marginTop: "8px",
                     }}
                   >
-                    <p
+                    <p className="whitespace-nowrap"
                       style={{
                         display: "flex",
                         justifyContent: "start",

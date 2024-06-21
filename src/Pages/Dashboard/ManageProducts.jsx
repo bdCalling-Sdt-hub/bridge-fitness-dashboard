@@ -396,7 +396,7 @@ const ManageProducts = () => {
                   ]}
                 >
                   <Input
-                    placeholder="topic here..."
+                    placeholder="product name here..."
                     type="text"
                     style={{
                       border: "1px solid #E0E4EC",
@@ -420,6 +420,7 @@ const ManageProducts = () => {
                   name="gender"
                 >
                   <Select
+                  placeholder="gender"
                     style={{
                       border: "1px solid #E0E4EC",
                       height: "52px",
@@ -573,7 +574,7 @@ const ManageProducts = () => {
                           id="product_img1"
                           type="file"
                           multiple
-                          onChange={handleImageUpload}
+                          onInput={handleImageUpload}
                           style={{
                             border: "1px solid #E0E4EC",
                             height: "52px",
@@ -630,7 +631,7 @@ const ManageProducts = () => {
                 ]}
               >
                 <Input
-                  placeholder="topic here..."
+                  placeholder="quantity here..."
                   type="number"
                   style={{
                     border: "1px solid #E0E4EC",

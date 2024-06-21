@@ -30,7 +30,6 @@ export default function DailyRentChart() {
       }
       return acc;
     }, []);
-
   const onClick = ({ key }) => {
     setYear(key);
   };
@@ -68,21 +67,24 @@ export default function DailyRentChart() {
             top: "0",
           }}
         >
-          <Dropdown menu={{ items, onClick }}>
-            <p
-              style={{
-                cursor: "pointer",
-                color: "#717171",
-                border: "1px solid #E9E9E9",
-                borderRadius: "4px",
-                padding: "4px 12px",
-              }}
-              onClick={(e) => e.preventDefault()}
-            >
-              {year}
-              <DownOutlined style={{ paddingLeft: "18px" }} color="#717171" />
-            </p>
-          </Dropdown>
+          {
+            items?.length > 1 && <Dropdown menu={{ items, onClick }}>
+              <p
+                style={{
+                  cursor: "pointer",
+                  color: "#717171",
+                  border: "1px solid #E9E9E9",
+                  borderRadius: "4px",
+                  padding: "4px 12px",
+                }}
+                onClick={(e) => e.preventDefault()}
+              >
+                {year}
+                <DownOutlined style={{ paddingLeft: "18px" }} color="#717171" />
+              </p>
+            </Dropdown>
+          }
+
         </div>
       </div>
       <div

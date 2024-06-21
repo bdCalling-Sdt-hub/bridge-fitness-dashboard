@@ -14,8 +14,7 @@ const TotalSellerListTable = ({ Subscribers }) => {
   const dropdownRef = useRef();
 
   const newSubscriber = Subscribers.newSubscribers;
-  console.log(newSubscriber);
-  const data = newSubscriber?.slice(0, 6)?.map((subs, index) => ({
+  const data = newSubscriber?.slice(0, 2)?.map((subs, index) => ({
     key: index + 1,
     name: subs.user_id?.name,
     photo: subs.user_id?.profile_image.includes("http")

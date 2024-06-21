@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { RiEditLine } from "react-icons/ri";
-import { Form, Input, Modal, Table } from "antd";
+import { Form, Input, Modal, Select, Table } from "antd";
 import { FaPlus } from "react-icons/fa6";
 import { MdReadMore } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -136,7 +136,7 @@ const Series = () => {
     if (!itemForEdit) {
       return;
     }
-    form.setFieldsValue({ title: itemForEdit.name ,program:itemForEdit._id});
+    form.setFieldsValue({ title: itemForEdit.name, program: itemForEdit._id });
   }, [itemForEdit]);
   return (
     <div>
@@ -209,20 +209,34 @@ const Series = () => {
                 },
               ]}
             >
-              <select disabled={formTitle !='Add New Series'}
+              <Select
+                className="border h-12 rounded-md cursor-pointer"
+                disabled={formTitle != 'Add New Series'}
+                showSearch
+                placeholder="Select a program"
+                filterOption={(input, option) =>
+                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                }
+                options={programs?.map(program => { return { value: program._id, label: program?.title } })}
+              />
+              {/* <select disabled={formTitle !='Add New Series'}
                 className="w-full p-4 border py-3 outline-none rounded-md cursor-pointer"
                 id=""
               >
-                {programs?.map((program ,index) => (
-                  <option selected={itemForEdit?._id == program?._id}
+                {programs?.map((program ,index) => {
+                  console.log(program._id == programs?.[0]?._id)
+                  return (
+                  <option 
+                  // selected={itemForEdit?._id == program?._id}
+                  selected={program._id == programs?.[0]?._id}
                     className="cursor-pointer "
                     key={program?.id}
                     value={program?.id}
                   >
                     {program?.title}
                   </option>
-                ))}
-              </select>
+                )})}
+              </select> */}
             </Form.Item>
             <p className="text-[#6D6D6D] py-1">Series Title</p>
             <Form.Item

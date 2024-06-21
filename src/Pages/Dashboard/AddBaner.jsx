@@ -184,7 +184,7 @@ const AddBaner = () => {
                                 </div>
                                 <div className="hidden">
                                     <Input
-                                        onChange={(e) => {
+                                        onInput={(e) => {
                                             if (!e.target.files[0].type.startsWith('video')) {
                                                 setuploadFiles({ ...uploadFiles, video: 'not a valid video', videoName: false })
                                             } else {

@@ -9,42 +9,42 @@ const initialState = {
     user: {},
 };
 
-export const ChangePass = createAsyncThunk(
-    'ChangePass',
+export const VerifyCode = createAsyncThunk(
+    'VerifyCode',
     async (value, thunkApi) => {
         try {
-            console.log({ oldPassword: value.oldPassword, newPassword: value.newPassword })
-            const response = await baseAxios.patch(`/auth/change-password`, { oldPassword: value.oldPassword, newPassword: value.newPassword }, {
+            //console.log({ code: value.code, email: value.email })
+            const response = await baseAxios.post(`/auth/verify-otp`, { code: value.code, email: value.email }, {
                 headers: {
                     "Content-Type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
-            });
+            })
+            //console.log(response)
             return response?.data.data;
         } catch (error) {
-            const axiosError =  AxiosError;
+            const axiosError = AxiosError;
             const message = axiosError?.response?.data;
             return thunkApi.rejectWithValue(message);
         }
     }
 )
-export const ChangePassSlice = createSlice({
-    name: 'ChangePass',
+export const VerifyCodeSlice = createSlice({
+    name: 'VerifyCode',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(ChangePass.pending, (state) => {
+        builder.addCase(VerifyCode.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(ChangePass.fulfilled, (state, action) => {
+            builder.addCase(VerifyCode.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
                 state.user = action.payload;
             }),
-            builder.addCase(ChangePass.rejected, (state) => {
+            builder.addCase(VerifyCode.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
@@ -53,4 +53,4 @@ export const ChangePassSlice = createSlice({
             })
     }
 })
-export default ChangePassSlice.reducer
+export default VerifyCodeSlice.reducer

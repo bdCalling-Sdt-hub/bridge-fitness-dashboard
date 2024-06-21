@@ -16,6 +16,7 @@ const AdminProfile = () => {
   const [tab, setTab] = useState(new URLSearchParams(window.location.search).get('tab') || "Profile");
   const dispatch = useDispatch()
   const { user } = useSelector(state => state.Profile)
+  const [passError, setPassError] = useState('')
   // console.log(user)
   const handlePageChange = (tab) => {
     setTab(tab);
@@ -30,15 +31,13 @@ const AdminProfile = () => {
 
   }
   const onFinish = (values) => {
+    if (values?.new_password === values.current_password) {
+      return setPassError('your old password cannot be your new password')
+    }
     if (values?.new_password !== values?.confirm_password) {
-      return Swal.fire({
-        title: "Confirm password doesn't match",
-        icon: "error",
-        showCancelButton: false,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "okey"
-      })
+      return setPassError("Confirm password doesn't match")
+    } else {
+      setPassError('')
     }
     form.setFieldsValue(values)
     dispatch(ChangePass({ oldPassword: values.current_password, newPassword: values.new_password }))
@@ -57,10 +56,8 @@ const AdminProfile = () => {
           Swal.fire({
             title: "old password doesn't match",
             icon: "error",
-            showCancelButton: false,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "okey"
+            showConfirmButton: false,
+            timer: 1500
           });
         }
       })
@@ -106,14 +103,11 @@ const AdminProfile = () => {
   }, [user])
   return (
     <div>
-      <h1 style={{ fontSize: "20px", fontWeight: 600, color: "#2F2F2F" }}>
-        Admin Profile(Super Admin)
-      </h1>
       <div className='container pb-16'>
 
         <div className='bg-base py-9 px-10 rounded flex items-center justify-center flex-col gap-6' >
           <div className='relative w-[140px] h-[124px] mx-auto'>
-            <input type="file" onChange={handleChange} id='img' style={{ display: "none" }} />
+            <input type="file" onInput={handleChange} id='img' style={{ display: "none" }} />
             <img
               style={{ width: 140, height: 140, borderRadius: "100%" }}
               src={`${image ? URL.createObjectURL(image) : user?.profile_image?.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}${user.profile_image}`}`}
@@ -356,7 +350,7 @@ const AdminProfile = () => {
                     placeholder="Enter Confirm Password"
                   />
                 </Form.Item>
-
+                {passError && <p className="text-red-600 -mt-4 mb-2">{passError}</p>}
                 <Form.Item
                   style={{ marginBottom: 0, display: "flex", alignItems: "center", justifyContent: "center" }}
                 >
