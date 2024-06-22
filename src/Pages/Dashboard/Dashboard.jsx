@@ -1,5 +1,5 @@
 import { Layout, Badge, Modal, Input, } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate, useLocation, Form } from "react-router-dom";
 import Logo from "../../assets/icon/logo.png";
 import { HiLogout } from "react-icons/hi";
@@ -15,6 +15,7 @@ import { LiaProductHunt } from "react-icons/lia";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { ServerUrl } from "../../../Config";
+import { AllNotification } from "../../ReduxSlices/Notification/GetAllNotificationSlice";
 const Dashboard = () => {
   const [dropdown, setDropdown] = useState(false)
   const [dropdown2, setDropdown2] = useState(false)
@@ -23,6 +24,13 @@ const Dashboard = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { user } = useSelector(state => state.Profile)
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(AllNotification());
+  }, [dispatch]);
+  const notifications = useSelector(
+    (state) => state.AllNotification.allNotification
+  );
   const handleLogOut = () => {
     localStorage.removeItem('token')
     navigate('/login');
@@ -400,7 +408,7 @@ const Dashboard = () => {
               justifyContent: "end"
             }}
           >
-            <Badge color="#C30303" count={5}>
+            <Badge color="#C30303" count={notifications?.length || 0}>
               <Link to="/notification" >
                 <RiNotification2Line color="#6A6A6A" size={24} />
               </Link>

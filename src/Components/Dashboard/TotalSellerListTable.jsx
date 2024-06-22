@@ -1,9 +1,9 @@
 import { Table, Modal } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import ServerUrl from "../../../Config";
 import Swal from "sweetalert2";
 import { FiEye } from "react-icons/fi";
+import { ServerUrl } from "../../../Config";
 
 const TotalSellerListTable = ({ Subscribers }) => {
   const [page, setPage] = useState(
@@ -17,14 +17,11 @@ const TotalSellerListTable = ({ Subscribers }) => {
   const data = newSubscriber?.slice(0, 2)?.map((subs, index) => ({
     key: index + 1,
     name: subs.user_id?.name,
-    photo: subs.user_id?.profile_image.includes("http")
-      ? subs.user_id?.profile_image
-      : `${ServerUrl}${subs.user_id?.profile_image}`,
+    photo: subs.user_id?.profile_image.includes("http") ? subs.user_id?.profile_image : `${ServerUrl}${subs.user_id?.profile_image}`,
     email: subs.user_id?.email,
     contact: subs.user_id?.phone_number,
     location: subs.user_id?.address,
   }));
-
   const columns = [
     {
       title: "S.No",
@@ -34,7 +31,9 @@ const TotalSellerListTable = ({ Subscribers }) => {
     {
       title: "Name",
       dataIndex: "name",
-      render: (text, record) => (
+      render: (text, record) => {
+        console.log(record.photo)
+        return (
         <span
           style={{
             display: "flex",
@@ -46,7 +45,7 @@ const TotalSellerListTable = ({ Subscribers }) => {
           <img src={record.photo} className=" h-10 w-14" alt="" />
           <span>{record.name}</span>
         </span>
-      ),
+      )},
       key: "username",
     },
     {

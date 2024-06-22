@@ -137,9 +137,10 @@ const ManageOrder = () => {
             }}
           >
             <Select
+            className="w-full h-full"
               disabled={record?.status === "completed" || loading}
               defaultValue={record?.status}
-              style={{ width: 120 }}
+          
               onChange={(value) => {
                 handleChange(record?.id, value);
               }}

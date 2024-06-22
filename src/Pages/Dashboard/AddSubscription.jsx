@@ -224,7 +224,7 @@ const AddSubscription = () => {
                     onClick={() => {
                       setDescriptionFeatures([
                         ...descriptionFeatures,
-                        { title: false, id: generateRandomNumber() },
+                        { title: '', id: generateRandomNumber() },
                       ]);
                     }}
                     className="p-1 bg-[#B47000] rounded-full absolute right-[8.5px]"
