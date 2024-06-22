@@ -164,6 +164,7 @@ const AddBaner = () => {
                                 ]}
                             >
                                 <Input
+                                 defaultValue={BannerData?.title}
                                     className="w-[100%] border outline-none px-3 py-[10px]"
                                     type="text"
                                 />
