@@ -14,7 +14,7 @@ import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSl
 import { AddClass, setProgress } from "../../ReduxSlices/Classes/AddClassSlice";
 import Swal from "sweetalert2";
 import { AllSeries } from "../../ReduxSlices/CreateSeries/GetAllSeriesSlice";
-import { UpdateClass } from "../../ReduxSlices/Classes/UpdateClassSlice";
+import { UpdateClass, setUpdateProgress } from "../../ReduxSlices/Classes/UpdateClassSlice";
 import { DeleteClass } from "../../ReduxSlices/Classes/DeleteClassSlice";
 import { FiSearch } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
@@ -61,6 +61,7 @@ const ClassManagement = () => {
 
   const { Classes, meta } = useSelector(state => state.GetAllClass)
   const { isError, isSuccess, isLoading, progress, message } = useSelector((state) => state.AddClass);
+  const { isLoading: UpdateLoading, progress: updateProgress, } = useSelector((state) => state.UpdateClass);
   const handeldelete = () => {
     if (!deleteId) {
       return
@@ -127,6 +128,14 @@ const ClassManagement = () => {
             docName: false,
           })
           dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search, program: ProgramID, series: SeriesID }))
+        } else {
+          Swal.fire({
+            title: "oops!",
+            text: "somthing went wrong",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         }
       })
     } else {
@@ -146,7 +155,14 @@ const ClassManagement = () => {
       formData.append('program', ProgramID)
       formData.append('series', SeriesID)
       setLoading(true)
-      dispatch(UpdateClass({ id: editItem?._id, data: formData })).then((res) => {
+      dispatch(UpdateClass({
+        id: editItem?._id,
+        data: formData,
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          dispatch(setUpdateProgress(percentCompleted));
+        }
+      })).then((res) => {
         if (res.type == 'UpdateClass/fulfilled') {
           setOpenAddModel(false)
           setLoading(false)
@@ -167,6 +183,14 @@ const ClassManagement = () => {
             docName: false,
           })
           dispatch(GetAllClass({ page: pageNumber, limit: limit, searchTerm: search, program: ProgramID, series: SeriesID }))
+        } else {
+          Swal.fire({
+            title: "oops!",
+            text: "somthing went wrong",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         }
       })
     }
@@ -551,8 +575,26 @@ const ClassManagement = () => {
                 </Form.Item>
               </div>
             </div>
+            {
+              isLoading && <div className="w-full h-3 bg-gray-200 rounded-md mb-2 relative overflow-hidden">
+                <div style={{
+                  transition: '1s',
+                  width: `${progress}%`
+                }} className={`absolute left-0 top-0 h-full bg-[#b47000]`}>
+                </div>
+              </div>
+            }
+            {
+              UpdateLoading && <div className="w-full h-3 bg-gray-200 rounded-md mb-2 relative overflow-hidden">
+                <div style={{
+                  transition: '1s',
+                  width: `${updateProgress}%`
+                }} className={`absolute left-0 top-0 h-full bg-[#b47000]`}>
+                </div>
+              </div>
+            }
             <Form.Item>
-              <Button disabled={loading}
+              <Button disabled={isLoading || UpdateLoading}
                 type="primary"
                 htmlType="submit"
                 block
@@ -566,7 +608,7 @@ const ClassManagement = () => {
                 }}
               >
                 {
-                  loading ? 'loading.....' : 'Publish'
+                  isLoading ? 'loading.....' : 'Publish'
                 }
               </Button>
             </Form.Item>

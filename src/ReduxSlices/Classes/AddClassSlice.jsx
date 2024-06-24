@@ -94,6 +94,7 @@ export const AddClass = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
+            console.log(error)
             const message =
                 (error.response && error.response.data && error.response.data) ||
                 error.message ||
