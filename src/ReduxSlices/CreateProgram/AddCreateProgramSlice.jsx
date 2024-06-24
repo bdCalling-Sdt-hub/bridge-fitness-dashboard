@@ -13,18 +13,16 @@ export const AddProgram = createAsyncThunk(
   "AddProgram",
   async (addProgramData, thunkAPI) => {
     try {
-      console.log(addProgramData.get("image"));
       let response = await baseAxios.post("/program/add", addProgramData, {
         headers: {
           "Content-type": "multipart/form-data",
           authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
-      console.log(response.data);
-
+      console.log(response);
       return response.data;
     } catch (error) {
+      console.log(error)
       const message =
         (error.response && error.response.data && error.response.data) ||
         error.message ||

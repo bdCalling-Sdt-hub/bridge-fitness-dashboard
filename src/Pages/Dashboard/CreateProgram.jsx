@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { RiEditLine } from "react-icons/ri";
-import { Form, Input, Modal, Table } from "antd";
+import { Form, Input, Modal, Select, Table } from "antd";
 import { FaPlus, FaRegImage } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
@@ -9,6 +9,7 @@ import { AddProgram } from "../../ReduxSlices/CreateProgram/AddCreateProgramSlic
 import { ServerUrl } from "../../../Config";
 import Swal from "sweetalert2";
 import { UpdateProgram } from "../../ReduxSlices/CreateProgram/UpdateProgramSlice";
+import { Subscription } from "../../ReduxSlices/AddSubscription";
 
 const CreateProgram = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
@@ -27,6 +28,7 @@ const CreateProgram = () => {
     date: moment(program?.createdAt).format("l"),
     img: program?.image,
     id: program?._id,
+    accessType:program?.accessType
   }));
 
   const columns = [
@@ -76,7 +78,7 @@ const CreateProgram = () => {
       ),
     },
   ];
-
+console.log(itemForEdit)
   const onFinish = (values) => {
     const formData = new FormData();
     if (formTitle == "Add New Program") {
@@ -87,6 +89,7 @@ const CreateProgram = () => {
         return false;
       }
       formData.append("title", values.title);
+      formData.append("accessType", values.subscription);
       dispatch(AddProgram(formData)).then((res) => {
         if (res.type == "AddProgram/fulfilled") {
           Swal.fire({
@@ -111,6 +114,7 @@ const CreateProgram = () => {
         formData.append("image", itemForEdit.img);
       }
       formData.append("title", values.title);
+      formData.append("accessType", values.subscription);
       dispatch(UpdateProgram({ id: itemForEdit?.id, data: formData })).then(
         (res) => {
           if (res.type == "UpdateProgram/fulfilled") {
@@ -141,9 +145,8 @@ const CreateProgram = () => {
     if (!itemForEdit) {
       return;
     }
-    form.setFieldsValue({ title: itemForEdit.name });
+    form.setFieldsValue({ title: itemForEdit.name, subscription: itemForEdit.accessType });
   }, [itemForEdit]);
-
   return (
     <div>
       <div style={{ margin: "24px 0" }}>
@@ -198,7 +201,7 @@ const CreateProgram = () => {
           // null;
           setImgFile(null);
           setOpenAddModel(false);
-         form.resetFields()
+          form.resetFields()
         }}
         width={500}
         footer={false}
@@ -228,7 +231,32 @@ const CreateProgram = () => {
                 />
               </Form.Item>
             </div>
-
+            <div className="row-span-2 col-span-2" style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Subscription
+              </label>
+              <Form.Item
+                style={{
+                  marginBottom: 0,
+                }}
+                name="subscription"
+              >
+                <Select
+                  style={{
+                    border: "1px solid #E0E4EC",
+                    height: "52px",
+                    background: "white",
+                    borderRadius: "8px",
+                    outline: "none",
+                  }}
+                  options={[
+                    { value: 'Basic', label: "Basic" },
+                    { value: 'Standard', label: "Standard" },
+                    { value: 'Premium', label: "Premium" },
+                  ]}
+                ></Select>
+              </Form.Item>
+            </div>
             <div>
               <p className="text-[#6D6D6D] py-1">Program Image</p>
 

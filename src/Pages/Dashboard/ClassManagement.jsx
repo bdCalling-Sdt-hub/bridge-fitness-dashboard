@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetAllClass } from "../../ReduxSlices/Classes/GetAllClassSlice";
 import { ServerUrl } from "../../../Config";
 import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
-import { AddClass } from "../../ReduxSlices/Classes/AddClassSlice";
+import { AddClass, setProgress } from "../../ReduxSlices/Classes/AddClassSlice";
 import Swal from "sweetalert2";
 import { AllSeries } from "../../ReduxSlices/CreateSeries/GetAllSeriesSlice";
 import { UpdateClass } from "../../ReduxSlices/Classes/UpdateClassSlice";
@@ -53,22 +53,14 @@ const ClassManagement = () => {
     docName: false,
   })
   const [submitError, setSubmitError] = useState(false)
-  const dispatch = useDispatch() 
-// subscription  
-useEffect(() => {
-  dispatch(Subscription());
-}, [dispatch]); 
+  const dispatch = useDispatch()
 
-const subscriptions = useSelector((state)=>state.Subscription.userData) 
-const data = subscriptions?.map((subs) => ({
-  value: subs?.title,
-  label:subs?.title,
-}));   
 
 
 
 
   const { Classes, meta } = useSelector(state => state.GetAllClass)
+  const { isError, isSuccess, isLoading, progress, message } = useSelector((state) => state.AddClass);
   const handeldelete = () => {
     if (!deleteId) {
       return
@@ -108,7 +100,13 @@ const data = subscriptions?.map((subs) => ({
       formData.append('docs', uploadFiles.docName)
       formData.append('pdf', uploadFiles.pdfName)
       setLoading(true)
-      dispatch(AddClass(formData)).then((res) => {
+      dispatch(AddClass({
+        value: formData,
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          dispatch(setProgress(percentCompleted));
+        }
+      })).then((res) => {
         if (res.type == 'AddClass/fulfilled') {
           setOpenAddModel(false)
           setLoading(false)
@@ -524,32 +522,7 @@ const data = subscriptions?.map((subs) => ({
               </div>
               {
                 submitError && <p className="text-red-500 col-span-2">{submitError}</p>
-              } 
-
-<div className="row-span-2 col-span-2"  style={{ marginBottom: "16px" }}>
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Subscription
-                </label>
-                <Form.Item
-                  style={{
-                    marginBottom: 0,
-                  }}
-                  name="subscription"
-                >
-                  <Select
-                  placeholder="subscription"
-                    style={{
-                      border: "1px solid #E0E4EC",
-                      height: "52px",
-                      background: "white",
-                      borderRadius: "8px",
-                      outline: "none",
-                    }}
-                    options={data}
-                  />
-                </Form.Item>
-              </div> 
-
+              }
               <div className="row-span-2 col-span-2">
                 <label style={{ display: "block", marginBottom: "5px" }}>
                   Description{" "}
@@ -593,7 +566,7 @@ const data = subscriptions?.map((subs) => ({
                 }}
               >
                 {
-                  loading?'loading.....':'Publish'
+                  loading ? 'loading.....' : 'Publish'
                 }
               </Button>
             </Form.Item>
