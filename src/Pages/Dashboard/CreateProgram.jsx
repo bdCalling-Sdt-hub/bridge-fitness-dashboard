@@ -242,6 +242,7 @@ console.log(itemForEdit)
                 name="subscription"
               >
                 <Select
+                  placeholder={'subscription'}
                   style={{
                     border: "1px solid #E0E4EC",
                     height: "52px",

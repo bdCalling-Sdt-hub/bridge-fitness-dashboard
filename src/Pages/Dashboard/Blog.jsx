@@ -32,19 +32,7 @@ const Blog = () => {
   const [imageToDelete, setImageToDelete] = useState([])
   useEffect(() => {
     dispatch(GetAllBlog({ page: page, limit: itemPerPage, }))
-  }, [page, itemPerPage]) 
-
-// subscription  
-useEffect(() => {
-  dispatch(Subscription());
-}, [dispatch]); 
-
-const subscriptions = useSelector((state)=>state.Subscription.userData) 
-const data = subscriptions?.map((subs) => ({
-  value: subs?.title,
-  label:subs?.title,
-}));   
-
+  }, [page, itemPerPage])
   const onChange = (pageNumber) => {
     setPage(pageNumber)
   };
@@ -93,9 +81,7 @@ const data = subscriptions?.map((subs) => ({
       if (imageToDelete.length > 0) {
         formData.append("imageToDelete", JSON.stringify(imageToDelete))
       }
-
       dispatch(UpdateBlog({ data: formData, id: editItemData?._id })).then((res) => {
-        console.log(res)
         if (res.type == 'UpdateBlog/fulfilled') {
           toast.success('product Successfully added')
           setOpenAddModel(false)
@@ -270,6 +256,33 @@ const data = subscriptions?.map((subs) => ({
                 />
               </Form.Item>
             </div>
+            <div className="row-span-2 col-span-2" style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Subscription
+              </label>
+              <Form.Item
+                style={{
+                  marginBottom: 0,
+                }}
+                name="accessType"
+              >
+                <Select
+                  placeholder={'subscription'}
+                  style={{
+                    border: "1px solid #E0E4EC",
+                    height: "52px",
+                    background: "white",
+                    borderRadius: "8px",
+                    outline: "none",
+                  }}
+                  options={[
+                    { value: 'Basic', label: "Basic" },
+                    { value: 'Standard', label: "Standard" },
+                    { value: 'Premium', label: "Premium" },
+                  ]}
+                ></Select>
+              </Form.Item>
+            </div>
             <p className='font-bold mb-1'>Products Image</p>
             <div className='grid grid-cols-4 col-span-2 gap-2 p-4 pt-5 border  my-4 rounded-md'>
               {
@@ -324,32 +337,7 @@ const data = subscriptions?.map((subs) => ({
                 </label>)
               }
 
-            </div> 
-
-            <div style={{ marginBottom: "16px" }}>
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Subscription
-                </label>
-                <Form.Item
-                  style={{
-                    marginBottom: 0,
-                  }}
-                  name="subscription"
-                >
-                  <Select
-                  placeholder="subscription"
-                    style={{
-                      border: "1px solid #E0E4EC",
-                      height: "52px",
-                      background: "white",
-                      borderRadius: "8px",
-                      outline: "none",
-                    }}
-                    options={data}
-                  />
-                </Form.Item>
-              </div> 
-
+            </div>
             <div style={{ marginBottom: "16px" }}>
               <label style={{ display: "block", marginBottom: "5px" }}>Description</label>
               <Form.Item
