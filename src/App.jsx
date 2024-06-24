@@ -34,6 +34,7 @@ import EcommerceIncome from "./Pages/Dashboard/EcommerceIncome";
 import CreateProgram from "./Pages/Dashboard/CreateProgram";
 import Series from "./Pages/Dashboard/Series";
 import AddBaner from "./Pages/Dashboard/AddBaner";
+import Feedback from "./Pages/Dashboard/Feedback";
 function App() {
   return (
     <>
@@ -68,6 +69,7 @@ function App() {
               <Route path="/seller-details/:id" element={<PrivateRoute><SellerDetails /></PrivateRoute>} />
               <Route path="/seller-product-list" element={<PrivateRoute><SellerProductList /></PrivateRoute>} />
               <Route path="/banner" element={<PrivateRoute><AddBaner /></PrivateRoute>} />
+              <Route path="/feedback" element={<PrivateRoute><Feedback /></PrivateRoute>} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />

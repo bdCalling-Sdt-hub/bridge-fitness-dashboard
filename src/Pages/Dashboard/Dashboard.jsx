@@ -68,6 +68,10 @@ const Dashboard = () => {
       title: "setting",
       path: "/banner",
     },
+    {
+      title: "Feedback",
+      path: "/feedback",
+    },
   ]
   const [linkItems, setlinkItems] = useState([
     {

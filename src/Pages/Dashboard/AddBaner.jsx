@@ -176,7 +176,7 @@ const AddBaner = () => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please input Package Name",
+                                        message: "Please input banner title",
                                     },
                                 ]}
                             >
