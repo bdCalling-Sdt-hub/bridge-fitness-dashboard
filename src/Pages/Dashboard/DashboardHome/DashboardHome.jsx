@@ -24,47 +24,96 @@ function DashboardHome() {
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
       : Math.sign(num) * Math.abs(num);
   };
-
+  console.log(user)
   const data = [
     {
       name: "Total User",
-      count: user.users,
+      count: user?.totalUser?.[0]?.users || 0,
       icon: <FaArrowUp size={16} />,
-      Percent: "18%",
-      Color: "#10B981",
+      Percent: `${user?.totalUser?.[0]?.userGrowth}%` || '0%',
     },
     {
       name: "Total Subscriber",
-      count: user.subscribers,
+      count: user?.subscribers?.[0]?.subscribers || 0,
       icon: <FaArrowUp size={16} />,
-      Percent: "25%",
-      Color: "#10B981",
+      Percent: `${user?.subscribers?.[0]?.subscriberGrowth}%` || `0%`,
     },
     {
       name: "Total Selling Products",
-      count: user.totalSellingProduct,
-      icon: <FaArrowDown size={16} />,
-      Percent: "7%",
-      Color: "#D70000",
+      count: user?.totalSellingProduct?.[0]?.totalSellingProduct || 0,
+      icon: <FaArrowUp size={16} />,
+      Percent: `${user?.totalSellingProduct?.[0]?.sellingProductGrowth}%` || '0%',
     },
     {
       name: "Total Earning",
-      count: KFormatter(user.totalEarning),
-      icon: <FaArrowDown size={16} />,
-      Percent: "7%",
-      Color: "#D70000",
+      count: `$${user?.totalEarning?.[0]?.totalEarning}` || 0,
+      icon: <FaArrowUp size={16} />,
+      Percent: `${user?.totalEarning?.[0]?.earningGrowth}%` || '0%',
+    },
+    {
+      name: "basic subscriber",
+      count: `${user?.subscriptionByType?.[0]?.basic?.basicSubscriber}` || 0,
+      icon: <FaArrowUp size={16} />,
+      Percent: `${user?.subscriptionByType?.[0]?.basic?.basicSubscriberGrowth}%` || '0%',
+    },
+    {
+      name: "standard subscriber",
+      count: `${user?.subscriptionByType?.[0]?.standard?.standardSubscriber}` || 0,
+      icon: <FaArrowUp size={16} />,
+      Percent: `${user?.subscriptionByType?.[0]?.standard?.standardSubscriberGrowth}%` || '0%',
+    },
+    {
+      name: "premium subscriber",
+      count: `${user?.subscriptionByType?.[0]?.premium?.premiumSubscriber}` || 0,
+      icon: <FaArrowUp size={16} />,
+      Percent: `${user?.subscriptionByType?.[0]?.premium?.premiumSubscriberGrowth}%` || '0%',
+    },
+    {
+      name: "Total Female Users",
+      count: `${user?.totalFemaleUsers?.[0]?.totalFemaleUsers}` || 0,
+      icon: <FaArrowUp size={16} />,
+      Percent: `${user?.totalFemaleUsers?.[0]?.femaleUserGrowth}%` || '0%',
+    },
+    {
+      name: "Total Male Users",
+      count: `${user?.totalMaleUsers?.[0]?.totalMaleUsers}` || 0,
+      icon: <FaArrowUp size={16} />,
+      Percent: `${user?.totalMaleUsers?.[0]?.maleUserGrowth}%` || '0%',
     },
   ];
-
   return (
     <div>
       <div
         style={{
-          padding: "0 12px",
+          padding: "0",
           boxSizing: "border-box",
         }}
       >
-        <Row gutter={26}>
+        <div className="grid grid-cols-3 gap-2 w-full">
+          {
+            data.map((item, index) => <div className={`p-4 w-full flex justify-start items-center px-8 gap-5 bg-white rounded-md`} key={index}>
+              <div>
+                <p style={{
+                  fontSize: "32px",
+                  fontWeight: "600",
+                  color: "#50525D",
+                  textAlign: "left",
+                }}>{item?.count}</p>
+                <h3 style={{
+                  fontSize: "16px",
+                  fontWeight: "400",
+                  color: "#B47000",
+                  textAlign: "left",
+                  marginTop: "20px",
+                }}>{item?.name}</h3>
+              </div>
+              <div className="text-[#10B981]">
+                <p className="flex justify-start items-start gap-1"> {item?.icon}{item?.Percent}</p>
+              </div>
+            </div>)
+          }
+        </div>
+        {/* <Row gutter={26}>
           {data.map((item, index) => (
             <Col
               style={{
@@ -79,9 +128,8 @@ function DashboardHome() {
               lg={{ span: 6 }}
             >
               <div
-                className={`${
-                  index === data.length - 1 ? "" : "borderLeft"
-                } income-card`}
+                className={`${index === data.length - 1 ? "" : "borderLeft"
+                  } income-card`}
                 style={{
                   background: "transparent",
                   borderRadius: "0px",
@@ -126,7 +174,7 @@ function DashboardHome() {
               </div>
             </Col>
           ))}
-        </Row>
+        </Row> */}
       </div>
       <div
         style={{

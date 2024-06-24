@@ -80,9 +80,7 @@ const Blog = () => {
       if (imageToDelete.length > 0) {
         formData.append("imageToDelete", JSON.stringify(imageToDelete))
       }
-
       dispatch(UpdateBlog({ data: formData, id: editItemData?._id })).then((res) => {
-        console.log(res)
         if (res.type == 'UpdateBlog/fulfilled') {
           toast.success('product Successfully added')
           setOpenAddModel(false)
@@ -257,7 +255,34 @@ const Blog = () => {
                 />
               </Form.Item>
             </div>
-            <p className='font-bold -mb-5'>Products Image</p>
+            <div className="row-span-2 col-span-2" style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Subscription
+              </label>
+              <Form.Item
+                style={{
+                  marginBottom: 0,
+                }}
+                name="accessType"
+              >
+                <Select
+                  placeholder={'subscription'}
+                  style={{
+                    border: "1px solid #E0E4EC",
+                    height: "52px",
+                    background: "white",
+                    borderRadius: "8px",
+                    outline: "none",
+                  }}
+                  options={[
+                    { value: 'Basic', label: "Basic" },
+                    { value: 'Standard', label: "Standard" },
+                    { value: 'Premium', label: "Premium" },
+                  ]}
+                ></Select>
+              </Form.Item>
+            </div>
+            <p className='font-bold mb-1'>Products Image</p>
             <div className='grid grid-cols-4 col-span-2 gap-2 p-4 pt-5 border  my-4 rounded-md'>
               {
                 selectedItemImage.map((item, index) => <div className='relative flex justify-center items-center w-full h-full border-dashed border border-black py-10' key={index}>
@@ -312,7 +337,6 @@ const Blog = () => {
               }
 
             </div>
-
             <div style={{ marginBottom: "16px" }}>
               <label style={{ display: "block", marginBottom: "5px" }}>Description</label>
               <Form.Item

@@ -4,14 +4,15 @@ import { Profile } from "../ReduxSlices/Profile/ProfileSlice";
 export const AdminContext = createContext(null || {});
 const AdminProvider = ({ children }) => {
   const dispatch = useDispatch()
-  const {user,loading:userloading}=useSelector(state=>state.Profile)
-    useEffect(() => {
-        dispatch(Profile())
-    }, [])
-    const userData = {
-      user,userloading
+  const { user, loading: userloading } = useSelector(state => state.Profile)
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      dispatch(Profile())
     }
-
+  }, [localStorage.getItem('token')])
+  const userData = {
+    user, userloading
+  }
   return (
     <AdminContext.Provider value={userData}>{children}</AdminContext.Provider>
   );

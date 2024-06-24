@@ -61,6 +61,8 @@ import GetBannerDataSlice from "./ReduxSlices/Banner/GetBannerDataSlice";
 import ForgetPassSlice from "./ReduxSlices/Authentication/ForgetPassSlice";
 import VerifyCodeSlice from "./ReduxSlices/Authentication/VerifyCodeSlice";
 import SetNewPassSlice from "./ReduxSlices/Authentication/SetNewPassSlice";
+import GetAllFeedbackSlice from "./ReduxSlices/Feedback/GetAllFeedbackSlice";
+import ApproveFeedbackSlice from "./ReduxSlices/Feedback/ApproveFeedbackSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -125,5 +127,7 @@ export const Store = configureStore({
     ForgetPass :ForgetPassSlice,
     VerifyCode :VerifyCodeSlice,
     SetNewPass :SetNewPassSlice,
+    GetAllFeedback:GetAllFeedbackSlice,
+    ApproveFeedback:ApproveFeedbackSlice,
   },
 });

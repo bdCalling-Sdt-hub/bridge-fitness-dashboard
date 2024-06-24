@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { LuRefreshCw } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import { AllSubscription } from "../../ReduxSlices/Subscription/GetAllSubscriptionSlice";
+import { CSVLink } from "react-csv";
 const SubscriptionIncome = () => {
   const [search, setSearch] = useState("");
   console.log(search);
@@ -72,7 +73,7 @@ const SubscriptionIncome = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
-
+  const exportCsv = data.map((item) => ({ name: item.name, email: item.email, package: item.package, price: item.price }))
   const columns = [
     {
       title: "S.No",
@@ -149,31 +150,7 @@ const SubscriptionIncome = () => {
             Subscription Income Details
           </h1>
         </div>
-        {/* <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <div
-            style={{
-              width: "304px",
-              height: "40px",
-              borderRadius: "8px",
-              background: "#fefefe",
-            }}
-          >
-            <Input
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search..."
-              prefix={<FiSearch size={14} color="#868FA0" />}
-              style={{
-                width: "100%",
-                height: "100%",
-                fontSize: "14px",
-                border: "none",
-                outline: "none",
-              }}
-              size="middle"
-              value={search}
-            />
-          </div>
-        </div> */}
+        <CSVLink filename="subscriptionIncome" className="p-2 bg-[#b47000] text-white hover:text-white" data={exportCsv}>Download csv</CSVLink>
       </div>
       <div
         style={{

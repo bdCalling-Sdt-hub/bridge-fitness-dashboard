@@ -16,7 +16,9 @@ export const UserData = createAsyncThunk(
     try {
       const response = await baseAxios.post("/auth/login", value);
       localStorage.setItem("token", response?.data.data.accessToken);
+      console.log(response)
       return response.data;
+     
     } catch (error) {
       const message =
         (error.response && error.response.data && error.response.data) ||

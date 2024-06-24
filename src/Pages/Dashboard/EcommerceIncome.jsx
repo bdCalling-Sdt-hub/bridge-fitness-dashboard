@@ -10,6 +10,8 @@ import avater from "../../assets/avater.png";
 import product from "../../assets/icon/product.png";
 import { useDispatch, useSelector } from "react-redux";
 import { AllEcommerce } from "../../ReduxSlices/GetEcommerceIncomeSlice";
+import { CSVLink } from "react-csv";
+import { ServerUrl } from "../../../Config";
 
 const EcommerceIncome = () => {
   const [search, setSearch] = useState("");
@@ -26,19 +28,18 @@ const EcommerceIncome = () => {
 
   const ecommerce = useSelector((state) => state?.AllEcommerces?.allEcommerce);
   const data = ecommerce?.map((subs, index) => {
-    console.log(subs?.product)
     return ({
-    key: index + 1,
-    name: subs?.user?.name,
-    email: subs?.user?.email,
-    // date: subs?.user_id?.name,
-    photo: subs?.user?.profile_image,
-    package: subs?.product?.productName,
-    status: subs?.user_id?.name,
-    price: `$${subs?.product?.price}`,
-    // balance: subs?.user_id?.name,
-  })});
-
+      key: index + 1,
+      name: subs?.user?.name,
+      email: subs?.user?.email,
+      // date: subs?.user_id?.name,
+      photo: subs?.user?.profile_image,
+      package: subs?.product?.productName,
+      status: subs?.user_id?.name,
+      price: `$${subs?.product?.price}`,
+      // balance: subs?.user_id?.name,
+    })
+  });
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -52,7 +53,7 @@ const EcommerceIncome = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
-
+  const exportCsv = data.map((item) => ({ name: item.name, email: item.email, package:item.package, price:item.price }))
   const columns = [
     {
       title: "S.No",
@@ -134,33 +135,7 @@ const EcommerceIncome = () => {
             Ecommerce Income Details
           </h1>
         </div>
-        {/* <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <div
-            style={{
-              width: "304px",
-              height: "40px",
-              borderRadius: "8px",
-              background: "#fefefe",
-            }}
-          >
-            <Input
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search..."
-              prefix={<FiSearch size={14} color="#868FA0" />}
-              style={{
-                width: "100%",
-                height: "100%",
-                fontSize: "14px",
-                border: "none",
-                outline: "none",
-              }}
-              size="middle"
-              value={search}
-            />
-          </div>
-
-        
-        </div> */}
+        <CSVLink filename="EcommerceIncome" className="p-2 bg-[#b47000] text-white hover:text-white" data={exportCsv}>Download csv</CSVLink>
       </div>
       <div
         style={{
