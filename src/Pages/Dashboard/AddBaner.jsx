@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { RiEditLine } from "react-icons/ri";
 import { Form, Input, Modal, Table } from "antd";
-import { FaPlus, FaRegImage, FaVideo } from "react-icons/fa6";
+import { FaImage, FaPlus, FaRegImage, FaVideo } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
 import { ServerUrl } from "../../../Config";
@@ -18,26 +18,25 @@ const AddBaner = () => {
     const [form] = Form.useForm();
     const [uploadFiles, setuploadFiles] = useState({
         video: false,
-        doc: false,
+        logo: false,
         pdf: false,
         videoName: false,
         pdfName: false,
-        docName: false,
+        logoName: false,
     })
     useEffect(() => {
         dispatch(GetBannerData());
     }, [dispatch]);
     const { BannerData } = useSelector((state) => state.GetBannerData);
     const data = [{ ...BannerData }]
-
     const columns = [
         {
-            title: "title",
+            title: "banner title",
             dataIndex: "title",
             key: "title",
         },
         {
-            title: "video",
+            title: "banner video",
             dataIndex: "video",
             render: (_, record) => (
                 <>
@@ -51,7 +50,22 @@ const AddBaner = () => {
             key: "video",
         },
         {
-            title: "Action",
+            title: "website logo",
+            dataIndex: "logo",
+            render: (_, record) => {
+                console.log(`${ServerUrl}${record?.logo}`)
+                return (
+                    <>
+                        {
+                            record?.logo && <img src={`${ServerUrl}${record?.logo}`} alt="" />
+                        }
+                    </>
+                )
+            },
+            key: "video",
+        },
+        {
+            title: "Edit",
             dataIndex: "",
             key: "",
             render: (_, record) => (
@@ -86,6 +100,9 @@ const AddBaner = () => {
         formData.append("title", values.title);
         if (uploadFiles?.videoName) {
             formData.append("video", uploadFiles?.videoName);
+        }
+        if (uploadFiles?.logoName) {
+            formData.append("image", uploadFiles?.logoName);
         }
         dispatch(UpdateBanner({ id: BannerData?._id, data: formData })).then(
             (res) => {
@@ -126,7 +143,7 @@ const AddBaner = () => {
                     }}
                 >
                     <h3 style={{ fontSize: "24px", fontWeight: 600, color: "#2F2F2F" }}>
-                        Banner
+                        Website setting
                     </h3>
                 </div>
             </div>
@@ -164,7 +181,7 @@ const AddBaner = () => {
                                 ]}
                             >
                                 <Input
-                                 defaultValue={BannerData?.title}
+                                    defaultValue={BannerData?.title}
                                     className="w-[100%] border outline-none px-3 py-[10px]"
                                     type="text"
                                 />
@@ -175,7 +192,7 @@ const AddBaner = () => {
                                 htmlFor="video"
                                 style={{ display: "block", marginBottom: "5px" }}
                             >
-                                video
+                                banner video
                                 <div className="border p-2 rounded-lg">
                                     <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
                                         {
@@ -185,6 +202,7 @@ const AddBaner = () => {
                                 </div>
                                 <div className="hidden">
                                     <Input
+                                        accept="video/*"
                                         onInput={(e) => {
                                             if (!e.target.files[0].type.startsWith('video')) {
                                                 setuploadFiles({ ...uploadFiles, video: 'not a valid video', videoName: false })
@@ -193,6 +211,46 @@ const AddBaner = () => {
                                             }
                                         }}
                                         id="video"
+                                        placeholder="tittle here..."
+                                        type="file"
+
+                                        style={{
+                                            border: "1px solid #E0E4EC",
+                                            height: "52px",
+                                            paddingTop: "10px",
+                                            background: "white",
+                                            borderRadius: "8px",
+                                            outline: "none",
+                                        }}
+                                    />
+                                </div>
+                                {
+                                    uploadFiles?.video && <p className="text-red-500">{uploadFiles.video}</p>
+                                }
+                            </label>
+                            <label
+                                htmlFor="logo"
+                                style={{ display: "block", marginBottom: "5px" }}
+                            >
+                                website logo
+                                <div className="border p-2 rounded-lg">
+                                    <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
+                                        {
+                                            uploadFiles?.logoName ? <img src={URL.createObjectURL(uploadFiles?.logoName)} alt="" /> : BannerData?.logo ? <img src={`${ServerUrl}${BannerData?.logo}`} alt="" srcset="" /> : <><FaImage /> browse video</>
+                                        }
+                                    </span>
+                                </div>
+                                <div className="hidden">
+                                    <Input
+                                        accept="image/png"
+                                        onInput={(e) => {
+                                            if (!e.target.files[0].type.startsWith('image')) {
+                                                setuploadFiles({ ...uploadFiles, logo: 'not a valid video', logoName: false })
+                                            } else {
+                                                setuploadFiles({ ...uploadFiles, logo: false, logoName: e.target.files[0] })
+                                            }
+                                        }}
+                                        id="logo"
                                         placeholder="tittle here..."
                                         type="file"
 

@@ -26,7 +26,7 @@ const AddSubscription = () => {
     dispatch(Subscription());
   }, [dispatch]);
 
-  const subscriptions = useSelector((state) => state.Subscription.userData);
+  const subscriptions = useSelector((state) => state.Subscription.userData); 
   const data = subscriptions?.map((subs, index) => ({
     key: index + 1,
     name: subs?.title,

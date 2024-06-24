@@ -7,6 +7,7 @@ import { AddAdmin } from "../../ReduxSlices/MakeAdminSlice/AddAdminSlice";
 import Swal from "sweetalert2";
 import { AllAdmins } from "../../ReduxSlices/MakeAdminSlice/GetAdminSlice";
 import { DeleteAdmin } from "../../ReduxSlices/MakeAdminSlice/DeleteAdminSlice";
+import { Navigate } from "react-router-dom";
 
 const MakeAdmin = () => {
   const [form] = Form.useForm()
@@ -116,6 +117,7 @@ const MakeAdmin = () => {
   useEffect(() => {
     form.setFieldsValue({})
   }, [])
+  // console.log(user)
   return (
     <div id="makeAdmin">
       <div style={{ margin: "24px 0" }}>
@@ -128,7 +130,7 @@ const MakeAdmin = () => {
           }}
         >
           <h3 style={{ fontSize: "24px", fontWeight: 600, color: "#2F2F2F" }}>
-            Make Admin
+            All Admins
           </h3>
           <button
             onClick={() => setOpenAddModel(true)}

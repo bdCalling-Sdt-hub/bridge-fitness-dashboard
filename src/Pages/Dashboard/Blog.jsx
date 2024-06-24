@@ -14,6 +14,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { UpdateBlog } from "../../ReduxSlices/Blog/UpdateBlogSlice";
 import Swal from "sweetalert2";
 import { DeleteBlog } from "../../ReduxSlices/Blog/DeleteBlogSlice";
+import { Subscription } from "../../ReduxSlices/AddSubscription";
 const Blog = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
@@ -31,7 +32,19 @@ const Blog = () => {
   const [imageToDelete, setImageToDelete] = useState([])
   useEffect(() => {
     dispatch(GetAllBlog({ page: page, limit: itemPerPage, }))
-  }, [page, itemPerPage])
+  }, [page, itemPerPage]) 
+
+// subscription  
+useEffect(() => {
+  dispatch(Subscription());
+}, [dispatch]); 
+
+const subscriptions = useSelector((state)=>state.Subscription.userData) 
+const data = subscriptions?.map((subs) => ({
+  value: subs?.title,
+  label:subs?.title,
+}));   
+
   const onChange = (pageNumber) => {
     setPage(pageNumber)
   };
@@ -257,7 +270,7 @@ const Blog = () => {
                 />
               </Form.Item>
             </div>
-            <p className='font-bold -mb-5'>Products Image</p>
+            <p className='font-bold mb-1'>Products Image</p>
             <div className='grid grid-cols-4 col-span-2 gap-2 p-4 pt-5 border  my-4 rounded-md'>
               {
                 selectedItemImage.map((item, index) => <div className='relative flex justify-center items-center w-full h-full border-dashed border border-black py-10' key={index}>
@@ -311,7 +324,31 @@ const Blog = () => {
                 </label>)
               }
 
-            </div>
+            </div> 
+
+            <div style={{ marginBottom: "16px" }}>
+                <label style={{ display: "block", marginBottom: "5px" }}>
+                  Subscription
+                </label>
+                <Form.Item
+                  style={{
+                    marginBottom: 0,
+                  }}
+                  name="subscription"
+                >
+                  <Select
+                  placeholder="subscription"
+                    style={{
+                      border: "1px solid #E0E4EC",
+                      height: "52px",
+                      background: "white",
+                      borderRadius: "8px",
+                      outline: "none",
+                    }}
+                    options={data}
+                  />
+                </Form.Item>
+              </div> 
 
             <div style={{ marginBottom: "16px" }}>
               <label style={{ display: "block", marginBottom: "5px" }}>Description</label>

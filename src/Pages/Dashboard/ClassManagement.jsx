@@ -1,4 +1,4 @@
-import { Form, Input, Modal, Button, Pagination, Empty } from "antd";
+import { Form, Input, Modal, Button, Pagination, Empty, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { FaFilePdf, FaImage, FaPlus, FaVideo } from "react-icons/fa6";
 import { Col, Row } from "antd";
@@ -18,6 +18,7 @@ import { UpdateClass } from "../../ReduxSlices/Classes/UpdateClassSlice";
 import { DeleteClass } from "../../ReduxSlices/Classes/DeleteClassSlice";
 import { FiSearch } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
+import { Subscription } from "../../ReduxSlices/AddSubscription";
 
 const ClassManagement = () => {
   const [form] = Form.useForm()
@@ -52,7 +53,21 @@ const ClassManagement = () => {
     docName: false,
   })
   const [submitError, setSubmitError] = useState(false)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch() 
+// subscription  
+useEffect(() => {
+  dispatch(Subscription());
+}, [dispatch]); 
+
+const subscriptions = useSelector((state)=>state.Subscription.userData) 
+const data = subscriptions?.map((subs) => ({
+  value: subs?.title,
+  label:subs?.title,
+}));   
+
+
+
+
   const { Classes, meta } = useSelector(state => state.GetAllClass)
   const handeldelete = () => {
     if (!deleteId) {
@@ -396,6 +411,7 @@ const ClassManagement = () => {
                     </span>
                   </div>
                   <div className="hidden">
+                    <input type="file" />
                     <Input
                       onInput={(e) => {
                         if (!e.target.files[0].type.startsWith('video')) {
@@ -508,7 +524,32 @@ const ClassManagement = () => {
               </div>
               {
                 submitError && <p className="text-red-500 col-span-2">{submitError}</p>
-              }
+              } 
+
+<div className="row-span-2 col-span-2"  style={{ marginBottom: "16px" }}>
+                <label style={{ display: "block", marginBottom: "5px" }}>
+                  Subscription
+                </label>
+                <Form.Item
+                  style={{
+                    marginBottom: 0,
+                  }}
+                  name="subscription"
+                >
+                  <Select
+                  placeholder="subscription"
+                    style={{
+                      border: "1px solid #E0E4EC",
+                      height: "52px",
+                      background: "white",
+                      borderRadius: "8px",
+                      outline: "none",
+                    }}
+                    options={data}
+                  />
+                </Form.Item>
+              </div> 
+
               <div className="row-span-2 col-span-2">
                 <label style={{ display: "block", marginBottom: "5px" }}>
                   Description{" "}
