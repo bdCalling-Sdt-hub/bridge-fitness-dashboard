@@ -297,9 +297,9 @@ const Blog = () => {
                     outline: "none",
                   }}
                   options={[
-                    { value: 'Basic', label: "Basic" },
-                    { value: 'Standard', label: "Standard" },
-                    { value: 'Premium', label: "Premium" },
+                    { value: 'basic', label: "Basic" },
+                    { value: 'standard', label: "Standard" },
+                    { value: 'premium', label: "Premium" },
                   ]}
                 ></Select>
               </Form.Item>
