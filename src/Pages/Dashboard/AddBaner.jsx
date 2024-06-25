@@ -14,6 +14,7 @@ const AddBaner = () => {
     const [openAddModel, setOpenAddModel] = useState(false);
     const [formTitle, setFormTitle] = useState("Update Banner");
     const [itemForEdit, setItemForEdit] = useState(null);
+    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const [uploadFiles, setuploadFiles] = useState({
@@ -96,6 +97,7 @@ const AddBaner = () => {
     ];
 
     const onFinish = (values) => {
+        setLoading(true)
         const formData = new FormData();
         formData.append("title", values.title);
         if (uploadFiles?.videoName) {
@@ -106,7 +108,7 @@ const AddBaner = () => {
         }
         dispatch(UpdateBanner({ id: BannerData?._id, data: formData })).then(
             (res) => {
-                console.log(res)
+                setLoading(false)
                 if (res.type == "UpdateBanner/fulfilled") {
                     dispatch(GetBannerData());
                     Swal.fire({
@@ -232,11 +234,11 @@ const AddBaner = () => {
                                 htmlFor="logo"
                                 style={{ display: "block", marginBottom: "5px" }}
                             >
-                                website logo
+                                websi xte logo
                                 <div className="border p-2 rounded-lg">
                                     <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
                                         {
-                                            uploadFiles?.logoName ? <img src={URL.createObjectURL(uploadFiles?.logoName)} alt="" /> : BannerData?.logo ? <img src={`${ServerUrl}${BannerData?.logo}`} alt="" srcset="" /> : <><FaImage /> browse video</>
+                                            uploadFiles?.logoName ? <img src={URL.createObjectURL(uploadFiles?.logoName)} alt="" /> : BannerData?.logo ? <img src={`${ServerUrl}${BannerData?.logo}`} alt="" srcset="" /> : <><FaImage /> browse logo</>
                                         }
                                     </span>
                                 </div>
@@ -270,8 +272,8 @@ const AddBaner = () => {
                             </label>
                         </div>
                         <div className="text-center mt-6">
-                            <button className="bg-[#B47000] px-6 py-3 text-[#FEFEFE]">
-                                Save
+                            <button disabled={loading} className="bg-[#B47000] px-6 py-3 disabled:bg-gray-400 text-[#FEFEFE]">
+                                {loading?'loading...':'Save'}
                             </button>
                         </div>
                     </Form>
