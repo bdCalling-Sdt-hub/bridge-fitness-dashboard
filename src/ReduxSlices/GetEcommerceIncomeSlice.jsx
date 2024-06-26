@@ -23,8 +23,6 @@ export const AllEcommerce = createAsyncThunk(
           },
         }
       );
-      console.log(response);
-
       return response.data;
     } catch (error) {
       const message =
@@ -57,7 +55,6 @@ export const GetAllSubscriptionSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(AllEcommerce.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

@@ -13,7 +13,6 @@ export const ChangePass = createAsyncThunk(
     'ChangePass',
     async (value, thunkApi) => {
         try {
-            console.log({ oldPassword: value.oldPassword, newPassword: value.newPassword })
             const response = await baseAxios.patch(`/auth/change-password`, { oldPassword: value.oldPassword, newPassword: value.newPassword }, {
                 headers: {
                     "Content-Type": "application/json",

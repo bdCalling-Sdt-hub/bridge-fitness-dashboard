@@ -136,7 +136,7 @@ const ManageProducts = () => {
       cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
-        // console.log(id)
+ 
         dispatch(DeleteProducts({ id })).then((res) => {
           if (res.type == "DeleteProducts/fulfilled") {
             dispatch(

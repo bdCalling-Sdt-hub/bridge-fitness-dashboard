@@ -20,10 +20,8 @@ export const DeleteFeedback = createAsyncThunk(
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            console.log(response)
             return response?.data.data;
         } catch (error) {
-            console.log(error)
             const axiosError = AxiosError;
             const message = axiosError?.response?.data;
             return thunkApi.rejectWithValue(message);

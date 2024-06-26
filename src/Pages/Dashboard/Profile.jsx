@@ -11,7 +11,7 @@ const Profile = () => {
     const [tab, setTab] = useState(new URLSearchParams(window.location.search).get('tab') || "Profile");
     const dispatch = useAppDispatch()
     const { user }= useAppSelector(state => state.Profile)
-    // console.log(user)
+ 
     const handlePageChange = (tab) => {
         setTab(tab);
         const params = new URLSearchParams(window.location.search);
@@ -52,7 +52,7 @@ const Profile = () => {
             })
     };
     const onEditProfile = (values) => {
-        // console.log(values)
+ 
         const data= {
             profile_image: image,
             name: values.fullName,

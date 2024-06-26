@@ -44,7 +44,6 @@ export const UpdateFAQSlice = createSlice({
             state.isLoading = true;
         });
         builder.addCase(UpdateFAQ.fulfilled, (state, { payload }) => {
-            console.log(payload);
             state.isError = false;
             state.isSuccess = true;
             state.isLoading = false;

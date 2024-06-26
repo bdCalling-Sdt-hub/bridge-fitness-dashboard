@@ -92,7 +92,7 @@ const Series = () => {
     },
   ];
   const onFinish = (values) => {
-    console.log(values);
+ 
     if (formTitle == "Add New Series") {
       dispatch(AddSeries(values)).then((res) => {
         if (res.type == "AddSeries/fulfilled") {
@@ -224,7 +224,7 @@ const Series = () => {
                 id=""
               >
                 {programs?.map((program ,index) => {
-                  console.log(program._id == programs?.[0]?._id)
+   
                   return (
                   <option 
                   // selected={itemForEdit?._id == program?._id}

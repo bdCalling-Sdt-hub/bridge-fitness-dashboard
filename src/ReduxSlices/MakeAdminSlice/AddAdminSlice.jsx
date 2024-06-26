@@ -49,7 +49,6 @@ export const AddAdminSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(AddAdmin.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

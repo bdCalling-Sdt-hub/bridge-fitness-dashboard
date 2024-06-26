@@ -12,7 +12,6 @@ const ForgotPassword = () => {
   const onFinish = (values) => {
     dispatch(ForgetPass({ email: values.email }))
     .then(response => {
-      console.log(response)
         if (response?.payload?.success && values.email) {
           localStorage.setItem('resetEmail', values.email)
             Swal.fire({

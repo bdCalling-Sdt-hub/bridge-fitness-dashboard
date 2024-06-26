@@ -13,7 +13,6 @@ export const UpdateProgram = createAsyncThunk(
     "UpdateProgram",
     async (value, thunkAPI) => {
         const {id,data}=value
-        console.log(`/program/${id}`,)
         try {
             let response = await baseAxios.patch(`/program/edit/${id}`,data, {
                 headers: {
@@ -45,7 +44,6 @@ export const UpdateProgramSlice = createSlice({
             state.isLoading = true;
         });
         builder.addCase(UpdateProgram.fulfilled, (state, { payload }) => {
-            console.log(payload);
             state.isError = false;
             state.isSuccess = true;
             state.isLoading = false;

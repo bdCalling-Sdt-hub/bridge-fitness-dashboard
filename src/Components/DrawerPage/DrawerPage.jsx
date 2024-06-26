@@ -51,7 +51,6 @@ const DrawerPage = (props) => {
   );
 
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
   };
 
   return (

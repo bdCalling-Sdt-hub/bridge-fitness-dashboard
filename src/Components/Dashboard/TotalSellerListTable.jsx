@@ -32,7 +32,6 @@ const TotalSellerListTable = ({ Subscribers }) => {
       title: "Name",
       dataIndex: "name",
       render: (text, record) => {
-        console.log(record.photo)
         return (
         <span
           style={{

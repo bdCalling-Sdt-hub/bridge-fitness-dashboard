@@ -43,7 +43,6 @@ export const UpdateContactSlice = createSlice({
             state.isLoading = true;
         });
         builder.addCase(UpdateContact.fulfilled, (state, { payload }) => {
-            console.log(payload);
             state.isError = false;
             state.isSuccess = true;
             state.isLoading = false;

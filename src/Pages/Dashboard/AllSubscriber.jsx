@@ -157,7 +157,7 @@ const AllSubscriber = () => {
   }, []);
 
   const onClick = ({ key }) => {
-    console.log(key)
+ 
     setPlan(key);
     setCategory(key);
     const params = new URLSearchParams(window.location.search);

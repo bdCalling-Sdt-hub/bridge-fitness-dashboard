@@ -9,9 +9,6 @@ import { FaArrowDown } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { NewSubcriber } from "../../../ReduxSlices/DashboardHomePage/HomeSlice";
 function DashboardHome() {
-  const onChange = (pageNumber) => {
-    console.log("Page: ", pageNumber);
-  };
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,7 +21,7 @@ function DashboardHome() {
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
       : Math.sign(num) * Math.abs(num);
   };
-  console.log(user)
+ 
   const data = [
     {
       name: "Total User",

@@ -23,8 +23,6 @@ export const AllNotification = createAsyncThunk(
           },
         }
       );
-      console.log(response);
-
       return response.data;
     } catch (error) {
       const message =
@@ -57,7 +55,6 @@ export const GetAllNotificationSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(AllNotification.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

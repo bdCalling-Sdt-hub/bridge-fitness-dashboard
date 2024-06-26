@@ -15,14 +15,12 @@ export const GetAllBlog = createAsyncThunk(
     'GetAllBlog',
     async (value , thunkApi) => {
         try {
-            console.log(`/blog/get-all?page=${value?.page}&limit=${value?.limit}`)
             const response = await baseAxios.get(`/blog/get-all?page=${value?.page}&limit=${value?.limit}`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            console.log(response)
             return response?.data;
         } catch (errors) {
             const message = errors;

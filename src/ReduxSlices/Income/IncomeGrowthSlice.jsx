@@ -19,8 +19,6 @@ export const IncomeGrowth = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
-
       return response.data;
     } catch (error) {
       const message =
@@ -53,7 +51,7 @@ export const incomeGrowthSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(IncomeGrowth.fulfilled, (state, { payload }) => {
-      console.log(payload);
+
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

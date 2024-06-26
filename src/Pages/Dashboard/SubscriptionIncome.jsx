@@ -10,7 +10,7 @@ import { AllSubscription } from "../../ReduxSlices/Subscription/GetAllSubscripti
 import { CSVLink } from "react-csv";
 const SubscriptionIncome = () => {
   const [search, setSearch] = useState("");
-  console.log(search);
+ 
   const [category, setCategory] = useState(
     new URLSearchParams(window.location.search).get("category") || "All"
   );
@@ -28,7 +28,6 @@ const SubscriptionIncome = () => {
   const subscribers = useSelector(
     (state) => state?.AllSubscription?.allSubscription
   );
-  console.log(subscribers);
 
   const data = subscribers?.map((subs, index) => ({
     key: index + 1,

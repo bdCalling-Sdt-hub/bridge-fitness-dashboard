@@ -22,7 +22,7 @@ const TotalSellerChart = () => {
   }, []);
 
   const userGrowth = useSelector((state) => state?.UserGrowth?.userData);
-  // console.log(userGrowth);
+ 
 
   const data = userGrowth?.data?.map((user) => ({
     name: user.month,

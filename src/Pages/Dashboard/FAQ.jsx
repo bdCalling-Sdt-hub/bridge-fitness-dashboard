@@ -98,7 +98,7 @@ const FAQ = () => {
     const handleUpdate = (e) => {
         e.preventDefault()
         dispatch(UpdateFAQ({ id: editID, question: question, answer: ans })).then((res) => {
-            console.log(res)
+ 
             if (res.type == 'UpdateFAQ/fulfilled') {
                 dispatch(GetFAQ())
                 Swal.fire({
