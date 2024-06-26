@@ -2,7 +2,7 @@ import axios from "axios";
 
 //api base url config
 const baseAxios = axios.create({
-  baseURL: "http://server.unityinmotion.ca",
+  baseURL: "https://server.unityinmotion.ca",
   headers: { "X-Custom-Header": "foobar" },
 });
 
