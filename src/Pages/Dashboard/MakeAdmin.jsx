@@ -17,7 +17,6 @@ const MakeAdmin = () => {
   const dispatch = useDispatch();
   const onFinish = (values) => {
     dispatch(AddAdmin(values)).then((response) => {
- 
       dispatch(AllAdmins());
       if (response.type === "AddAdmin/fulfilled") {
         setOpenAddModel(false);
@@ -284,9 +283,26 @@ const MakeAdmin = () => {
                   },
                 ]}
               >
-                <select defaultValue={`male`} className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" id="">
+                <select defaultValue={`male`} placeholder="please select a Gender" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" id="">
                   <option selected value="male">Male</option>
                   <option value="female">Female</option>
+                </select>
+              </Form.Item>
+            </div>
+            <div>
+              <p className="text-[#919191] text-[16px] leading-5 font-normal">Role</p>
+              <Form.Item
+                name="role"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input Gender",
+                  },
+                ]}
+              >
+                <select defaultValue={`ADMIN`} placeholder="please select a role" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" id="">
+                  <option selected value="ADMIN">ADMIN</option>
+                  <option value="SUPER_ADMIN">SUPER_ADMIN</option>
                 </select>
               </Form.Item>
             </div>
