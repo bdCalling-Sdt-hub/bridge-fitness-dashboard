@@ -54,7 +54,6 @@ const AddBaner = () => {
             title: "website logo",
             dataIndex: "logo",
             render: (_, record) => {
-                console.log(`${ServerUrl}${record?.logo}`)
                 return (
                     <>
                         {

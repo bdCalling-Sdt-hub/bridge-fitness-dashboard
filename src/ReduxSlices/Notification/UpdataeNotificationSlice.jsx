@@ -20,7 +20,6 @@ export const UpdataeNotification = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            console.log(error)
             const message = error?.response?.data?.message
             return thunkAPI.rejectWithValue(message);
         }
@@ -49,7 +48,6 @@ export const UpdataeNotificationSlice = createSlice({
             state.isSuccess = true;
             state.isLoading = false;
             state.message = payload.message;
-            // console.log(payload)
         })
         builder.addCase(UpdataeNotification.rejected, (state, { payload }) => {
 

@@ -5,10 +5,8 @@ import { Navigate, useLocation } from "react-router-dom";
 const PrivateRoute = ({ children }) => {
   const { isLoading, isError, isSuccess, userData, accessToken, message } =
     useSelector((state) => state.yourInfo);
-  console.log(userData);
   // const location = useLocation();
   // const UserData = JSON.parse(localStorage.getItem("yourInfo"));
-  // console.log(UserData);
   // if (
   //   UserData?.approved != false &&
   //   UserData?.isBanned == "false" &&

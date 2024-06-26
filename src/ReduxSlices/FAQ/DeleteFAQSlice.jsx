@@ -44,7 +44,7 @@ export const DeleteFAQSlice = createSlice({
             state.isLoading = true;
         });
         builder.addCase(DeleteFAQ.fulfilled, (state, { payload }) => {
-            console.log(payload);
+
             state.isError = false;
             state.isSuccess = true;
             state.isLoading = false;

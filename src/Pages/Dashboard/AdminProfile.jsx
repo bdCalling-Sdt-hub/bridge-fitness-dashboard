@@ -17,7 +17,6 @@ const AdminProfile = () => {
   const dispatch = useDispatch()
   const { user } = useSelector(state => state.Profile)
   const [passError, setPassError] = useState('')
-  // console.log(user)
   const handlePageChange = (tab) => {
     setTab(tab);
     const params = new URLSearchParams(window.location.search);
@@ -63,7 +62,6 @@ const AdminProfile = () => {
       })
   };
   const onEditProfile = (values) => {
-    // console.log(values)
     const data = {
       profile_image: image,
       name: values.fullName,
@@ -72,7 +70,7 @@ const AdminProfile = () => {
     }
     dispatch(EditProfile(data))
       .then((res) => {
-        console.log(res)
+    
         if (res.type === 'EditProfile/fulfilled') {
           Swal.fire({
             position: "top-end",

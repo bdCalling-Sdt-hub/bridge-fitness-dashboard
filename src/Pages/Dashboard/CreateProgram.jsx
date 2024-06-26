@@ -78,7 +78,7 @@ const CreateProgram = () => {
       ),
     },
   ];
-console.log(itemForEdit)
+ 
   const onFinish = (values) => {
     const formData = new FormData();
     if (formTitle == "Add New Program") {

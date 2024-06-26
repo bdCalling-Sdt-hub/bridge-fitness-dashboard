@@ -20,8 +20,6 @@ export const AllSeries = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
-
       return response.data;
     } catch (error) {
       const message =
@@ -54,7 +52,6 @@ export const allSeriesSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(AllSeries.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

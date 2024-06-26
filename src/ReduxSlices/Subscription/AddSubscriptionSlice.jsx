@@ -12,15 +12,12 @@ export const AddSubscriptions = createAsyncThunk(
   async (value, thunkAPI) => {
     try {
         const {id,...otherValue}=value
-        // console.log(`/subscription-plan/update/${id}`,otherValue)
       let response = await baseAxios.patch(`/subscription-plan/update-item/${id}`,otherValue, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response);
-
       return response.data;
     } catch (error) {
       const message =
@@ -51,7 +48,6 @@ export const AddSubscriptionsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(AddSubscriptions.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

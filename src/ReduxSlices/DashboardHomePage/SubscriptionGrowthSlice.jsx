@@ -19,8 +19,6 @@ export const SubscriptionGrowth = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
-
       return response.data;
     } catch (error) {
       const message =
@@ -53,7 +51,6 @@ export const SubscriptionGrowthSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(SubscriptionGrowth.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

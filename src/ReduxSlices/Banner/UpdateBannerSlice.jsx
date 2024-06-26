@@ -13,7 +13,7 @@ export const UpdateBanner = createAsyncThunk(
   "UpdateBanner",
   async (value, thunkAPI) => {
     const { id, data } = value;
-    console.log(`/banner/edit/${id}`);
+
     try {
       let response = await baseAxios.patch(`/banner/edit/${id}`, data, {
         headers: {
@@ -43,7 +43,6 @@ export const UpdateBannerSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(UpdateBanner.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

@@ -48,7 +48,6 @@ export const incomesSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(Incomes.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

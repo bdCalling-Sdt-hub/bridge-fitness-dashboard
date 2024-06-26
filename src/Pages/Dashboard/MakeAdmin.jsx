@@ -17,7 +17,7 @@ const MakeAdmin = () => {
   const dispatch = useDispatch();
   const onFinish = (values) => {
     dispatch(AddAdmin(values)).then((response) => {
-      console.log(response);
+ 
       dispatch(AllAdmins());
       if (response.type === "AddAdmin/fulfilled") {
         setOpenAddModel(false);
@@ -57,7 +57,7 @@ const MakeAdmin = () => {
     : [];
 
   const handleDelete = async () => {
-    console.log(deleteID);
+ 
     dispatch(DeleteAdmin(deleteID)).then((res) => {
       if (res.type == "DeleteAdmin/fulfilled") {
         setShowDelete(false);
@@ -117,7 +117,7 @@ const MakeAdmin = () => {
   useEffect(() => {
     form.setFieldsValue({})
   }, [])
-  // console.log(user)
+ 
   return (
     <div id="makeAdmin">
       <div style={{ margin: "24px 0" }}>

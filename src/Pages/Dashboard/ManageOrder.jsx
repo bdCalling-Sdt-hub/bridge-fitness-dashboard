@@ -20,7 +20,7 @@ const ManageOrder = () => {
     dispatch(AllProducts({ page: page, searchTerm: search }));
   }, [page, search]);
   const products = useSelector((state) => state.AllProducts.userData.data);
-  console.log(products);
+ 
   const [loading, setLoading] = useState(false);
   const data = products?.map((product, index) => ({
     key: index + 1,
@@ -46,7 +46,7 @@ const ManageOrder = () => {
     setLoading(true);
     dispatch(UpdateOrder({ data: { orderStatus: value }, id: id })).then(
       (res) => {
-        console.log(res);
+ 
         if (res.type == "UpdateOrder/fulfilled") {
           toast.success(`product ${value} Successfully`);
           setLoading(false);

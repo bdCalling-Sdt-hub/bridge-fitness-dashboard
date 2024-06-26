@@ -14,7 +14,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const { isLoading, isError, isSuccess, userData, accessToken, message } =
     useSelector((state) => state.UserData);
-  // console.log(userData);
   // useEffect(() => {
   //   if (isError == true) {
   //     Swal.fire({

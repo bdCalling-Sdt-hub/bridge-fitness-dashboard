@@ -85,7 +85,7 @@ const Income = () => {
   }, [dispatch]);
 
   const incomeGrowth = useSelector((state) => state.IncomeGrowth.userData);
-  console.log(incomeGrowth);
+ 
 
   const chartData = incomeGrowth?.data?.analytics?.map((growth) => ({
     name: growth.month,

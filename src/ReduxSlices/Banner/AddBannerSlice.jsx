@@ -13,16 +13,12 @@ export const AddBanner = createAsyncThunk(
   "AddBanner",
   async (AddBannerData, thunkAPI) => {
     try {
-      console.log(AddBannerData.get("image"));
       let response = await baseAxios.post("/program/add", AddBannerData, {
         headers: {
           "Content-type": "multipart/form-data",
           authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
-      console.log(response.data);
-
       return response.data;
     } catch (error) {
       const message =
@@ -55,7 +51,6 @@ export const AddBannerSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(AddBanner.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

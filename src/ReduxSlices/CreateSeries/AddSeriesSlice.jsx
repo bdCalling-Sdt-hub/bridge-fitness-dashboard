@@ -13,7 +13,6 @@ export const AddSeries = createAsyncThunk(
   "AddSeries",
   async (addProgramData, thunkAPI) => {
     try {
-      console.log(addProgramData);
       let response = await baseAxios.post(
         "/series/add",
         { ...addProgramData },
@@ -24,8 +23,6 @@ export const AddSeries = createAsyncThunk(
           },
         }
       );
-
-      console.log(response);
 
       return response.data;
     } catch (error) {
@@ -58,7 +55,6 @@ export const AddSeriesSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(AddSeries.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

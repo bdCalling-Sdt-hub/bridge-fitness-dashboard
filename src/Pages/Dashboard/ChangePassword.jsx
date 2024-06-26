@@ -8,7 +8,7 @@ const ChangePassword = () => {
     const [curPassError, setCurPassError] = useState("");
 
     const handleChangePassword=(values)=>{
-        console.log(values)
+ 
         if(values?.current_password === values.new_password){
             setNewPassError("The New password is semilar with old Password");
         }else{

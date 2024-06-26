@@ -25,7 +25,6 @@ export const AllAdmins = createAsyncThunk(
       return response.data;
     } catch (error) {
 
-      console.log(error)
       const message = error?.response?.data?.message
       //  thunkAPI.rejectWithValue(message);
       return message
@@ -53,7 +52,6 @@ export const allAdminsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(AllAdmins.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

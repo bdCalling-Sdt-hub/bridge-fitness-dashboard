@@ -17,8 +17,6 @@ export const AddAbout = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response);
-
       return response.data;
     } catch (error) {
       const message =
@@ -49,7 +47,6 @@ export const AddAboutSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(AddAbout.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

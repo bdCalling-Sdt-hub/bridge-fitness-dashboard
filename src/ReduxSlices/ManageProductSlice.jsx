@@ -23,12 +23,8 @@ export const ManageProduct = createAsyncThunk(
           },
         }
       );
-
-      console.log(response);
-
       return response.data;
     } catch (error) {
-      console.log(error);
       const message = error.response.data;
       return thunkAPI.rejectWithValue(message);
     }
@@ -55,7 +51,6 @@ export const ManageProductSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(ManageProduct.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

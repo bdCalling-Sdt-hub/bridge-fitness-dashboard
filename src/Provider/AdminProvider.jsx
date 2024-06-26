@@ -6,9 +6,7 @@ const AdminProvider = ({ children }) => {
   const dispatch = useDispatch()
   const { user, loading: userloading } = useSelector(state => state.Profile)
   useEffect(() => {
-    if (localStorage.getItem('token')) {
       dispatch(Profile())
-    }
   }, [localStorage.getItem('token')])
   const userData = {
     user, userloading

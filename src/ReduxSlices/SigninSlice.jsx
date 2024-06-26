@@ -16,7 +16,6 @@ export const UserData = createAsyncThunk(
     try {
       const response = await baseAxios.post("/auth/login", value);
       localStorage.setItem("token", response?.data.data.accessToken);
-      console.log(response)
       return response.data;
      
     } catch (error) {
@@ -49,7 +48,6 @@ export const signinSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(UserData.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;
@@ -70,7 +68,6 @@ export const signinSlice = createSlice({
   //     state.isLoading = true;
   //   },
   //   [UserData.fulfilled]: (state, action) => {
-  //     console.log(action)
   //     state.isError = false;
   //     state.isSuccess = true;
   //     state.isLoading = false;

@@ -13,18 +13,14 @@ export const UpdateProduct = createAsyncThunk(
     async (value, thunkAPI) => {
         const {id, data}= value;
         try {
-            // console.log(`/product/edit/${value.id}`)
             let response = await baseAxios.patch(`/product/edit/${id}`, data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
                 }
             });
-            console.log(response.data)
-
             return response.data;
         } catch (error) {
-            console.log(error)
             const message = error?.response?.data?.message
             return thunkAPI.rejectWithValue(message);
         }
@@ -53,7 +49,6 @@ export const UpdateProductSlice = createSlice({
             state.isSuccess = true;
             state.isLoading = false;
             state.message = payload.message;
-            // console.log(payload)
         })
         builder.addCase(UpdateProduct.rejected, (state, { payload }) => {
 

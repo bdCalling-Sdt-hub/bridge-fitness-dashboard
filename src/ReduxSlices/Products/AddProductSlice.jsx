@@ -18,11 +18,8 @@ export const AddProducts = createAsyncThunk(
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
                 }
             });
-            console.log(response.data)
-
             return response.data;
         } catch (error) {
-            console.log(error)
             const message = error?.response?.data?.message
             return thunkAPI.rejectWithValue(message);
         }
@@ -51,7 +48,6 @@ export const AddProductsSlice = createSlice({
             state.isSuccess = true;
             state.isLoading = false;
             state.message = payload.message;
-            // console.log(payload)
         })
         builder.addCase(AddProducts.rejected, (state, { payload }) => {
 

@@ -12,9 +12,6 @@ const initialState = {
 export const Subscribers = createAsyncThunk(
   "Subscribers",
   async (value, thunkAPI) => {
-    console.log(
-      `subscriptions/subscribers?page=${value.page}${value?.plan_type && `&plan_type=${value?.plan_type}`}`
-    );
     try {
       const response = await axios.get(
         `subscriptions/subscribers?page=${value.page}${value?.plan_type && value?.plan_type !='All'  && `&plan_type=${value?.plan_type}`}`,
@@ -24,9 +21,6 @@ export const Subscribers = createAsyncThunk(
           },
         }
       );
-      console.log(response.data);
-      // console.log(response.data);
-
       return response.data;
     } catch (error) {
       const message =
@@ -59,7 +53,6 @@ export const subscribersSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(Subscribers.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;

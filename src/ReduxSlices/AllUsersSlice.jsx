@@ -12,7 +12,6 @@ const initialState = {
 export const AllUsers = createAsyncThunk(
   "AllUsers",
   async (value, thunkAPI) => {
-    console.log(value.searchTerm);
     try {
       let token = localStorage.getItem("token");
       let response = await axios.get(
@@ -23,8 +22,6 @@ export const AllUsers = createAsyncThunk(
           },
         }
       );
-      console.log(response);
-
       return response.data;
     } catch (error) {
       const message =
@@ -57,7 +54,7 @@ export const allUsersSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(AllUsers.fulfilled, (state, { payload }) => {
-      console.log(payload);
+
       state.isError = false;
       state.isSuccess = true;
       state.isLoading = false;
