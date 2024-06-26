@@ -65,7 +65,7 @@ const Dashboard = () => {
       path: "/blog",
     },
     {
-      title: "setting",
+      title: "Setting",
       path: "/banner",
     },
     {
@@ -99,11 +99,6 @@ const Dashboard = () => {
       path: "/income",
       icon: <LuDatabase size={24} />,
     },
-    // {
-    //   title: "Manage Class",
-    //   path: "/class-management",
-    //   icon: <IoSpeedometerOutline size={24} />,
-    // },
     {
       title: "Manage Product",
       path: "/manage-products",
@@ -111,19 +106,17 @@ const Dashboard = () => {
     },
   ])
   useEffect(() => {
+    const links = linkItems.filter(item => item.path != "/make-admin")
     if (!userloading && user?.role == "SUPER_ADMIN") {
-      setlinkItems([...linkItems, {
+      setlinkItems([...links, {
         title: "Make Admin",
         path: "/make-admin",
         icon: <TbUserPlus size={24} />,
       },])
     } else {
-      const links = linkItems.filter(item => item.path != "/make-admin")
       setlinkItems(links)
     }
   }, [user])
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
   return (// <input className="w-full p-4 border py-3 outline-none rounded-md" {...register("programName", { required: true })} />
     <Layout style={{ height: "100vh", width: "100vw" }}>
       <Sider
@@ -286,18 +279,6 @@ const Dashboard = () => {
                 }}>
                   <p>Create Series</p>
                 </Link>
-                {/* <Link className="" onClick={() => {
-                  setOpenAddModal(true)
-                }} style={{
-                  textAlign: 'center',
-                  color: '#242424',
-                  width: '100%',
-                  backgroundColor: '#FBFBFB',
-                  display: 'block',
-                  padding: '6px 0px'
-                }}>
-                  <p>Create Module</p>
-                </Link> */}
               </div>
             }
           </li>
@@ -420,7 +401,7 @@ const Dashboard = () => {
               justifyContent: "end"
             }}
           >
-            <Badge color="#C30303" count={notifications?.length || 0}>
+            <Badge color="#C30303" count={notifications?.unreadNotification || 0}>
               <Link to="/notification" >
                 <RiNotification2Line color="#6A6A6A" size={24} />
               </Link>

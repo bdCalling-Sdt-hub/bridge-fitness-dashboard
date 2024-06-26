@@ -39,6 +39,8 @@ const SubscriptionIncome = () => {
     package: subs?.plan_id?.title,
     status: subs?.user_id?.name,
     price: `$${subs?.plan_id?.price}`,
+    gender: subs?.user_id?.gender,
+    age: subs?.user_id?.age
   }));
 
   const items = [
@@ -73,7 +75,7 @@ const SubscriptionIncome = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
-  const exportCsv = data.map((item) => ({ name: item.name, email: item.email, package: item.package, price: item.price }))
+  const exportCsv = data.map((item) => ({ name: item?.name, email: item?.email, package: item?.package, price: item?.price, age: item?.age, gender: item?.gender }))
   const columns = [
     {
       title: "S.No",

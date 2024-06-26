@@ -285,7 +285,7 @@ const MakeAdmin = () => {
                 ]}
               >
                 <select defaultValue={`male`} className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" id="">
-                  <option value="male">Male</option>
+                  <option selected value="male">Male</option>
                   <option value="female">Female</option>
                 </select>
               </Form.Item>

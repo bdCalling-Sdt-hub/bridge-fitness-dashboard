@@ -33,22 +33,16 @@ function DashboardHome() {
       Percent: `${user?.totalUser?.[0]?.userGrowth}%` || '0%',
     },
     {
-      name: "Total Subscriber",
-      count: user?.subscribers?.[0]?.subscribers || 0,
+      name: "Total Female Users",
+      count: `${user?.totalFemaleUsers?.[0]?.totalFemaleUsers}` || 0,
       icon: <FaArrowUp size={16} />,
-      Percent: `${user?.subscribers?.[0]?.subscriberGrowth}%` || `0%`,
+      Percent: `${user?.totalFemaleUsers?.[0]?.femaleUserGrowth}%` || '0%',
     },
     {
-      name: "Total Selling Products",
-      count: user?.totalSellingProduct?.[0]?.totalSellingProduct || 0,
+      name: "Total Male Users",
+      count: `${user?.totalMaleUsers?.[0]?.totalMaleUsers}` || 0,
       icon: <FaArrowUp size={16} />,
-      Percent: `${user?.totalSellingProduct?.[0]?.sellingProductGrowth}%` || '0%',
-    },
-    {
-      name: "Total Earning",
-      count: `$${user?.totalEarning?.[0]?.totalEarning}` || 0,
-      icon: <FaArrowUp size={16} />,
-      Percent: `${user?.totalEarning?.[0]?.earningGrowth}%` || '0%',
+      Percent: `${user?.totalMaleUsers?.[0]?.maleUserGrowth}%` || '0%',
     },
     {
       name: "basic subscriber",
@@ -69,16 +63,22 @@ function DashboardHome() {
       Percent: `${user?.subscriptionByType?.[0]?.premium?.premiumSubscriberGrowth}%` || '0%',
     },
     {
-      name: "Total Female Users",
-      count: `${user?.totalFemaleUsers?.[0]?.totalFemaleUsers}` || 0,
+      name: "Total Subscriber",
+      count: user?.subscribers?.[0]?.subscribers || 0,
       icon: <FaArrowUp size={16} />,
-      Percent: `${user?.totalFemaleUsers?.[0]?.femaleUserGrowth}%` || '0%',
+      Percent: `${user?.subscribers?.[0]?.subscriberGrowth}%` || `0%`,
     },
     {
-      name: "Total Male Users",
-      count: `${user?.totalMaleUsers?.[0]?.totalMaleUsers}` || 0,
+      name: "Total Selling Products",
+      count: user?.totalSellingProduct?.[0]?.totalSellingProduct || 0,
       icon: <FaArrowUp size={16} />,
-      Percent: `${user?.totalMaleUsers?.[0]?.maleUserGrowth}%` || '0%',
+      Percent: `${user?.totalSellingProduct?.[0]?.sellingProductGrowth}%` || '0%',
+    },
+    {
+      name: "Total Earning",
+      count: `$${user?.totalEarning?.[0]?.totalEarning}` || 0,
+      icon: <FaArrowUp size={16} />,
+      Percent: `${user?.totalEarning?.[0]?.earningGrowth}%` || '0%',
     },
   ];
   return (

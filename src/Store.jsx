@@ -63,6 +63,7 @@ import VerifyCodeSlice from "./ReduxSlices/Authentication/VerifyCodeSlice";
 import SetNewPassSlice from "./ReduxSlices/Authentication/SetNewPassSlice";
 import GetAllFeedbackSlice from "./ReduxSlices/Feedback/GetAllFeedbackSlice";
 import ApproveFeedbackSlice from "./ReduxSlices/Feedback/ApproveFeedbackSlice";
+import DeleteFeedbackSlice from "./ReduxSlices/Feedback/DeleteFeedbackSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -129,5 +130,6 @@ export const Store = configureStore({
     SetNewPass :SetNewPassSlice,
     GetAllFeedback:GetAllFeedbackSlice,
     ApproveFeedback:ApproveFeedbackSlice,
+    DeleteFeedback:DeleteFeedbackSlice,
   },
 });
