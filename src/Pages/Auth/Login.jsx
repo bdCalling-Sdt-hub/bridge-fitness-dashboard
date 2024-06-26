@@ -36,15 +36,14 @@ const Login = () => {
       if (res.type == 'UserData/fulfilled') {
         navigate('/')
         location.reload()
-      }
-      if (res.type == 'UserData/rejected') {
+      } else {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: message,
-          showCloseButton:false,
-          showConfirmButton:false,
-          timer:1500
+          text: res?.payload?.message,
+          showCloseButton: false,
+          showConfirmButton: false,
+          timer: 1500
         });
       }
     });

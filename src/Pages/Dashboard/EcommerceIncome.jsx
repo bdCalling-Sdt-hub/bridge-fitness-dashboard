@@ -32,12 +32,12 @@ const EcommerceIncome = () => {
       key: index + 1,
       name: subs?.user?.name,
       email: subs?.user?.email,
-      // date: subs?.user_id?.name,
+      gender: subs?.user?.gender,
+      age: subs?.user?.age,
       photo: subs?.user?.profile_image,
       package: subs?.product?.productName,
       status: subs?.user_id?.name,
       price: `$${subs?.product?.price}`,
-      // balance: subs?.user_id?.name,
     })
   });
   useEffect(() => {
@@ -53,7 +53,7 @@ const EcommerceIncome = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
-  const exportCsv = data.map((item) => ({ name: item.name, email: item.email, package:item.package, price:item.price }))
+  const exportCsv = data.map((item) => ({ name: item?.name, email: item?.email, package: item?.package, price: item?.price ,age: item?.age, gender: item?.gender}))
   const columns = [
     {
       title: "S.No",

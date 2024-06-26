@@ -15,7 +15,7 @@ const Notification = () => {
   const notifications = useSelector(
     (state) => state.AllNotification.allNotification
   );
-  const data = notifications?.map((notification, index) => ({
+  const data = notifications?.allNotification?.map((notification, index) => ({
     key: index + 1,
     title: notification.title,
     date: moment(notification.createdAt).format("h:mm a , dddd"),

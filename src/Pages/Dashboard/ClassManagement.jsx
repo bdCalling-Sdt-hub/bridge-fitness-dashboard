@@ -608,7 +608,7 @@ const ClassManagement = () => {
                 }}
               >
                 {
-                  isLoading ? 'loading.....' : 'Publish'
+                  (isLoading || UpdateLoading) ? 'loading.....' : 'Publish'
                 }
               </Button>
             </Form.Item>

@@ -273,7 +273,23 @@ const MakeAdmin = () => {
                 />
               </Form.Item>
             </div>
-
+            <div>
+              <p className="text-[#919191] text-[16px] leading-5 font-normal">Gender</p>
+              <Form.Item
+                name="gender"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input Gender",
+                  },
+                ]}
+              >
+                <select defaultValue={`male`} className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" id="">
+                  <option selected value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </Form.Item>
+            </div>
             <div style={{ marginBottom: "16px" }}>
               <label
                 style={{ display: "block", marginBottom: "5px" }}

@@ -5,6 +5,7 @@ import { ServerUrl } from '../../../Config'
 import { Empty, Pagination } from 'antd'
 import { ApproveFeedback } from '../../ReduxSlices/Feedback/ApproveFeedbackSlice'
 import Swal from 'sweetalert2'
+import { DeleteFeedback } from '../../ReduxSlices/Feedback/DeleteFeedbackSlice'
 
 const Feedback = () => {
     const dispatch = useDispatch()
@@ -26,6 +27,21 @@ const Feedback = () => {
                 Swal.fire({
                     title: "Approved!",
                     text: "feedback has been Approved.",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).then(() => {
+                    dispatch(GetAllFeedback({ page: page, limit: itemPerPage, }))
+                })
+            }
+        })
+    }
+    const handleDelete = (id) => {
+        dispatch(DeleteFeedback({ id: id })).then((res) => {
+            if (res.type == 'DeleteFeedback/fulfilled') {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "feedback has been Deleted.",
                     icon: "success",
                     showConfirmButton: false,
                     timer: 1500,
@@ -61,13 +77,15 @@ const Feedback = () => {
                                         <p className='text-[#555555] font-thin whitespace-nowrap text-left'>{item?.user?.role}</p>
                                     </div>
                                 </div>
-                                <p className='mt-2'>{item?.text}</p>
-                                <p className=''>status : <span className={`${item?.approveStatus == 'pending' ? 'text-red-600' : 'text-green-600'}`}>{item?.approveStatus}</span></p>
+                                <p className='mt-2 capitalize'>{item?.text}</p>
+                                <p className='capitalize'>status : <span className={`${item?.approveStatus == 'pending' ? 'text-red-600' : 'text-green-600'}`}>{item?.approveStatus}</span></p>
                             </div>
-                            {
-                                item?.approveStatus == 'pending' && <button onClick={() => handleApprove(item?._id)} className='p-1 px-3 bg-[#B47000] absolute bottom-1 right-1 rounded-md uppercase text-white hover:scale-105 active:scale-95 transition-all'>approve</button>
-                            }
-
+                            <div className='absolute right-1 bottom-1'>
+                                <button onClick={() => handleDelete(item?._id)} className='p-1 px-3 mr-2 bg-red-600  rounded-md uppercase text-white hover:scale-105 active:scale-95 transition-all'>delete</button>
+                                {
+                                    item?.approveStatus == 'pending' && <button onClick={() => handleApprove(item?._id)} className='p-1 px-3 bg-[#B47000] rounded-md uppercase text-white hover:scale-105 active:scale-95 transition-all'>approve</button>
+                                }
+                            </div>
                         </div>
                     ))
                 }

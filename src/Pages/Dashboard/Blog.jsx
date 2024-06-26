@@ -58,13 +58,16 @@ const Blog = () => {
   const onFinish = (values) => {
     form.setFieldsValue(values)
     const formData = new FormData();
-    const { date, ...otherValues } = values
+    const { date, youtubeUrl, ...otherValues } = values
     formData.append("date", date?.toString().split('T')[0]);
     Object.keys(otherValues).forEach((key) => {
       formData.append(key, values[key]);
     });
     for (const image of images) {
       formData.append("image", image);
+    }
+    if (youtubeUrl) {
+      formData.append("youtubeUrl", youtubeUrl);
     }
     if (submitType === 'add') {
       dispatch(AddBlog(formData)).then((res) => {
@@ -255,6 +258,25 @@ const Blog = () => {
                 />
               </Form.Item>
             </div>
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "5px" }}>youtube video url</label>
+              <Form.Item
+                style={{ marginBottom: 0 }}
+                name="youtubeUrl"
+              >
+                <Input
+                  placeholder="youtube video url"
+                  type="url"
+                  style={{
+                    border: "1px solid #E0E4EC",
+                    height: "52px",
+                    background: "white",
+                    borderRadius: "8px",
+                    outline: "none",
+                  }}
+                />
+              </Form.Item>
+            </div>
             <div className="row-span-2 col-span-2" style={{ marginBottom: "16px" }}>
               <label style={{ display: "block", marginBottom: "5px" }}>
                 Subscription
@@ -275,9 +297,9 @@ const Blog = () => {
                     outline: "none",
                   }}
                   options={[
-                    { value: 'Basic', label: "Basic" },
-                    { value: 'Standard', label: "Standard" },
-                    { value: 'Premium', label: "Premium" },
+                    { value: 'basic', label: "Basic" },
+                    { value: 'standard', label: "Standard" },
+                    { value: 'premium', label: "Premium" },
                   ]}
                 ></Select>
               </Form.Item>
