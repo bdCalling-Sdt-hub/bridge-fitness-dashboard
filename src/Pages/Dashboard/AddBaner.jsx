@@ -3,10 +3,8 @@ import { RiEditLine } from "react-icons/ri";
 import { Form, Input, Modal, Table } from "antd";
 import { FaImage, FaPlus, FaRegImage, FaVideo } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
 import { ServerUrl } from "../../../Config";
 import Swal from "sweetalert2";
-import { UpdateProgram } from "../../ReduxSlices/CreateProgram/UpdateProgramSlice";
 import { GetBannerData } from "../../ReduxSlices/Banner/GetBannerDataSlice";
 import { UpdateBanner } from "../../ReduxSlices/Banner/UpdateBannerSlice";
 
@@ -35,6 +33,11 @@ const AddBaner = () => {
             title: "banner title",
             dataIndex: "title",
             key: "title",
+        },
+        {
+            title: "Button text",
+            dataIndex: "buttonName",
+            key: "buttonName",
         },
         {
             title: "banner video",
@@ -99,6 +102,7 @@ const AddBaner = () => {
         setLoading(true)
         const formData = new FormData();
         formData.append("title", values.title);
+        formData.append("buttonName", values.buttonName);
         if (uploadFiles?.videoName) {
             formData.append("video", uploadFiles?.videoName);
         }
@@ -183,6 +187,24 @@ const AddBaner = () => {
                             >
                                 <Input
                                     defaultValue={BannerData?.title}
+                                    className="w-[100%] border outline-none px-3 py-[10px]"
+                                    type="text"
+                                />
+                            </Form.Item>
+                        </div>
+                        <div>
+                            <p className="text-[#6D6D6D] py-1">Button Text</p>
+                            <Form.Item
+                                name="buttonName"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please input Button text",
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    defaultValue={BannerData?.buttonName}
                                     className="w-[100%] border outline-none px-3 py-[10px]"
                                     type="text"
                                 />
