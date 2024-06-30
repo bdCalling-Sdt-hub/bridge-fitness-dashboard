@@ -201,7 +201,6 @@ const CreateProgram = () => {
           // null;
           setImgFile(null);
           setOpenAddModel(false);
-          form.resetFields()
         }}
         width={500}
         footer={false}
@@ -280,7 +279,6 @@ const CreateProgram = () => {
                   <div className="hidden">
                     <Input
                       id="image"
-                      placeholder="150 CND"
                       type="file"
                       onInput={handleChange}
                       style={{
