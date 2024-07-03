@@ -72,6 +72,10 @@ const Dashboard = () => {
       title: "Feedback",
       path: "/feedback",
     },
+    {
+      title: "Discount",
+      path: "/discount",
+    },
   ]
   const [linkItems, setlinkItems] = useState([
     {

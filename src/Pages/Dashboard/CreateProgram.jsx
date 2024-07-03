@@ -9,7 +9,6 @@ import { AddProgram } from "../../ReduxSlices/CreateProgram/AddCreateProgramSlic
 import { ServerUrl } from "../../../Config";
 import Swal from "sweetalert2";
 import { UpdateProgram } from "../../ReduxSlices/CreateProgram/UpdateProgramSlice";
-import { Subscription } from "../../ReduxSlices/AddSubscription";
 
 const CreateProgram = () => {
   const [openAddModel, setOpenAddModel] = useState(false);

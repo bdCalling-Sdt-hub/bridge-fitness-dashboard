@@ -35,6 +35,7 @@ import CreateProgram from "./Pages/Dashboard/CreateProgram";
 import Series from "./Pages/Dashboard/Series";
 import AddBaner from "./Pages/Dashboard/AddBaner";
 import Feedback from "./Pages/Dashboard/Feedback";
+import Discount from "./Pages/Dashboard/Discount";
 function App() {
   return (
     <>
@@ -63,6 +64,7 @@ function App() {
               <Route path="/series/:name" element={<PrivateRoute><ClassManagement /></PrivateRoute>} />
               <Route path="/create-program" element={<PrivateRoute><CreateProgram /></PrivateRoute>} />
               <Route path="/ecommerce-income" element={<PrivateRoute><EcommerceIncome /></PrivateRoute>} />
+              <Route path="/discount" element={<PrivateRoute><Discount /></PrivateRoute>} />
               <Route path="/admin-profile" element={<PrivateRoute><AdminProfile /></PrivateRoute>} />
               <Route path="/all-subscriber" element={<PrivateRoute><AllSubscriber /></PrivateRoute>} />
               <Route path="/subscription-income" element={<PrivateRoute><SubscriptionIncome /></PrivateRoute>} />

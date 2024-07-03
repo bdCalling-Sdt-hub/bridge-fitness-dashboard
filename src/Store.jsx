@@ -64,6 +64,10 @@ import SetNewPassSlice from "./ReduxSlices/Authentication/SetNewPassSlice";
 import GetAllFeedbackSlice from "./ReduxSlices/Feedback/GetAllFeedbackSlice";
 import ApproveFeedbackSlice from "./ReduxSlices/Feedback/ApproveFeedbackSlice";
 import DeleteFeedbackSlice from "./ReduxSlices/Feedback/DeleteFeedbackSlice";
+import AddDiscountSlice from "./ReduxSlices/Discount/AddDiscountSlice";
+import UpdateDiscountSlice from "./ReduxSlices/Discount/UpdateDiscountSlice";
+import GetAllDiscountSlice from "./ReduxSlices/Discount/GetAllDiscountSlice";
+import ActiveTokenSlice from "./ReduxSlices/Discount/ActiveTokenSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -131,5 +135,9 @@ export const Store = configureStore({
     GetAllFeedback:GetAllFeedbackSlice,
     ApproveFeedback:ApproveFeedbackSlice,
     DeleteFeedback:DeleteFeedbackSlice,
+    AddDiscount:AddDiscountSlice,
+    UpdateDiscount:UpdateDiscountSlice,
+    AllDiscount:GetAllDiscountSlice,
+    ActiveToken:ActiveTokenSlice,
   },
 });
