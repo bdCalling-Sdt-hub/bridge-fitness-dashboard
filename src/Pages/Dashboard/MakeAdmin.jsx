@@ -56,7 +56,7 @@ const MakeAdmin = () => {
     : [];
 
   const handleDelete = async () => {
- 
+
     dispatch(DeleteAdmin(deleteID)).then((res) => {
       if (res.type == "DeleteAdmin/fulfilled") {
         setShowDelete(false);
@@ -116,7 +116,7 @@ const MakeAdmin = () => {
   useEffect(() => {
     form.setFieldsValue({})
   }, [])
- 
+
   return (
     <div id="makeAdmin">
       <div style={{ margin: "24px 0" }}>
@@ -286,6 +286,8 @@ const MakeAdmin = () => {
                 <select defaultValue={`male`} placeholder="please select a Gender" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" id="">
                   <option selected value="male">Male</option>
                   <option value="female">Female</option>
+                  <option value="prefer not to say">Prefer Not To Say</option>
+                  <option value="other">Others</option>
                 </select>
               </Form.Item>
             </div>
