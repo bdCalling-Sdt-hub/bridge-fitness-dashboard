@@ -28,7 +28,7 @@ const ClassManagement = () => {
   const [Program, setProgram] = useState(
     new URLSearchParams(window.location.search).get("program") || "all"
   );
- 
+
   const [ProgramID, setProgramID] = useState(
     new URLSearchParams(window.location.search).get("id") || ''
   );
@@ -82,6 +82,7 @@ const ClassManagement = () => {
       }
     })
   };
+  console.log(updateProgress)
   const onFinish = (values) => {
     const formData = new FormData();
     const { date, ...otherValues } = values;
@@ -95,11 +96,18 @@ const ClassManagement = () => {
       Object.keys(otherValues).forEach((key) => {
         formData.append(key, values[key]);
       });
+      Swal.fire({
+        title: `your video size is ${Math.floor(uploadFiles?.videoName?.size / 1048576)} MB`,
+        text: `it may take a while`,
+        icon: "info",
+        showConfirmButton: true,
+        timer: 3500,
+      });
       formData.append('program', ProgramID)
       formData.append('series', SeriesID)
       formData.append('video', uploadFiles.videoName)
       formData.append('docs', uploadFiles.docName)
-      formData.append('pdf', uploadFiles.pdfName)
+      formData.append('pdf', uploadFiles.pdfName) 
       setLoading(true)
       dispatch(AddClass({
         value: formData,
@@ -133,8 +141,8 @@ const ClassManagement = () => {
             title: "oops!",
             text: "somthing went wrong",
             icon: "error",
-            showConfirmButton: false,
-            timer: 1500,
+            showConfirmButton: true,
+            timer: 3500,
           });
         }
       })
@@ -146,6 +154,13 @@ const ClassManagement = () => {
       if (uploadFiles.videoName) {
         formData.append('video', uploadFiles.videoName)
       }
+      Swal.fire({
+        title: `your video size is ${Math.floor(uploadFiles?.videoName?.size / 1048576)} MB`,
+        text: `it may take a while`,
+        icon: "info",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       if (uploadFiles.docName) {
         formData.append('docs', uploadFiles.docName)
       }
@@ -585,7 +600,7 @@ const ClassManagement = () => {
               </div>
             }
             {
-              UpdateLoading && <div className="w-full h-3 bg-gray-200 rounded-md mb-2 relative overflow-hidden">
+              UpdateLoading && <div className="w-full h-3 bg-gray-200 rounded-md mb-2 relative overflow-hidden animate-bounce">
                 <div style={{
                   transition: '1s',
                   width: `${updateProgress}%`
@@ -639,8 +654,8 @@ const ClassManagement = () => {
                     marginBottom: "30px",
                   }}
                 >
-                  <div className="w-full">
-                    <video autoPlay={false} muted loop>
+                  <div className="w-full h-[300px]">
+                    <video autoPlay={false} muted loop className="w-full h-full object-cover">
                       {
                         item?.video && <source src={`${ServerUrl}${item?.video}`} />
                       }

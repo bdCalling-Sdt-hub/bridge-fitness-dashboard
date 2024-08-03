@@ -27,7 +27,7 @@ const CreateProgram = () => {
     date: moment(program?.createdAt).format("l"),
     img: program?.image,
     id: program?._id,
-    accessType:program?.accessType
+    accessType: program?.accessType
   }));
 
   const columns = [
@@ -77,7 +77,7 @@ const CreateProgram = () => {
       ),
     },
   ];
- 
+
   const onFinish = (values) => {
     const formData = new FormData();
     if (formTitle == "Add New Program") {
@@ -265,11 +265,11 @@ const CreateProgram = () => {
                 className="p-3 border"
               >
                 <Form.Item name="image">
-                  <div className="flex justify-center items-center w-full h-full border-dashed border border-black py-10">
+                  <div className="flex justify-center items-center w-full h-[300px]  border-dashed border border-black py-10">
                     {imgFile ? (
-                      <img src={URL.createObjectURL(imgFile)} alt="" />
+                      <img className="w-full h-full object-contain" src={URL.createObjectURL(imgFile)} alt="" />
                     ) : itemForEdit?.img ? (
-                      <img src={`${ServerUrl}${itemForEdit.img}`} alt="" />
+                      <img className="w-full h-full object-contain" src={`${ServerUrl}${itemForEdit.img}`} alt="" />
                     ) : (
                       <FaRegImage className="text-2xl" />
                     )}
