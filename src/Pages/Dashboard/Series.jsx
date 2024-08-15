@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { UpdateSeries } from "../../ReduxSlices/CreateSeries/UpdateSerieSlice";
 
 const Series = () => {
+  const [page, setPage] = useState(1)
   const [openAddModel, setOpenAddModel] = useState(false);
   const [formTitle, setFormTitle] = useState("Add New Series");
   const [series, setSeries] = useState("");
@@ -20,8 +21,8 @@ const Series = () => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    dispatch(AllSeries());
-  }, [dispatch]);
+    dispatch(AllSeries(page));
+  }, [dispatch, page]);
 
   useEffect(() => {
     dispatch(AllProgram());
@@ -29,6 +30,8 @@ const Series = () => {
 
   const programs = useSelector((state) => state.AllProgram?.userData?.data);
   const items = useSelector((state) => state.AllSeries.userData);
+  const {isLoading} = useSelector((state) => state.AddSeries);
+  console.log(items)
   const data = items?.data?.map((item, index) => ({
     key: index + 1,
     program: item?.program?.title,
@@ -92,7 +95,7 @@ const Series = () => {
     },
   ];
   const onFinish = (values) => {
- 
+
     if (formTitle == "Add New Series") {
       dispatch(AddSeries(values)).then((res) => {
         if (res.type == "AddSeries/fulfilled") {
@@ -183,7 +186,12 @@ const Series = () => {
         </div>
       </div>
       <div>
-        <Table columns={columns} dataSource={data} pagination={false} />
+        <Table columns={columns} dataSource={data} pagination={{
+          pageSize: items?.meta?.limit,
+          total: items?.meta?.total,
+          current: page,
+          onChange: (page) => setPage(page)
+        }} />
       </div>
       <Modal
         centered
@@ -257,7 +265,7 @@ const Series = () => {
             <div className="flex justify-center items-center mt-7">
               <Input
                 className="px-6 py-2 bg-[#B47000] text-white cursor-pointer hover:text-[#B47000] hover:border-2 hover:border-[#B47000]"
-                value={`Save`}
+                value={isLoading?'Loading...':'Create'}
                 type="submit"
               />
             </div>

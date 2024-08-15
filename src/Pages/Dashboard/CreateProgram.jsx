@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import { UpdateProgram } from "../../ReduxSlices/CreateProgram/UpdateProgramSlice";
 
 const CreateProgram = () => {
+  const [page, setPage] = useState(1)
   const [openAddModel, setOpenAddModel] = useState(false);
   const [formTitle, setFormTitle] = useState("Add New Program");
   const [imgFile, setImgFile] = useState(null);
@@ -18,10 +19,11 @@ const CreateProgram = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   useEffect(() => {
-    dispatch(AllProgram());
-  }, [dispatch]);
-  const programs = useSelector((state) => state.AllProgram?.userData?.data);
-  const data = programs?.map((program, index) => ({
+    dispatch(AllProgram(page));
+  }, [dispatch, page]);
+  const { userData } = useSelector((state) => state.AllProgram);
+  const { isLoading } = useSelector((state) => state.AddProgram);
+  const data = userData?.data?.map((program, index) => ({
     key: index + 1,
     name: program?.title,
     date: moment(program?.createdAt).format("l"),
@@ -104,6 +106,14 @@ const CreateProgram = () => {
             setOpenAddModel(false);
             setItemForEdit(null);
           });
+        } else {
+          Swal.fire({
+            title: "Ops !!",
+            text: "failed to add  New Program",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+          })
         }
       });
     } else {
@@ -191,7 +201,12 @@ const CreateProgram = () => {
         </div>
       </div>
       <div>
-        <Table columns={columns} dataSource={data} pagination={false} />
+        <Table columns={columns} dataSource={data} pagination={{
+          pageSize: userData?.meta?.limit || 10,
+          total: userData?.meta?.total || 0,
+          current: page,
+          onChange: (page) => setPage(page)
+        }} />
       </div>
       <Modal
         centered
@@ -200,6 +215,7 @@ const CreateProgram = () => {
           // null;
           setImgFile(null);
           setOpenAddModel(false);
+          form.resetFields();
         }}
         width={500}
         footer={false}
@@ -293,8 +309,8 @@ const CreateProgram = () => {
               </label>
             </div>
             <div className="text-center mt-6">
-              <button className="bg-[#B47000] px-6 py-3 text-[#FEFEFE]">
-                Save
+              <button disabled={isLoading} className="bg-[#B47000] px-6 py-3 disabled:bg-gray-400 text-[#FEFEFE]">
+                {isLoading?'Loading...':'Create'}
               </button>
             </div>
           </Form>
