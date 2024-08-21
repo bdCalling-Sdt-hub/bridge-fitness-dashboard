@@ -72,6 +72,7 @@ function App() {
               <Route path="/seller-product-list" element={<PrivateRoute><SellerProductList /></PrivateRoute>} />
               <Route path="/banner" element={<PrivateRoute><AddBaner /></PrivateRoute>} />
               <Route path="/feedback" element={<PrivateRoute><Feedback /></PrivateRoute>} />
+              <Route path="/category" element={<Feedback />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />

@@ -68,6 +68,12 @@ import AddDiscountSlice from "./ReduxSlices/Discount/AddDiscountSlice";
 import UpdateDiscountSlice from "./ReduxSlices/Discount/UpdateDiscountSlice";
 import GetAllDiscountSlice from "./ReduxSlices/Discount/GetAllDiscountSlice";
 import ActiveTokenSlice from "./ReduxSlices/Discount/ActiveTokenSlice";
+import AddCreateCategorySlice from "./ReduxSlices/Category/AddCreateCategorySlice";
+import UpdateCategorySlice from "./ReduxSlices/Category/UpdateCategorySlice";
+import AllCategorysSlice from "./ReduxSlices/Category/AllCategorysSlice";
+import DeleteProgramSlice from "./ReduxSlices/CreateProgram/DeleteProgramSlice";
+import DeleteCategorySlice from "./ReduxSlices/Category/DeleteCategorySlice";
+import DeleteSeriesSlice from "./ReduxSlices/CreateSeries/DeleteSeriesSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -128,16 +134,22 @@ export const Store = configureStore({
     UpdataeNotification: UpdataeNotificationSlice,
     AddBanners: AddBannerSlice,
     UpdateBanner: UpdateBannerSlice,
-    GetBannerData :GetBannerDataSlice,
-    ForgetPass :ForgetPassSlice,
-    VerifyCode :VerifyCodeSlice,
-    SetNewPass :SetNewPassSlice,
-    GetAllFeedback:GetAllFeedbackSlice,
-    ApproveFeedback:ApproveFeedbackSlice,
-    DeleteFeedback:DeleteFeedbackSlice,
-    AddDiscount:AddDiscountSlice,
-    UpdateDiscount:UpdateDiscountSlice,
-    AllDiscount:GetAllDiscountSlice,
-    ActiveToken:ActiveTokenSlice,
+    GetBannerData: GetBannerDataSlice,
+    ForgetPass: ForgetPassSlice,
+    VerifyCode: VerifyCodeSlice,
+    SetNewPass: SetNewPassSlice,
+    GetAllFeedback: GetAllFeedbackSlice,
+    ApproveFeedback: ApproveFeedbackSlice,
+    DeleteFeedback: DeleteFeedbackSlice,
+    AddDiscount: AddDiscountSlice,
+    UpdateDiscount: UpdateDiscountSlice,
+    AllDiscount: GetAllDiscountSlice,
+    ActiveToken: ActiveTokenSlice,
+    AddCategory: AddCreateCategorySlice,
+    UpdateCategory:UpdateCategorySlice,
+    AllCategory:AllCategorysSlice,
+    DeleteProgram:DeleteProgramSlice,
+    DeleteCategory:DeleteCategorySlice,
+    DeleteSeries:DeleteSeriesSlice
   },
 });

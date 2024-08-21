@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { RiEditLine } from "react-icons/ri";
 import { Form, Input, Modal, Select, Table } from "antd";
 import { FaPlus } from "react-icons/fa6";
-import { MdReadMore } from "react-icons/md";
+import { MdDelete, MdReadMore } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AllSeries } from "../../ReduxSlices/CreateSeries/GetAllSeriesSlice";
@@ -10,6 +10,7 @@ import { AddSeries } from "../../ReduxSlices/CreateSeries/AddSeriesSlice";
 import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
 import Swal from "sweetalert2";
 import { UpdateSeries } from "../../ReduxSlices/CreateSeries/UpdateSerieSlice";
+import { DeleteSeries } from "../../ReduxSlices/CreateSeries/DeleteSeriesSlice";
 
 const Series = () => {
   const [page, setPage] = useState(1)
@@ -30,7 +31,7 @@ const Series = () => {
 
   const programs = useSelector((state) => state.AllProgram?.userData?.data);
   const items = useSelector((state) => state.AllSeries.userData);
-  const {isLoading} = useSelector((state) => state.AddSeries);
+  const { isLoading } = useSelector((state) => state.AddSeries);
   console.log(items)
   const data = items?.data?.map((item, index) => ({
     key: index + 1,
@@ -82,6 +83,22 @@ const Series = () => {
                 fontSize: "22px",
               }}
             />
+          </button>
+          <button
+            onClick={() => {
+              setItemForEdit(record);
+              handeldelete()
+            }}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            <MdDelete style={{ fontSize: "22px" }} />
           </button>
           <Link to={`/series/${record?.name}?program=${record?.program}&id=${record?._id}&series=${record?.id}`}>
             <MdReadMore
@@ -141,6 +158,41 @@ const Series = () => {
     }
     form.setFieldsValue({ title: itemForEdit.name, program: itemForEdit._id });
   }, [itemForEdit]);
+  const handeldelete = () => {
+    if (!itemForEdit?.id) {
+      return
+    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your Series has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+    dispatch(DeleteSeries({ id: itemForEdit?.id })).then((res) => {
+      if (res.type == 'DeleteCategory/fulfilled') {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your Class has been Deleted.",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        dispatch(AllSeries(page));
+        setItemForEdit(null);
+      }
+    })
+  };
   return (
     <div>
       <div style={{ margin: "24px 0" }}>
@@ -265,7 +317,7 @@ const Series = () => {
             <div className="flex justify-center items-center mt-7">
               <Input
                 className="px-6 py-2 bg-[#B47000] text-white cursor-pointer hover:text-[#B47000] hover:border-2 hover:border-[#B47000]"
-                value={isLoading?'Loading...':'Create'}
+                value={isLoading ? 'Loading...' : 'Create'}
                 type="submit"
               />
             </div>
