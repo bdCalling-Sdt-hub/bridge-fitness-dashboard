@@ -13,7 +13,7 @@ export const AddCategory = createAsyncThunk(
   "AddCategory",
   async (AddCategoryData, thunkAPI) => {
     try {
-      let response = await baseAxios.post("/program/add", AddCategoryData, {
+      let response = await baseAxios.post("/series/catagory", AddCategoryData, {
         headers: {
           "Content-type": "multipart/form-data",
           authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -14,7 +14,7 @@ export const AllCategory = createAsyncThunk(
   async (value, thunkAPI) => {
     try {
       let token = localStorage.getItem("token");
-      let response = await baseAxios.get(`/program/all?page=${value}`, {
+      let response = await baseAxios.get(`/series/catagory?page=${value}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

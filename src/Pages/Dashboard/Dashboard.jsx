@@ -273,6 +273,16 @@ const Dashboard = () => {
                 }}>
                   <p>Create Program</p>
                 </Link>
+                <Link className="" to={`/category`} style={{
+                  textAlign: 'center',
+                  color: '#242424',
+                  width: '100%',
+                  backgroundColor: pathname === '/category' ? "#E8D3B0" : '#FBFBFB',
+                  display: 'block',
+                  padding: '6px 0px'
+                }}>
+                  <p>Category</p>
+                </Link>
                 <Link className="" to={`/series`} style={{
                   textAlign: 'center',
                   color: '#242424',

@@ -106,8 +106,7 @@ const Category = () => {
             if (!imgFile) {
                 return false;
             }
-            formData.append("title", values.title);
-            formData.append("accessType", values.subscription);
+            formData.append("name", values.title);
             dispatch(AddCategory(formData)).then((res) => {
                 if (res.type == "AddCategory/fulfilled") {
                     Swal.fire({
