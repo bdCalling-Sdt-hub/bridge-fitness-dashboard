@@ -10,7 +10,7 @@ import { AddCategory } from "../../ReduxSlices/Category/AddCreateCategorySlice";
 import { UpdateCategory } from "../../ReduxSlices/Category/UpdateCategorySlice";
 import { AllCategory } from "../../ReduxSlices/Category/AllCategorysSlice";
 import { DeleteCategory } from "../../ReduxSlices/Category/DeleteCategorySlice";
-
+import { MdDelete } from "react-icons/md";
 const Category = () => {
     const [page, setPage] = useState(1)
     const [openAddModel, setOpenAddModel] = useState(false);
@@ -54,8 +54,8 @@ const Category = () => {
             dataIndex: "",
             key: "",
             render: (_, record) => (
-                <>
-                    <button
+                <div className="flex justify-start items-center gap-3">
+                    {/* <button
                         onClick={() => {
                             setOpenAddModel(true);
                             setFormTitle("Edit Program");
@@ -75,7 +75,7 @@ const Category = () => {
                                 fontSize: "22px",
                             }}
                         />
-                    </button>
+                    </button> */}
                     <button
                         onClick={() => {
                             setItemForEdit(record);
@@ -92,26 +92,21 @@ const Category = () => {
                     >
                         <MdDelete style={{ fontSize: "22px" }} />
                     </button>
-                </>
+                </div>
             ),
         },
     ];
 
     const onFinish = (values) => {
-        const formData = new FormData();
         if (formTitle == "Add New Program") {
-            if (imgFile) {
-                formData.append("image", imgFile);
-            }
-            if (!imgFile) {
-                return false;
-            }
-            formData.append("name", values.title);
-            dispatch(AddCategory(formData)).then((res) => {
+
+            const data = { "name": values.title };
+            dispatch(AddCategory(data)).then((res) => {
+                console.log(res)
                 if (res.type == "AddCategory/fulfilled") {
                     Swal.fire({
                         title: "Added!",
-                        text: "New Program has been added.",
+                        text: "New Category has been added.",
                         icon: "success",
                         showConfirmButton: false,
                         timer: 1500,
@@ -125,7 +120,7 @@ const Category = () => {
                 } else {
                     Swal.fire({
                         title: "Ops !!",
-                        text: "failed to add  New Program",
+                        text: "failed to add  New Category",
                         icon: "error",
                         showConfirmButton: false,
                         timer: 1500,
@@ -133,14 +128,9 @@ const Category = () => {
                 }
             });
         } else {
-            if (imgFile) {
-                formData.append("image", imgFile);
-            } else {
-                formData.append("image", itemForEdit.img);
-            }
-            formData.append("title", values.title);
-            formData.append("accessType", values.subscription);
-            dispatch(UpdateCategory({ id: itemForEdit?.id, data: formData })).then(
+
+            const data = { "name": values.title };
+            dispatch(UpdateCategory(data)).then(
                 (res) => {
                     if (res.type == "UpdateCategory/fulfilled") {
                         dispatch(AllCategory());
@@ -173,7 +163,7 @@ const Category = () => {
         form.setFieldsValue({ title: itemForEdit.name });
     }, [itemForEdit]);
     const handeldelete = () => {
-        if (!itemForEdit?.id) {
+        if (!itemForEdit?._id) {
             return
         }
         Swal.fire({
@@ -186,26 +176,22 @@ const Category = () => {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your Category has been deleted.",
-                    icon: "success"
-                });
+                dispatch(DeleteCategory({ id: itemForEdit?._id })).then((res) => {
+                    if (res.type == 'DeleteCategory/fulfilled') {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your Category has been Deleted.",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                        dispatch(AllCategory());
+                        setItemForEdit(null);
+                    }
+                })
             }
         });
-        dispatch(DeleteCategory({ id: itemForEdit?.id })).then((res) => {
-            if (res.type == 'DeleteCategory/fulfilled') {
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your Class has been Deleted.",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-                dispatch(AllCategory());
-                setItemForEdit(null);
-            }
-        })
+
     };
     return (
         <div>
@@ -252,9 +238,9 @@ const Category = () => {
                 </div>
             </div>
             <div>
-                <Table columns={columns} dataSource={data} pagination={{
-                    pageSize: userData?.meta?.limit || 10,
-                    total: userData?.meta?.total || 0,
+                <Table columns={columns} dataSource={userData} pagination={{
+                    pageSize: 10,
+                    total: 0,
                     current: page,
                     onChange: (page) => setPage(page)
                 }} />
@@ -296,7 +282,7 @@ const Category = () => {
                                 />
                             </Form.Item>
                         </div>
-                        <div>
+                        {/* <div>
                             <p className="text-[#6D6D6D] py-1">Category Image</p>
 
                             <label
@@ -331,7 +317,7 @@ const Category = () => {
                                     </div>
                                 </Form.Item>
                             </label>
-                        </div>
+                        </div> */}
                         <div className="text-center mt-6">
                             <button disabled={isLoading} className="bg-[#B47000] px-6 py-3 disabled:bg-gray-400 text-[#FEFEFE]">
                                 {isLoading ? 'Loading...' : 'Create'}

@@ -172,26 +172,30 @@ const Series = () => {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your Series has been deleted.",
-          icon: "success"
-        });
+        dispatch(DeleteSeries({ id: itemForEdit?.id })).then((res) => {
+          if (res.type == 'DeleteSeries/fulfilled') {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your series has been Deleted.",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            dispatch(AllSeries(page));
+            setItemForEdit(null);
+          } else {
+            Swal.fire({
+              title: "Ops !!",
+              text: "failed to delete  series",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        })
       }
     });
-    dispatch(DeleteSeries({ id: itemForEdit?.id })).then((res) => {
-      if (res.type == 'DeleteCategory/fulfilled') {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your Class has been Deleted.",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        dispatch(AllSeries(page));
-        setItemForEdit(null);
-      }
-    })
+
   };
   return (
     <div>

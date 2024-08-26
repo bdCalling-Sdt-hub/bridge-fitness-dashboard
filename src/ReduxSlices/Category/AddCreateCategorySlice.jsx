@@ -15,7 +15,7 @@ export const AddCategory = createAsyncThunk(
     try {
       let response = await baseAxios.post("/series/catagory", AddCategoryData, {
         headers: {
-          "Content-type": "multipart/form-data",
+          "Content-type": "application/json",
           authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });

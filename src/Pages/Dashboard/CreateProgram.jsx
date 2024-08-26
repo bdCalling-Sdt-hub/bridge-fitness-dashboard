@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import { UpdateProgram } from "../../ReduxSlices/CreateProgram/UpdateProgramSlice";
 import { MdDelete } from "react-icons/md";
 import { DeleteProgram } from "../../ReduxSlices/CreateProgram/DeleteProgramSlice";
+import { AllCategory } from "../../ReduxSlices/Category/AllCategorysSlice";
 
 const CreateProgram = () => {
   const [page, setPage] = useState(1)
@@ -22,8 +23,11 @@ const CreateProgram = () => {
   const [form] = Form.useForm();
   useEffect(() => {
     dispatch(AllProgram(page));
+    dispatch(AllCategory());
   }, [dispatch, page]);
+  const { userData: category } = useSelector((state) => state.AllCategory);
   const { userData } = useSelector((state) => state.AllProgram);
+  console.log(userData)
   const { isLoading } = useSelector((state) => state.AddProgram);
   const data = userData?.data?.map((program, index) => ({
     key: index + 1,
@@ -31,7 +35,8 @@ const CreateProgram = () => {
     date: moment(program?.createdAt).format("l"),
     img: program?.image,
     id: program?._id,
-    accessType: program?.accessType
+    accessType: program?.accessType,
+    category: program?.category || "category not found",
   }));
 
   const columns = [
@@ -43,7 +48,12 @@ const CreateProgram = () => {
     {
       title: "Name",
       dataIndex: "name",
-      key: "pakg",
+      key: "name",
+    },
+    {
+      title: "Category ",
+      dataIndex: "category",
+      key: "category",
     },
     {
       title: "Date",
@@ -55,7 +65,7 @@ const CreateProgram = () => {
       dataIndex: "",
       key: "",
       render: (_, record) => (
-        <>
+        <div className="flex justify-start items-center gap-3">
           <button
             onClick={() => {
               setOpenAddModel(true);
@@ -93,7 +103,7 @@ const CreateProgram = () => {
           >
             <MdDelete style={{ fontSize: "22px" }} />
           </button>
-        </>
+        </div>
       ),
     },
   ];
@@ -108,6 +118,7 @@ const CreateProgram = () => {
         return false;
       }
       formData.append("title", values.title);
+      formData.append("category", values.category);
       formData.append("accessType", values.subscription);
       dispatch(AddProgram(formData)).then((res) => {
         if (res.type == "AddProgram/fulfilled") {
@@ -141,6 +152,7 @@ const CreateProgram = () => {
         formData.append("image", itemForEdit.img);
       }
       formData.append("title", values.title);
+      formData.append("category", values.category);
       formData.append("accessType", values.subscription);
       dispatch(UpdateProgram({ id: itemForEdit?.id, data: formData })).then(
         (res) => {
@@ -188,26 +200,31 @@ const CreateProgram = () => {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your Series has been deleted.",
-          icon: "success"
-        });
+        dispatch(DeleteProgram({ id: itemForEdit?.id })).then((res) => {
+          console.log(res)
+          if (res.type == 'DeleteProgram/fulfilled') {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your Program has been Deleted.",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            dispatch(AllProgram(page));
+            setItemForEdit(null);
+          } else {
+            Swal.fire({
+              title: "Ops !!",
+              text: "failed to delete  Program",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 1500,
+            })
+          }
+        })
       }
     });
-    dispatch(DeleteProgram({ id: itemForEdit?.id })).then((res) => {
-      if (res.type == 'DeleteCategory/fulfilled') {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your Program has been Deleted.",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        dispatch(AllProgram(page));
-        setItemForEdit(null);
-      }
-    })
+
   };
   return (
     <div>
@@ -296,6 +313,34 @@ const CreateProgram = () => {
                   className="w-[100%] border outline-none px-3 py-[10px]"
                   type="text"
                 />
+              </Form.Item>
+            </div>
+            <div className="row-span-2 col-span-2" style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Category
+              </label>
+              <Form.Item
+                style={{
+                  marginBottom: 0,
+                }}
+                name="category"
+              >
+                <Select
+                  placeholder={'category'}
+                  style={{
+                    border: "1px solid #E0E4EC",
+                    height: "52px",
+                    background: "white",
+                    borderRadius: "8px",
+                    outline: "none",
+                  }}
+                  options={category?.map((item) => {
+                    return {
+                      value: item?.name,
+                      label: item?.name,
+                    };
+                  })}
+                ></Select>
               </Form.Item>
             </div>
             <div className="row-span-2 col-span-2" style={{ marginBottom: "16px" }}>

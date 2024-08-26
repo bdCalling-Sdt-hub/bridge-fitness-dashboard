@@ -12,7 +12,7 @@ export const DeleteProgram = createAsyncThunk(
     "DeleteProgram",
     async (value, thunkAPI) => {
         try {
-            let response = await baseAxios.delete(`/class/delete/${value.id}`, {
+            let response = await baseAxios.delete(`/program/delete/${value.id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
