@@ -32,6 +32,7 @@ const Login = () => {
 
   const onFinish = (values) => {
     dispatch(UserData(values)).then((res) => {
+      console.log(res)
       if (res.type == 'UserData/fulfilled') {
         navigate('/')
         location.reload()

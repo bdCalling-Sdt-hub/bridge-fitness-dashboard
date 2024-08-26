@@ -82,7 +82,6 @@ const ClassManagement = () => {
       }
     })
   };
-  console.log(updateProgress)
   const onFinish = (values) => {
     const formData = new FormData();
     const { date, ...otherValues } = values;

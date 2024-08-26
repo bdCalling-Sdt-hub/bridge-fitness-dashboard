@@ -36,6 +36,7 @@ import Series from "./Pages/Dashboard/Series";
 import AddBaner from "./Pages/Dashboard/AddBaner";
 import Feedback from "./Pages/Dashboard/Feedback";
 import Discount from "./Pages/Dashboard/Discount";
+import Category from "./Pages/Dashboard/Category";
 function App() {
   return (
     <>
@@ -72,6 +73,7 @@ function App() {
               <Route path="/seller-product-list" element={<PrivateRoute><SellerProductList /></PrivateRoute>} />
               <Route path="/banner" element={<PrivateRoute><AddBaner /></PrivateRoute>} />
               <Route path="/feedback" element={<PrivateRoute><Feedback /></PrivateRoute>} />
+              <Route path="/category" element={<Category />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
