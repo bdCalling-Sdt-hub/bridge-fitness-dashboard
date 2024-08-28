@@ -5,7 +5,7 @@ import Logo from "../../assets/icon/logo.png";
 import { HiLogout } from "react-icons/hi";
 import { LuDatabase, LuUser } from "react-icons/lu";
 import { TbUserPlus } from "react-icons/tb";
-import { MdDashboard, MdDashboardCustomize, MdOutlineManageHistory, MdOutlineSignalCellularAlt } from "react-icons/md";
+import { MdDashboard, MdDashboardCustomize, MdOutlineCategory, MdOutlineManageHistory, MdOutlineSignalCellularAlt } from "react-icons/md";
 import { RiNotification2Line } from "react-icons/ri";
 const { Header, Sider, Content } = Layout;
 import { IoSettingsOutline } from "react-icons/io5";
@@ -92,6 +92,11 @@ const Dashboard = () => {
       title: "Manage Order",
       path: "/manage-order",
       icon: <MdOutlineManageHistory size={24} />,
+    },
+    {
+      title: "Category",
+      path: "/category",
+      icon: <MdOutlineCategory size={24} />,
     },
     {
       title: "Add Subscription",
@@ -273,7 +278,7 @@ const Dashboard = () => {
                 }}>
                   <p>Create Program</p>
                 </Link>
-                <Link className="" to={`/category`} style={{
+                {/* <Link className="" to={`/category`} style={{
                   textAlign: 'center',
                   color: '#242424',
                   width: '100%',
@@ -282,7 +287,7 @@ const Dashboard = () => {
                   padding: '6px 0px'
                 }}>
                   <p>Category</p>
-                </Link>
+                </Link> */}
                 <Link className="" to={`/series`} style={{
                   textAlign: 'center',
                   color: '#242424',
