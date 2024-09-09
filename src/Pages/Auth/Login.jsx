@@ -32,7 +32,6 @@ const Login = () => {
 
   const onFinish = (values) => {
     dispatch(UserData(values)).then((res) => {
-      console.log(res)
       if (res.type == 'UserData/fulfilled') {
         navigate('/')
         location.reload()
@@ -40,7 +39,7 @@ const Login = () => {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: res?.payload?.message,
+          text: res?.error?.message,
           showCloseButton: false,
           showConfirmButton: false,
           timer: 1500

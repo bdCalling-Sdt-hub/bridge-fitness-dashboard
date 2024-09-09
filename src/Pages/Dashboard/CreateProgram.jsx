@@ -27,7 +27,6 @@ const CreateProgram = () => {
   }, [dispatch, page]);
   const { userData: category } = useSelector((state) => state.AllCategory);
   const { userData } = useSelector((state) => state.AllProgram);
-  console.log(userData)
   const { isLoading } = useSelector((state) => state.AddProgram);
   const data = userData?.data?.map((program, index) => ({
     key: index + 1,
@@ -287,7 +286,7 @@ const CreateProgram = () => {
           setOpenAddModel(false);
           form.resetFields();
         }}
-        width={500}
+        width={600}
         footer={false}
       >
         <div className="p-6 ">

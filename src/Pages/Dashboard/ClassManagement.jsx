@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { IoDocumentSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { GetAllClass } from "../../ReduxSlices/Classes/GetAllClassSlice";
-import { ServerUrl } from "../../../Config";
+import baseAxios, { ServerUrl } from "../../../Config";
 import { AllProgram } from "../../ReduxSlices/CreateProgram/GetCreateProgramesSlice";
 import { AddClass, setProgress } from "../../ReduxSlices/Classes/AddClassSlice";
 import Swal from "sweetalert2";
@@ -44,6 +44,7 @@ const ClassManagement = () => {
   const [deleteId, setDeleteId] = useState('')
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false)
+  const [uploadProgress, setProgress] = useState(0);
   const [uploadFiles, setuploadFiles] = useState({
     video: false,
     doc: false,
@@ -54,11 +55,6 @@ const ClassManagement = () => {
   })
   const [submitError, setSubmitError] = useState(false)
   const dispatch = useDispatch()
-
-
-
-
-
   const { Classes, meta } = useSelector(state => state.GetAllClass)
   const { isError, isSuccess, isLoading, progress, message } = useSelector((state) => state.AddClass);
   const { isLoading: UpdateLoading, progress: updateProgress, } = useSelector((state) => state.UpdateClass);
@@ -82,7 +78,48 @@ const ClassManagement = () => {
       }
     })
   };
-  const onFinish = (values) => {
+  // upload video 
+  const uploadFile = async (file) => {
+    const CHUNK_SIZE = 5 * 1024 * 1024;
+    let res
+    const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+    for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+      const start = chunkIndex * CHUNK_SIZE;
+      const end = Math.min(start + CHUNK_SIZE, file.size);
+      const chunk = file.slice(start, end);
+
+      const formData = new FormData();
+      formData.append('chunk', chunk);
+      formData.append('originalname', file.name);
+      formData.append('chunkIndex', chunkIndex);
+      formData.append('totalChunks', totalChunks);
+
+      res = await baseAxios.post('/upload', formData, {
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(((chunkIndex + 1) / totalChunks) * 100);
+          setProgress(percentCompleted);
+        },
+      });
+    }
+    return res
+  };
+  const getVideoDuration = async (file) => {
+    return new Promise((resolve, reject) => {
+      const videoElement = document.createElement('video');
+      videoElement.src = URL.createObjectURL(file);
+
+      videoElement.addEventListener('loadedmetadata', () => {
+        const durationInSeconds = videoElement.duration;
+        resolve(durationInSeconds); // Resolve the duration when metadata is loaded
+      });
+
+      videoElement.addEventListener('error', (error) => {
+        reject(error); // Reject the promise if there's an error
+      });
+    });
+  };
+
+  const onFinish = async (values) => { //videoDuration
     const formData = new FormData();
     const { date, ...otherValues } = values;
     if (formFor == 'Add New Class') {
@@ -104,10 +141,26 @@ const ClassManagement = () => {
       });
       formData.append('program', ProgramID)
       formData.append('series', SeriesID)
-      formData.append('video', uploadFiles.videoName)
+      // formData.append('video', uploadFiles.videoName)
       formData.append('docs', uploadFiles.docName)
-      formData.append('pdf', uploadFiles.pdfName) 
+      formData.append('pdf', uploadFiles.pdfName)
       setLoading(true)
+      const videoDuration = await getVideoDuration(uploadFiles.videoName)
+      formData.append('videoDuration', Math.ceil(videoDuration))
+      const res = await uploadFile(uploadFiles.videoName) // upload video
+      const video = res?.data?.path
+      console.log(video)
+      if (res?.data?.success) {
+        formData.append('video', video)
+      } else {
+        return Swal.fire({
+          title: "oops!",
+          text: "something went wrong",
+          icon: "error",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
       dispatch(AddClass({
         value: formData,
         onUploadProgress: (progressEvent) => {
@@ -151,7 +204,21 @@ const ClassManagement = () => {
         formData.append(key, values[key]);
       });
       if (uploadFiles.videoName) {
-        formData.append('video', uploadFiles.videoName)
+        const videoDuration = await getVideoDuration(uploadFiles.videoName)
+        formData.append('videoDuration', Math.ceil(videoDuration))
+        const res = await uploadFile(uploadFiles.videoName)
+        const video = res?.data?.path
+        if (res?.data?.success) {
+          formData.append('video', video)
+        } else {
+          return Swal.fire({
+            title: "oops!",
+            text: "something went wrong",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
       }
       Swal.fire({
         title: `your video size is ${Math.floor(uploadFiles?.videoName?.size / 1048576)} MB`,
@@ -219,6 +286,8 @@ const ClassManagement = () => {
     if (!editItem) {
       return
     }
+    setLoading(false)
+    form.resetFields()
     form.setFieldsValue(editItem)
   }, [editItem])
   const onChangePage = (pageNumber) => {
@@ -261,7 +330,7 @@ const ClassManagement = () => {
               value={search}
             />
             <button
-              onClick={() => { setFormFor('Add New Class'); setOpenAddModel(true); seteditItem({}); form.resetFields() }}
+              onClick={() => { setFormFor('Add New Class'); setOpenAddModel(true); seteditItem({}); form.resetFields(); setLoading(false) }}
               style={{
                 borderRadius: "4px",
                 color: "#F2F2F2",
@@ -442,7 +511,7 @@ const ClassManagement = () => {
                   <div className="border p-2 rounded-lg">
                     <span className="flex justify-start items-center w-fit bg-[#DADADA] py-[6px] px-2 gap-2 rounded-md">
                       {
-                        uploadFiles?.videoName ? <p>{uploadFiles?.videoName?.name?.slice(0, 34)}....</p> : editItem?.video ? <p>{editItem?.video?.split('/')[2].slice(0, 34)}....</p> : <><FaVideo /> browse video</>
+                        uploadFiles?.videoName ? <p>{uploadFiles?.videoName?.name?.slice(0, 34)}....</p> : editItem?.video ? <p>{editItem?.video}</p> : <><FaVideo /> browse video</>
                       }
                     </span>
                   </div>
@@ -589,26 +658,26 @@ const ClassManagement = () => {
                 </Form.Item>
               </div>
             </div>
-            {
-              isLoading && <div className="w-full h-3 bg-gray-200 rounded-md mb-2 relative overflow-hidden">
+            {/* {
+              loading && <div className="w-full h-3 bg-gray-200 rounded-md mb-2 relative overflow-hidden">
                 <div style={{
                   transition: '1s',
-                  width: `${progress}%`
+                  width: `${uploadProgress}%`
                 }} className={`absolute left-0 top-0 h-full bg-[#b47000]`}>
                 </div>
               </div>
-            }
+            } */}
             {
-              UpdateLoading && <div className="w-full h-3 bg-gray-200 rounded-md mb-2 relative overflow-hidden animate-bounce">
+              loading && <div className="w-full h-3 bg-gray-200 rounded-md mb-2 relative overflow-hidden animate-bounce">
                 <div style={{
                   transition: '1s',
-                  width: `${updateProgress}%`
+                  width: `${uploadProgress}%`
                 }} className={`absolute left-0 top-0 h-full bg-[#b47000]`}>
                 </div>
               </div>
             }
             <Form.Item>
-              <Button disabled={isLoading || UpdateLoading}
+              <Button disabled={loading}
                 type="primary"
                 htmlType="submit"
                 block
@@ -622,7 +691,7 @@ const ClassManagement = () => {
                 }}
               >
                 {
-                  (isLoading || UpdateLoading) ? 'loading.....' : 'Publish'
+                  loading ? 'loading.....' : 'Publish'
                 }
               </Button>
             </Form.Item>
@@ -638,6 +707,7 @@ const ClassManagement = () => {
       >
         <Row gutter={30}>
           {Classes.map((item, index) => {
+            console.log(`${ServerUrl}/${item?.video}`)
             const key = item?._id;
             return (
               <Col
@@ -656,7 +726,7 @@ const ClassManagement = () => {
                   <div className="w-full h-[300px]">
                     <video autoPlay={false} muted loop className="w-full h-full object-cover">
                       {
-                        item?.video && <source src={`${ServerUrl}${item?.video}`} />
+                        item?.video && <source src={`${ServerUrl}/${item?.video}`} />
                       }
                     </video>
                   </div>
@@ -721,7 +791,7 @@ const ClassManagement = () => {
                       Delete
                     </button>
                     <button
-                      onClick={() => { setFormFor('Update Class'); setOpenAddModel(true); seteditItem(item) }}
+                      onClick={() => { setFormFor('Update Class'); form.resetFields(); setLoading(false); setOpenAddModel(true); seteditItem(item) }}
                       style={{
                         background: "transparent",
                         border: "none",
